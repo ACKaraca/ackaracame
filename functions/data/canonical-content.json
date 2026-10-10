@@ -2338,8 +2338,8 @@
       }
     },
     "footerNote": {
-      "en": "Selected work across architecture, products, and software.",
-      "tr": "Mimarlık, ürün ve yazılım üzerine seçilmiş çalışmalar."
+      "en": "Are you really surprised you’re here?",
+      "tr": "Are you really surprised you’re here?"
     },
     "headline": {
       "en": "An architect and developer working between architecture and software.",
@@ -2373,6 +2373,15 @@
         "label": {
           "en": "GitHub profile",
           "tr": "GitHub profili"
+        },
+        "newTab": true
+      },
+      {
+        "href": "https://www.linkedin.com/in/ahmet-cem-karaca/",
+        "kind": "social",
+        "label": {
+          "en": "LinkedIn profile",
+          "tr": "LinkedIn profili"
         },
         "newTab": true
       }

@@ -43,7 +43,7 @@
   --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
 
   /* Layout */
-  --shell: min(86rem, calc(100vw - clamp(2rem, 6vw, 5rem)));
+  --shell: min(80rem, calc(100vw - clamp(2rem, 6vw, 5rem)));
   --header-height: 4.75rem;
   --radius-lg: 1.25rem;
   --radius-xl: 1.75rem;
@@ -271,6 +271,10 @@ ol {
 
 .section {
   padding-block: clamp(4.5rem, 10vw, 8.5rem);
+}
+
+.about-page .section {
+  padding-block: clamp(3rem, 6vw, 5rem);
 }
 
 .section-heading {
@@ -572,19 +576,13 @@ html[data-theme='dark'] .button--primary {
 
 .brand__mark {
   display: block;
-  width: 5.1rem;
+  width: 4.3rem;
   height: auto;
-  aspect-ratio: 1.76;
-  object-fit: contain;
+  /* Condensed horizontally so the monogram reads as a compact mark. */
+  aspect-ratio: 1.45;
+  object-fit: fill;
   overflow: hidden;
-  border: 1px solid var(--line-strong);
   flex-shrink: 0;
-  transition: transform 420ms var(--ease-spring), border-color 220ms ease;
-}
-
-.brand:hover .brand__mark {
-  transform: rotate(-6deg) scale(1.05);
-  border-color: var(--accent);
 }
 
 .brand__name {
@@ -852,10 +850,10 @@ html[data-theme='dark'] .button--primary {
 
 .site-footer__wordmark {
   display: block;
-  width: min(100%, 44rem);
+  width: min(100%, 11rem);
   height: auto;
-  aspect-ratio: 1.76;
-  object-fit: contain;
+  aspect-ratio: 1.45;
+  object-fit: fill;
   margin-inline: auto;
   padding-bottom: clamp(1rem, 3vw, 2rem);
   user-select: none;
@@ -999,6 +997,9 @@ html[data-theme='dark'] .button--primary {
 .home-hero h1 > span {
   display: block;
   overflow: hidden;
+  /* Room for descenders (p, g) inside the clipped reveal line, without changing line spacing. */
+  padding-bottom: 0.16em;
+  margin-bottom: -0.16em;
 }
 
 .home-hero h1 > span > span {
@@ -1399,6 +1400,13 @@ html[data-theme='dark'] .button--primary {
   }
 }
 
+.project-grid__flip {
+  display: grid;
+  min-width: 0;
+  transform-origin: center;
+  backface-visibility: hidden;
+}
+
 .project-card {
   --tilt-x: 0;
   --tilt-y: 0;
@@ -1601,10 +1609,9 @@ html[data-theme='dark'] .button--primary {
 
 .work-toolbar {
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
   align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
+  gap: 1.1rem;
   padding-bottom: 1.4rem;
   border-bottom: 1px solid var(--line);
 }
@@ -1613,22 +1620,23 @@ html[data-theme='dark'] .button--primary {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 0.4rem;
+  justify-content: center;
+  gap: 0.6rem;
 }
 
 .work-toolbar__filters > svg {
-  width: 16px;
-  height: 16px;
+  width: 20px;
+  height: 20px;
   margin-right: 0.35rem;
   color: var(--ink-faint);
 }
 
 .work-toolbar__filters button {
-  padding: 0.55rem 1.05rem;
+  padding: 0.8rem 1.6rem;
   border: 1px solid var(--line);
   border-radius: 999px;
   background: transparent;
-  font-size: 0.84rem;
+  font-size: 1.02rem;
   font-weight: 620;
   color: var(--ink-soft);
   cursor: pointer;
@@ -1657,7 +1665,7 @@ html[data-theme='dark'] .work-toolbar__filters button.is-active {
   display: flex;
   align-items: center;
   gap: 0.6rem;
-  min-width: min(20rem, 100%);
+  width: min(28rem, 100%);
   padding: 0.65rem 1.05rem;
   border: 1px solid var(--line);
   border-radius: 999px;
@@ -2249,6 +2257,51 @@ html[data-theme='dark'] .work-toolbar__filters button.is-active {
   display: grid;
   gap: 1.4rem;
   max-width: 62ch;
+}
+
+.company-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.2em;
+  font-size: 1.18em;
+  font-weight: 760;
+  color: var(--accent);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+  white-space: nowrap;
+}
+
+.company-link svg {
+  width: 0.9em;
+  height: 0.9em;
+}
+
+.company-link:hover {
+  color: var(--accent-strong);
+}
+
+.now-section__media {
+  margin: 0;
+  overflow: clip;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-md);
+}
+
+.now-section__media img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.now-section__media figcaption {
+  padding: 0.7rem 1.1rem;
+  border-top: 1px solid var(--line);
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  color: var(--ink-faint);
 }
 
 .about-story__copy p {
@@ -3276,7 +3329,7 @@ html[data-theme='dark'] .work-toolbar__filters button.is-active {
   }
 
   .brand__mark {
-    width: 4.6rem;
+    width: 3.9rem;
   }
 
   .hero-search kbd {
@@ -3284,12 +3337,16 @@ html[data-theme='dark'] .work-toolbar__filters button.is-active {
   }
 
   .work-toolbar {
-    flex-direction: column;
     align-items: stretch;
   }
 
+  .work-toolbar__filters button {
+    padding: 0.6rem 1.15rem;
+    font-size: 0.9rem;
+  }
+
   .work-search {
-    min-width: 100%;
+    width: 100%;
   }
 
   .project-card__body {

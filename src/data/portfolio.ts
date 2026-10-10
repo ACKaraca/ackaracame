@@ -54,6 +54,12 @@ const fallbackBundle = {
         href: 'https://github.com/ahmetcemkaraca',
         newTab: true,
       },
+      {
+        kind: 'social',
+        label: localized('LinkedIn profili', 'LinkedIn profile'),
+        href: 'https://www.linkedin.com/in/ahmet-cem-karaca/',
+        newTab: true,
+      },
     ],
     palette: {
       background: '#f5f2ea',
@@ -61,8 +67,8 @@ const fallbackBundle = {
       accent: '#197fe6',
     },
     footerNote: localized(
-      'Mimarlık, ürün ve yazılım üzerine seçilmiş çalışmalar.',
-      'Selected work across architecture, products, and software.',
+      'Are you really surprised you’re here?',
+      'Are you really surprised you’re here?',
     ),
     defaultSeo: {
       title: localized(

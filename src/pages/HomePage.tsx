@@ -106,18 +106,26 @@ const CountUp = ({ value }: { value: number }) => {
   );
 };
 
+const HOME_PROJECT_SLUGS = ['draw-or-die', 'archbuilder', 'peakactivity', 'attalus', 'duaapp', 'hypcas'];
+
+// Hidden until the hero search is wired to real project search.
+const HERO_SEARCH_ENABLED = false;
+
 export default function HomePage() {
   const { settings, projects } = useContent();
   const { locale, motionEnabled } = useAppPreferences();
   const t = copy[locale];
   const heroGlowRef = usePointerGlow<HTMLElement>();
 
-  const selectedProjects = useMemo(() => (
-    [...projects].sort((left, right) => {
-      const experimentDelta = Number(right.format === 'experiment') - Number(left.format === 'experiment');
-      return experimentDelta || (left.order ?? 100) - (right.order ?? 100);
-    }).slice(0, 6)
-  ), [projects]);
+  const selectedProjects = useMemo(() => {
+    const curated = HOME_PROJECT_SLUGS
+      .map((slug) => projects.find((project) => project.slug === slug))
+      .filter((project): project is NonNullable<typeof project> => Boolean(project));
+    const rest = [...projects]
+      .filter((project) => !curated.includes(project))
+      .sort((left, right) => (left.order ?? 100) - (right.order ?? 100));
+    return [...curated, ...rest].slice(0, HOME_PROJECT_SLUGS.length);
+  }, [projects]);
 
   const disciplineCount = new Set(projects.map((project) => project.discipline)).size;
   const technologyCount = new Set(projects.flatMap((project) => project.technologies)).size;
@@ -190,13 +198,14 @@ export default function HomePage() {
             <div className="home-hero__actions">
               <Link href="/work" className="button button--primary">{t.exploreWork}<ArrowRight aria-hidden="true" /></Link>
               {acceptingInquiries ? (
-                <a href={`mailto:${settings.contactEmail}`} className="button button--ghost">{settings.contactEmail}<ArrowUpRight aria-hidden="true" /></a>
+                <Link href="/contact" className="button button--ghost">{locale === 'tr' ? 'İletişime geç' : 'Get in touch'}<ArrowUpRight aria-hidden="true" /></Link>
               ) : (
                 <Link href="/about" className="button button--ghost">{locale === 'tr' ? 'Profili oku' : 'Read the profile'}<ArrowUpRight aria-hidden="true" /></Link>
               )}
             </div>
           </div>
 
+          {HERO_SEARCH_ENABLED ? (
           <div className="home-hero__utility">
             <button type="button" className="hero-search" onClick={openSearch}>
               <span className="hero-search__icon"><Command aria-hidden="true" /></span>
@@ -204,6 +213,7 @@ export default function HomePage() {
               <kbd>⌘ K</kbd>
             </button>
           </div>
+          ) : null}
         </div>
         <div className="shell">
           <a className="home-hero__scroll" href="#selected-work"><ArrowDown aria-hidden="true" /> {t.scroll}</a>

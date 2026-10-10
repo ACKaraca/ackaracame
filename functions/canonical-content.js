@@ -10,7 +10,7 @@ const SYSTEM_FIELDS = new Set(['schemaVersion', 'createdAt', 'updatedAt', 'delet
 // revision. Updating the fallback requires updating the artifact, this digest,
 // and passing the root exact-equality build check together.
 export const CANONICAL_CONTENT_ARTIFACT_SHA256 =
-  'ddba333bfc600f97df760ad5d5fd5b3010782ec7925b6f7e7becdf32f4738faf';
+  '97e10a1a6f5c2b3d10043608cb2105afced18d8d924045b88c4b4e550f162720';
 
 export const parsePinnedCanonicalContentArtifact = (source) => {
   if (typeof source !== 'string' && !Buffer.isBuffer(source)) {

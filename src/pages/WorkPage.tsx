@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
 import { Search, SlidersHorizontal } from 'lucide-react';
 import { Link } from 'wouter';
 import { useAppPreferences, localize } from '../context/AppPreferences';
@@ -42,7 +43,7 @@ const normalize = (value: string) => value.normalize('NFKD').replace(/[\u0300-\u
 
 export default function WorkPage() {
   const { projects, settings } = useContent();
-  const { locale } = useAppPreferences();
+  const { locale, motionEnabled } = useAppPreferences();
   const t = labels[locale];
   const acceptingInquiries = isAcceptingInquiries(settings.availability);
   const [filter, setFilter] = useState<WorkFilter>('all');
@@ -105,9 +106,21 @@ export default function WorkPage() {
         <div className="work-result-count" aria-live="polite"><strong>{filtered.length}</strong> {t.result}</div>
 
         {filtered.length ? (
-          <div className="project-grid project-grid--archive">
-            {filtered.map((project, index) => <ProjectCard key={project.slug} project={project} index={index} />)}
-          </div>
+          <AnimatePresence mode="wait" initial={false}>
+            <motion.div key={filter} className="project-grid project-grid--archive">
+              {filtered.map((project, index) => (
+                <motion.div
+                  key={project.slug}
+                  className="project-grid__flip"
+                  initial={motionEnabled ? { rotateY: -90, opacity: 0 } : false}
+                  animate={{ rotateY: 0, opacity: 1, transition: { duration: 0.38, delay: Math.min(index, 8) * 0.045, ease: [0.22, 1, 0.36, 1] } }}
+                  exit={motionEnabled ? { rotateY: 90, opacity: 0, transition: { duration: 0.22, delay: Math.min(index, 8) * 0.025, ease: [0.4, 0, 1, 1] } } : { opacity: 1 }}
+                >
+                  <ProjectCard project={project} index={index} />
+                </motion.div>
+              ))}
+            </motion.div>
+          </AnimatePresence>
         ) : (
           <div className="empty-state">
             <p>{t.empty}</p>

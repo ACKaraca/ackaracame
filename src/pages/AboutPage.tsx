@@ -1,19 +1,21 @@
 import { ArrowUpRight, Box, Braces, Building2, Compass, Layers3, ShieldCheck } from 'lucide-react';
 import { Link } from 'wouter';
-import { ProjectArtwork } from '../components/experience/ProjectArtwork';
 import { useAppPreferences, localize } from '../context/AppPreferences';
 import { useContent } from '../context/Content';
 import { useDocumentMeta } from '../hooks/useDocumentMeta';
 import { isAcceptingInquiries } from '../lib/availability';
 
+const COMPANY_REGISTER_URL = 'https://find-and-update.company-information.service.gov.uk/company/14560445';
+
 const content = {
   tr: {
     eyebrow: 'Profil / yaklaşım',
     titleA: 'Mimarlık bana', titleB: 'nasıl bakacağımı;', titleC: 'yazılım nasıl sınayacağımı öğretti.',
-    intro: 'Ben Ahmet Cem Karaca. Mimarlık eğitimi alırken aynı zamanda bağımsız dijital ürünler, yapay zekâ araçları ve deneysel sistemler geliştiriyorum.',
+    intro: 'Ben Ahmet Cem Karaca. Mimarlık mesleğimle birlikte bağımsız oyunlar, dijital ürünler, yapay zekâ araçları ve deneysel sistemler geliştiriyorum.',
     body1: 'Bir binayı yalnızca cephesiyle açıklayamayacağınız gibi, bir ürünü de yalnızca ekranlarıyla açıklayamazsınız. Akışın, taşıyıcı sistemin, sınırların ve kullanım anının birlikte çalışması gerekir.',
-    body2: 'Çalışmalarım bu kesişimde duruyor: mimarlık öğrencileri için jüri simülatörü, e-posta özet servisi, dijital sağlık ürünü, mobil keşif deneyimleri ve yaratıcı üretim araçları.',
-    body3: 'ACKARACA LIMITED çatısı altında fikirleri küçük deneylerden, test edilebilir ve yönetilebilir ürün sistemlerine dönüştürüyorum.',
+    body2: 'Çalışmalarım bu kesişimde duruyor: mimarlık öğrencileri için jüri simülatörü, açık çekirdekli bir CAD/BIM editörü, dijital sağlık ürünü, mobil keşif deneyimleri ve bağımsız oyunlar.',
+    body3Before: '',
+    body3After: ' çatısı altında fikirleri küçük deneylerden, test edilebilir ve yönetilebilir ürün sistemlerine dönüştürüyorum.',
     principles: 'Çalışma ilkeleri',
     principle1: 'Önce bağlam', principle1Body: 'Teknolojiden önce insanı, kısıtı ve gerçek kullanım anını tanımlarım.',
     principle2: 'Görünür kararlar', principle2Body: 'Neden yaptığımı, trade-off’ları ve sistem sınırlarını belgelerim.',
@@ -28,10 +30,11 @@ const content = {
   en: {
     eyebrow: 'Profile / approach',
     titleA: 'Architecture taught me', titleB: 'how to look;', titleC: 'software taught me how to test.',
-    intro: 'I’m Ahmet Cem Karaca. Alongside studying architecture, I build independent digital products, AI tools, and experimental systems.',
+    intro: 'I’m Ahmet Cem Karaca. Alongside my work as an architect, I build independent games, digital products, AI tools, and experimental systems.',
     body1: 'Just as a building cannot be explained by its façade alone, a product cannot be explained by its screens. Flow, structure, boundaries, and the moment of use all have to work together.',
-    body2: 'My work sits at that intersection: an architecture jury simulator, an email digest service, a digital wellbeing product, mobile discovery experiences, and tools for creative production.',
-    body3: 'Through ACKARACA LIMITED, I turn ideas from small experiments into product systems that can be tested, managed, and maintained.',
+    body2: 'My work sits at that intersection: an architecture jury simulator, an open-core CAD/BIM editor, a digital wellbeing product, mobile discovery experiences, and independent games.',
+    body3Before: 'Through ',
+    body3After: ', I turn ideas from small experiments into product systems that can be tested, managed, and maintained.',
     principles: 'Working principles',
     principle1: 'Context first', principle1Body: 'Before technology, I define the person, the constraint, and the real moment of use.',
     principle2: 'Visible decisions', principle2Body: 'I document why, the trade-offs, and where the system’s boundaries sit.',
@@ -50,6 +53,7 @@ export default function AboutPage() {
   const { settings, projects } = useContent();
   const t = content[locale];
   const representative = projects.find((project) => project.slug === 'archbuilder') ?? projects[0];
+  const representativeCover = representative?.media.find((media) => media.role === 'cover' && media.assetState === 'ready' && media.src);
   const acceptingInquiries = isAcceptingInquiries(settings.availability);
 
   useDocumentMeta({
@@ -83,7 +87,7 @@ export default function AboutPage() {
 
       <section className="about-story shell">
         <div className="about-story__mark" aria-hidden="true"><span>AC</span><small>Architecture × Product</small></div>
-        <div className="about-story__copy"><p>{t.body1}</p><p>{t.body2}</p><p>{t.body3}</p></div>
+        <div className="about-story__copy"><p>{t.body1}</p><p>{t.body2}</p><p>{t.body3Before}<a className="company-link" href={COMPANY_REGISTER_URL} target="_blank" rel="noreferrer">ACKARACA LIMITED<ArrowUpRight aria-hidden="true" /></a>{t.body3After}</p></div>
       </section>
 
       <section className="section principles-section">
@@ -107,7 +111,12 @@ export default function AboutPage() {
       <section className="section now-section">
         <div className="shell now-section__grid">
           <div><span className="eyebrow">03 / {t.now}</span><h2>{t.nowTitle}</h2><p>{t.nowBody}</p><Link href={acceptingInquiries ? '/contact' : '/work'} className="text-link text-link--large">{acceptingInquiries ? t.contact : (locale === 'tr' ? 'Seçili işleri incele' : 'Explore selected work')}<ArrowUpRight aria-hidden="true" /></Link></div>
-          {representative ? <ProjectArtwork slug={representative.slug} variant={representative.cover.visualVariant} palette={representative.cover.palette} title={localize(representative.title, locale)} caption={localize(representative.cover.alt, locale)} /> : null}
+          {representative && representativeCover?.src ? (
+            <figure className="now-section__media">
+              <img src={representativeCover.src} alt={localize(representativeCover.alt, locale)} width={representativeCover.width} height={representativeCover.height} loading="lazy" decoding="async" />
+              <figcaption>{localize(representative.title, locale)}</figcaption>
+            </figure>
+          ) : null}
         </div>
       </section>
     </main>
