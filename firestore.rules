@@ -189,7 +189,7 @@ service cloud.firestore {
         && data.schemaVersion >= 2
         && data.schemaVersion <= 10
         && data.discipline in ['architecture', 'software', 'hybrid', 'research']
-        && data.format in ['case-study', 'product', 'experiment', 'academic']
+        && data.format in ['case-study', 'product', 'experiment', 'academic', 'game']
         && validLocalizedText(data.title, 2, 120)
         && validLocalizedText(data.dek, 12, 360)
         && validState(data.status)
@@ -199,7 +199,8 @@ service cloud.firestore {
         && optionalLocalizedText(data, 'context', 1, 80)
         && optionalLocalizedText(data, 'location', 1, 80)
         && (!('releaseStage' in data) || data.releaseStage in [
-          'concept', 'prototype', 'in-development', 'live', 'maintained', 'archived'
+          'concept', 'prototype', 'pre-alpha', 'in-development', 'feature-complete',
+          'beta', 'release-candidate', 'stable', 'live', 'maintained', 'archived'
         ])
         && data.technologies is list
         && data.technologies.size() >= 1

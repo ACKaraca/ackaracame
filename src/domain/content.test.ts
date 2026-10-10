@@ -231,13 +231,16 @@ describe('portfolio fallback content', () => {
   it('contains every existing named project with unique, resolvable slugs', () => {
     const requiredSlugs = [
       'draw-or-die',
-      'mailcrush',
-      'beatforge',
       'peakactivity',
       'hocapuanla',
       'archbuilder',
       'duaapp',
       'where-to-go',
+      'attalus',
+      'ai-tycoon',
+      'mesai-bitti',
+      'hypcas',
+      'gsgame',
     ];
     const actualSlugs = new Set(portfolioProjects.map((project) => project.slug));
 
@@ -321,19 +324,31 @@ describe('portfolio fallback content', () => {
     expect(bySlug.get('draw-or-die')?.technologies).toEqual(
       expect.arrayContaining(['Next.js 15', 'React 19', 'Appwrite', 'Gemini', 'Stripe']),
     );
-    expect(bySlug.get('beatforge')?.technologies).toEqual(
-      expect.arrayContaining(['Python', 'mido', 'music21', 'simpleaudio', 'Paperclip']),
-    );
-    expect(bySlug.get('beatforge')?.technologies).not.toEqual(
-      expect.arrayContaining(['TypeScript', 'Vite']),
-    );
+    expect(bySlug.get('peakactivity')?.links).toEqual([]);
+    expect(bySlug.get('peakactivity')?.releaseStage).toBe('pre-alpha');
     expect(bySlug.get('duaapp')?.technologies).toEqual(
       expect.arrayContaining(['Flutter', 'Riverpod', 'GoRouter', 'Appwrite Auth']),
     );
-    expect(bySlug.get('where-to-go')?.releaseStage).toBe('in-development');
+    expect(bySlug.get('where-to-go')?.releaseStage).toBe('release-candidate');
     expect(bySlug.get('where-to-go')?.technologies).toEqual(
       expect.arrayContaining(['Flutter', 'Riverpod', 'Google Places', 'Deep Links']),
     );
+  });
+
+  it('ships a ready, locally hosted cover image for every project', () => {
+    const publicAssets = new Set(
+      Object.keys(import.meta.glob('../../public/media/projects/**/*.webp')).map((path) =>
+        path.replace('../../public', ''),
+      ),
+    );
+    for (const project of portfolioProjects) {
+      const cover = project.media.find((media) => media.role === 'cover');
+      expect(cover?.assetState, project.slug).toBe('ready');
+      for (const media of project.media) {
+        expect(media.src?.startsWith(`/media/projects/${project.slug}/`), media.id).toBe(true);
+        expect(publicAssets.has(media.src ?? ''), media.id).toBe(true);
+      }
+    }
   });
 
   it('keeps editorial publication state and search visibility coherent', () => {

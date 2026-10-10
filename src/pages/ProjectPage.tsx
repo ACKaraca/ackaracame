@@ -16,8 +16,16 @@ const disciplineLabels = {
 } as const;
 
 const stageLabels = {
-  tr: { concept: 'Konsept', prototype: 'Prototip', 'in-development': 'Geliştirme aşamasında', live: 'Yayında', maintained: 'Aktif bakımda', archived: 'Arşivlendi' },
-  en: { concept: 'Concept', prototype: 'Prototype', 'in-development': 'In development', live: 'Live', maintained: 'Actively maintained', archived: 'Archived' },
+  tr: {
+    concept: 'Konsept', prototype: 'Prototip', 'pre-alpha': 'Pre-alpha', 'in-development': 'Geliştirme aşamasında',
+    'feature-complete': 'Özellikleri tamamlandı', beta: 'Beta', 'release-candidate': 'Sürüm adayı (RC)',
+    stable: 'Kararlı sürüm', live: 'Yayında', maintained: 'Aktif bakımda', archived: 'Arşivlendi',
+  },
+  en: {
+    concept: 'Concept', prototype: 'Prototype', 'pre-alpha': 'Pre-alpha', 'in-development': 'In development',
+    'feature-complete': 'Feature-complete', beta: 'Beta', 'release-candidate': 'Release candidate',
+    stable: 'Stable release', live: 'Live', maintained: 'Actively maintained', archived: 'Archived',
+  },
 } as const;
 
 const toneLabels = {
@@ -188,7 +196,7 @@ export default function ProjectPage() {
           <ProjectArtwork slug={project.slug} variant={project.cover.visualVariant} palette={project.cover.palette} title={title} caption={localize(project.cover.alt, locale)} className="case-hero__artwork" />
         )}
         <dl className="case-overview">
-          <div><dt>{locale === 'tr' ? 'Alan' : 'Discipline'}</dt><dd>{disciplineLabels[locale][project.discipline]}</dd></div>
+          <div><dt>{locale === 'tr' ? 'Alan' : 'Discipline'}</dt><dd>{project.format === 'game' ? (locale === 'tr' ? 'Oyun geliştirme' : 'Game development') : disciplineLabels[locale][project.discipline]}</dd></div>
           <div><dt>{locale === 'tr' ? 'Durum' : 'Stage'}</dt><dd>{project.releaseStage ? stageLabels[locale][project.releaseStage] : (locale === 'tr' ? 'Devam ediyor' : 'Ongoing')}</dd></div>
           <div><dt>{locale === 'tr' ? 'Yıl' : 'Year'}</dt><dd>{project.year ?? '—'}</dd></div>
           <div><dt>{locale === 'tr' ? 'Araçlar' : 'Tools'}</dt><dd>{project.technologies.slice(0, 5).join(', ')}</dd></div>

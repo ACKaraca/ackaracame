@@ -326,7 +326,7 @@ email, App Check debug tokens, or secret values.
 The deployed `seedContent` callable and local CLI read the same checked-in,
 bounded `functions/data/canonical-content.json` artifact. Root build verification
 parses it with the domain schema and requires exact equality with the bundled
-fallback. It currently contains site settings, eight projects, and two journal
+fallback. It currently contains site settings, eleven projects, and two journal
 entries. Both seed surfaces are create-only: existing documents are preserved
 even when fallback content changes. The old `content-seeds.json` file is retained
 only as a legacy-collision recognition fixture and is never a seed payload. The

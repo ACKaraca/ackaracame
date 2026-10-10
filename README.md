@@ -175,7 +175,7 @@ parçasıdır:
    kontrolün exact `ACKARACA_OWNER_PREFLIGHT_MODE=normal` komutu
    [`functions/README.md`](functions/README.md) içindedir.
 6. `npm run legacy:migrate-content --prefix functions` dry-run çıktısındaki
-   canonical settings + sekiz proje + iki journal yolunu, sınıflandırmaları,
+   canonical settings + on bir proje + iki journal yolunu, sınıflandırmaları,
    local `0600` planı ve SHA-256 özetini inceleyin. Komut collection query
    çalıştırmaz; hiçbir unrelated legacy auto-ID belgesini listelemez veya değiştirmez.
 7. Private plandaki her `sourceData` / `replacementData` çiftini inceleyin;

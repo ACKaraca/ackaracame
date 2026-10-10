@@ -116,7 +116,7 @@ export default function HomePage() {
     [...projects].sort((left, right) => {
       const experimentDelta = Number(right.format === 'experiment') - Number(left.format === 'experiment');
       return experimentDelta || (left.order ?? 100) - (right.order ?? 100);
-    }).slice(0, 4)
+    }).slice(0, 6)
   ), [projects]);
 
   const disciplineCount = new Set(projects.map((project) => project.discipline)).size;
@@ -228,7 +228,7 @@ export default function HomePage() {
             <div><span className="eyebrow">{t.selectedEyebrow}</span><h2>{t.selectedTitle}</h2></div>
             <div><p>{t.selectedBody}</p><Link href="/work" className="text-link">{t.allWork}<ArrowUpRight aria-hidden="true" /></Link></div>
           </Reveal>
-          <div className="project-grid">
+          <div className="project-grid project-grid--triple">
             {selectedProjects.map((project, index) => <ProjectCard key={project.slug} project={project} index={index} />)}
           </div>
         </div>

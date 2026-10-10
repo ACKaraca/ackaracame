@@ -214,7 +214,16 @@
       "format": "product",
       "links": [
         {
-          "href": "https://github.com/ahmetcemkaraca/draw-or-die",
+          "href": "https://drawordie.app",
+          "kind": "live",
+          "label": {
+            "en": "Open Draw Or Die",
+            "tr": "Draw Or Die’ı aç"
+          },
+          "newTab": true
+        },
+        {
+          "href": "https://github.com/ACKaraca/draw-or-die",
           "kind": "source",
           "label": {
             "en": "GitHub repository",
@@ -223,7 +232,62 @@
           "newTab": true
         }
       ],
-      "media": [],
+      "media": [
+        {
+          "alt": {
+            "en": "Draw Or Die landing screen",
+            "tr": "Draw Or Die açılış ekranı"
+          },
+          "assetState": "ready",
+          "caption": {
+            "en": "The live product landing screen: upload your board and face the jury.",
+            "tr": "Canlı ürünün açılış ekranı: paftanı yükle, jüriyle yüzleş."
+          },
+          "height": 1000,
+          "id": "draw-or-die-cover",
+          "kind": "image",
+          "mimeType": "image/webp",
+          "role": "cover",
+          "src": "/media/projects/draw-or-die/cover.webp",
+          "width": 1600
+        },
+        {
+          "alt": {
+            "en": "Draw Or Die Studio Desk upload step",
+            "tr": "Draw Or Die Studio Desk yükleme adımı"
+          },
+          "assetState": "ready",
+          "caption": {
+            "en": "Studio Desk: board upload, the project defence form, jury harshness, and persona selection.",
+            "tr": "Studio Desk: pafta yükleme alanı, proje savunma formu, jüri sertliği ve persona seçimi."
+          },
+          "height": 1000,
+          "id": "draw-or-die-studio-desk",
+          "kind": "image",
+          "mimeType": "image/webp",
+          "role": "gallery",
+          "src": "/media/projects/draw-or-die/studio-desk.webp",
+          "width": 1600
+        },
+        {
+          "alt": {
+            "en": "Draw Or Die Rapido store",
+            "tr": "Draw Or Die Rapido mağazası"
+          },
+          "assetState": "ready",
+          "caption": {
+            "en": "The Premium and Rapido store with credit costs per analysis mode.",
+            "tr": "Premium ve Rapido mağazası: analiz modlarının kredi maliyetleri."
+          },
+          "height": 1000,
+          "id": "draw-or-die-rapido-store",
+          "kind": "image",
+          "mimeType": "image/webp",
+          "role": "gallery",
+          "src": "/media/projects/draw-or-die/rapido-store.webp",
+          "width": 1600
+        }
+      ],
       "metrics": [
         {
           "context": {
@@ -261,7 +325,7 @@
       "order": 10,
       "relatedSlugs": [
         "archbuilder",
-        "beatforge"
+        "hocapuanla"
       ],
       "seo": {
         "description": {
@@ -301,264 +365,8 @@
       "blocks": [
         {
           "body": {
-            "en": "MailCrush is structured as a service that receives email and turns it into a short OpenAI-assisted summary. The goal is a smaller reading surface that preserves the meaning of the message.",
-            "tr": "MailCrush, gelen e-postayı alıp OpenAI tabanlı kısa bir özete dönüştüren bir servis kurgusuna sahip. Amaç, mesajın anlamını koruyan daha küçük bir okuma yüzeyi oluşturmak."
-          },
-          "eyebrow": {
-            "en": "Product idea",
-            "tr": "Ürün fikri"
-          },
-          "heading": {
-            "en": "Turning the inbox into a digest layer",
-            "tr": "Gelen kutusunu özet katmanına çevirmek"
-          },
-          "id": "mailcrush-purpose",
-          "type": "text"
-        },
-        {
-          "body": {
-            "en": "Next.js carries the interface layer while FastAPI handles the service flow. Firebase is listed for authentication and Stripe for the subscription structure in the current project definition.",
-            "tr": "Next.js arayüz katmanını, FastAPI servis akışını taşır. Firebase kimlik doğrulamayı, Stripe ise abonelik yapısını desteklemek üzere mevcut proje tanımında yer alır."
-          },
-          "eyebrow": {
-            "en": "Technical spine",
-            "tr": "Teknik omurga"
-          },
-          "heading": {
-            "en": "Separating product and service layers",
-            "tr": "Ürün ve servis katmanlarını ayırmak"
-          },
-          "id": "mailcrush-architecture",
-          "type": "text"
-        },
-        {
-          "heading": {
-            "en": "Project profile",
-            "tr": "Proje profili"
-          },
-          "id": "mailcrush-facts",
-          "items": [
-            {
-              "label": {
-                "en": "Input",
-                "tr": "Girdi"
-              },
-              "value": {
-                "en": "Inbound email",
-                "tr": "Gelen e-posta"
-              }
-            },
-            {
-              "label": {
-                "en": "Output",
-                "tr": "Çıktı"
-              },
-              "value": {
-                "en": "Concise email digest",
-                "tr": "Kısa e-posta özeti"
-              }
-            }
-          ],
-          "type": "facts"
-        }
-      ],
-      "context": {
-        "en": "Personal work",
-        "tr": "Kişisel çalışma"
-      },
-      "cover": {
-        "alt": {
-          "en": "MailCrush email digest flow",
-          "tr": "MailCrush e-posta özet akışı"
-        },
-        "palette": [
-          "#111827",
-          "#e2e8f0",
-          "#8b5cf6"
-        ],
-        "slug": "mailcrush",
-        "visualVariant": "signal-field"
-      },
-      "dek": {
-        "en": "An AI-assisted email service designed to turn inbound messages into concise, readable digests.",
-        "tr": "Gelen e-postaları kısa, okunur özetlere dönüştürmek için tasarlanmış yapay zekâ destekli bir e-posta servisi."
-      },
-      "discipline": "software",
-      "featured": true,
-      "format": "product",
-      "links": [],
-      "media": [],
-      "metrics": [],
-      "order": 30,
-      "relatedSlugs": [
-        "peakactivity",
-        "hocapuanla"
-      ],
-      "seo": {
-        "description": {
-          "en": "An AI-assisted email digest service combining Next.js, FastAPI, OpenAI, Firebase, and Stripe.",
-          "tr": "Next.js, FastAPI, OpenAI, Firebase ve Stripe katmanlarını birleştiren yapay zekâ destekli e-posta özetleme servisi."
-        },
-        "noIndex": false,
-        "title": {
-          "en": "MailCrush — AI-Assisted Email Digests",
-          "tr": "MailCrush — Yapay Zekâ Destekli E-posta Özeti"
-        }
-      },
-      "slug": "mailcrush",
-      "status": "published",
-      "technologies": [
-        "Next.js",
-        "FastAPI",
-        "OpenAI",
-        "Firebase",
-        "Stripe"
-      ],
-      "title": {
-        "en": "MailCrush",
-        "tr": "MailCrush"
-      },
-      "topics": [
-        "email",
-        "ai",
-        "subscription"
-      ],
-      "year": 2026
-    },
-    {
-      "blocks": [
-        {
-          "body": {
-            "en": "BeatForge explores keeping beat composition and arrangement decisions deterministic. Its MIDI-led approach represents the parts of a composition explicitly across a timeline.",
-            "tr": "BeatForge, beat besteleme ve aranjman kararlarını deterministik bir yapıda tutmayı araştırıyor. MIDI odaklı yaklaşım, kompozisyonun zaman çizelgesi üzerindeki parçalarını açık biçimde temsil ediyor."
-          },
-          "eyebrow": {
-            "en": "Principle",
-            "tr": "İlke"
-          },
-          "heading": {
-            "en": "A traceable flow from the same input",
-            "tr": "Aynı girdiden izlenebilir bir akış"
-          },
-          "id": "beatforge-principle",
-          "type": "text"
-        },
-        {
-          "body": {
-            "en": "The Python core uses mido and music21 for MIDI generation and musical structure, with simpleaudio supporting quick playback. Timeline sections keep arrangement decisions explicit, while Paperclip workflows organise production steps.",
-            "tr": "Python çekirdeği mido ve music21 ile MIDI üretimini ve müzikal yapıyı işler; simpleaudio hızlı dinleme katmanını destekler. Zaman çizelgesi bölümleri aranjman kararlarını açık tutarken Paperclip iş akışları üretim adımlarını düzenler."
-          },
-          "eyebrow": {
-            "en": "Workspace",
-            "tr": "Çalışma alanı"
-          },
-          "heading": {
-            "en": "A section-aware timeline",
-            "tr": "Bölüm farkındalığı olan zaman çizelgesi"
-          },
-          "id": "beatforge-workspace",
-          "type": "text"
-        },
-        {
-          "heading": {
-            "en": "Project profile",
-            "tr": "Proje profili"
-          },
-          "id": "beatforge-facts",
-          "items": [
-            {
-              "label": {
-                "en": "Core data",
-                "tr": "Temel veri"
-              },
-              "value": {
-                "en": "MIDI",
-                "tr": "MIDI"
-              }
-            },
-            {
-              "label": {
-                "en": "Approach",
-                "tr": "Yaklaşım"
-              },
-              "value": {
-                "en": "Deterministic composition",
-                "tr": "Deterministik kompozisyon"
-              }
-            }
-          ],
-          "type": "facts"
-        }
-      ],
-      "context": {
-        "en": "Personal work",
-        "tr": "Kişisel çalışma"
-      },
-      "cover": {
-        "alt": {
-          "en": "BeatForge MIDI timeline",
-          "tr": "BeatForge MIDI zaman çizelgesi"
-        },
-        "palette": [
-          "#0b1020",
-          "#22d3ee",
-          "#f59e0b"
-        ],
-        "slug": "beatforge",
-        "visualVariant": "signal-field"
-      },
-      "dek": {
-        "en": "A deterministic composition environment centred on MIDI and timeline awareness for reproducible music workflows.",
-        "tr": "Tekrar üretilebilir müzik akışları için MIDI ve zaman çizelgesi farkındalığını merkeze alan deterministik besteleme ortamı."
-      },
-      "discipline": "software",
-      "featured": false,
-      "format": "experiment",
-      "links": [],
-      "media": [],
-      "metrics": [],
-      "order": 60,
-      "relatedSlugs": [
-        "draw-or-die",
-        "peakactivity"
-      ],
-      "seo": {
-        "description": {
-          "en": "A MIDI-first composition environment using Python, mido, music21, and simpleaudio, with a section-aware timeline and Paperclip workflows.",
-          "tr": "Python, mido, music21 ve simpleaudio ile geliştirilen; bölüm farkındalıklı zaman çizelgesi ve Paperclip iş akışları sunan MIDI-first besteleme ortamı."
-        },
-        "noIndex": false,
-        "title": {
-          "en": "BeatForge — Deterministic MIDI Workspace",
-          "tr": "BeatForge — Deterministik MIDI Çalışma Alanı"
-        }
-      },
-      "slug": "beatforge",
-      "status": "published",
-      "technologies": [
-        "Python",
-        "mido",
-        "music21",
-        "simpleaudio",
-        "Paperclip"
-      ],
-      "title": {
-        "en": "BeatForge",
-        "tr": "BeatForge"
-      },
-      "topics": [
-        "music",
-        "midi",
-        "creative-workflows"
-      ],
-      "year": 2026
-    },
-    {
-      "blocks": [
-        {
-          "body": {
-            "en": "PeakActivity explores a product structure that interprets ActivityWatch-based data through productivity and digital wellbeing instead of leaving it as a raw duration log.",
-            "tr": "PeakActivity, ActivityWatch tabanlı veriyi tek başına bir süre kaydı olarak bırakmak yerine üretkenlik ve dijital sağlık bağlamında anlamlandıran bir ürün yapısını araştırıyor."
+            "en": "PeakActivity aims to turn time spent at the computer into personal insight rather than a raw duration log. Window and idle data are collected and stored on the device, while rules, reports, and manual time entries work on that local data.",
+            "tr": "PeakActivity, bilgisayar başında geçen zamanı ham bir süre kaydı olarak bırakmak yerine kişisel içgörüye çevirmeyi hedefliyor. Pencere ve boşta kalma verisi cihazda toplanıyor ve saklanıyor; kurallar, raporlar ve manuel süre girişleri bu yerel veri üzerinde çalışıyor."
           },
           "eyebrow": {
             "en": "Question",
@@ -573,16 +381,16 @@
         },
         {
           "body": {
-            "en": "Tauri, Vue 3, and TypeScript bring the desktop and web experiences into one product frame. Python-based Cloud Functions support data processing, Firestore stores product data, and Firebase Auth handles user identity.",
-            "tr": "Tauri, Vue 3 ve TypeScript masaüstü ve web deneyimini aynı ürün çerçevesinde topluyor. Python tabanlı Cloud Functions veri işleme katmanını, Firestore kalıcı veriyi, Firebase Auth ise kullanıcı kimliğini destekliyor."
+            "en": "The project is a pre-alpha source workspace that keeps ActivityWatch’s open-source components as a pinned base; it is not an installable release yet. The Tauri desktop shell, pre-storage filtering, optional SQLCipher, and rule-based classification are experimental, while encrypted-by-default storage, end-to-end encrypted sync, and a privacy firewall are planned. The repository is private for now, so no source link is shared.",
+            "tr": "Proje, ActivityWatch’ın açık kaynak bileşenlerini sabitlenmiş bir temel olarak koruyan pre-alpha bir kaynak çalışma alanı; henüz kurulabilir bir sürüm değil. Tauri masaüstü kabuğu, depolama öncesi filtreleme, isteğe bağlı SQLCipher ve kural tabanlı sınıflandırma deneysel aşamada. Varsayılan şifreli depolama, uçtan uca şifreli senkronizasyon ve gizlilik güvenlik duvarı planlanıyor. Depo şu an özel olduğu için kaynak bağlantısı paylaşılmıyor."
           },
           "eyebrow": {
-            "en": "Layers",
-            "tr": "Katmanlar"
+            "en": "Status",
+            "tr": "Durum"
           },
           "heading": {
-            "en": "A system spanning desktop to cloud",
-            "tr": "Masaüstünden buluta uzanan sistem"
+            "en": "From an ActivityWatch base to an independent product",
+            "tr": "ActivityWatch temelinden bağımsız bir ürüne"
           },
           "id": "peakactivity-layers",
           "type": "text"
@@ -596,12 +404,22 @@
           "items": [
             {
               "label": {
-                "en": "Data source",
-                "tr": "Veri kaynağı"
+                "en": "Base",
+                "tr": "Temel"
               },
               "value": {
-                "en": "ActivityWatch",
-                "tr": "ActivityWatch"
+                "en": "ActivityWatch derivative",
+                "tr": "ActivityWatch türevi"
+              }
+            },
+            {
+              "label": {
+                "en": "Stage",
+                "tr": "Aşama"
+              },
+              "value": {
+                "en": "Pre-alpha source workspace",
+                "tr": "Pre-alpha kaynak çalışma alanı"
               }
             },
             {
@@ -624,8 +442,8 @@
       },
       "cover": {
         "alt": {
-          "en": "PeakActivity activity data view",
-          "tr": "PeakActivity etkinlik verisi görünümü"
+          "en": "PeakActivity capability status",
+          "tr": "PeakActivity yetenek durumu"
         },
         "palette": [
           "#07111f",
@@ -636,51 +454,59 @@
         "visualVariant": "product-orbit"
       },
       "dek": {
-        "en": "A platform combining desktop, web, and cloud layers to interpret ActivityWatch data through productivity and digital wellbeing.",
-        "tr": "ActivityWatch verisini üretkenlik ve dijital sağlık bağlamında yorumlamak için masaüstü, web ve bulut katmanlarını birleştiren platform."
+        "en": "A local-first, privacy-focused activity tracking platform built on ActivityWatch for personal activity insights.",
+        "tr": "Kişisel etkinlik içgörüleri için ActivityWatch üzerine kurulan, yerel öncelikli ve gizlilik odaklı bir etkinlik takip platformu."
       },
       "discipline": "software",
       "featured": true,
       "format": "product",
-      "links": [
+      "links": [],
+      "media": [
         {
-          "href": "https://github.com/ahmetcemkaraca/PeakActivity",
-          "kind": "source",
-          "label": {
-            "en": "GitHub repository",
-            "tr": "GitHub reposu"
+          "alt": {
+            "en": "PeakActivity capability status summary",
+            "tr": "PeakActivity yetenek durumu özeti"
           },
-          "newTab": true
+          "assetState": "ready",
+          "caption": {
+            "en": "A summary prepared from the repository capability registry; not the product interface.",
+            "tr": "Depodaki yetenek kaydından hazırlanan özet; ürün arayüzü değildir."
+          },
+          "height": 1000,
+          "id": "peakactivity-cover",
+          "kind": "image",
+          "mimeType": "image/webp",
+          "role": "cover",
+          "src": "/media/projects/peakactivity/cover.webp",
+          "width": 1600
         }
       ],
-      "media": [],
       "metrics": [],
       "order": 40,
       "relatedSlugs": [
-        "mailcrush",
-        "beatforge"
+        "hocapuanla",
+        "duaapp"
       ],
+      "releaseStage": "pre-alpha",
       "seo": {
         "description": {
-          "en": "A digital wellbeing platform interpreting ActivityWatch data with Tauri, Vue 3, TypeScript, Python Cloud Functions, Firestore, and Firebase Auth.",
-          "tr": "ActivityWatch verisini Tauri, Vue 3, TypeScript, Python Cloud Functions, Firestore ve Firebase Auth ile yorumlayan dijital sağlık platformu."
+          "en": "A pre-alpha platform built on ActivityWatch that turns on-device activity data into personal insight through rules and reports.",
+          "tr": "ActivityWatch üzerine kurulan; cihazda saklanan etkinlik verisini kurallar ve raporlarla kişisel içgörüye çeviren pre-alpha platform."
         },
         "noIndex": false,
         "title": {
-          "en": "PeakActivity — Productivity and Digital Wellbeing",
-          "tr": "PeakActivity — Üretkenlik ve Dijital Sağlık"
+          "en": "PeakActivity — Local-First Activity Tracking",
+          "tr": "PeakActivity — Yerel Öncelikli Etkinlik Takibi"
         }
       },
       "slug": "peakactivity",
       "status": "published",
       "technologies": [
-        "Tauri",
-        "Vue 3",
-        "TypeScript",
         "Python",
-        "Cloud Functions",
-        "Firestore",
-        "Firebase Auth"
+        "Rust",
+        "Vue",
+        "Tauri",
+        "SQLCipher"
       ],
       "title": {
         "en": "PeakActivity",
@@ -783,13 +609,69 @@
       "featured": true,
       "format": "product",
       "links": [],
-      "media": [],
+      "media": [
+        {
+          "alt": {
+            "en": "HocaPuanla home search",
+            "tr": "HocaPuanla ana sayfa araması"
+          },
+          "assetState": "ready",
+          "caption": {
+            "en": "Home page search across professors, universities, and departments.",
+            "tr": "Ana sayfa: hoca, üniversite ve bölüm araması."
+          },
+          "height": 720,
+          "id": "hocapuanla-cover",
+          "kind": "image",
+          "mimeType": "image/webp",
+          "role": "cover",
+          "src": "/media/projects/hocapuanla/cover.webp",
+          "width": 1600
+        },
+        {
+          "alt": {
+            "en": "HocaPuanla search results",
+            "tr": "HocaPuanla arama sonuçları"
+          },
+          "assetState": "ready",
+          "caption": {
+            "en": "Filtered search results with a university card.",
+            "tr": "Filtreli arama sonuçları ve üniversite kartı."
+          },
+          "height": 1000,
+          "id": "hocapuanla-search",
+          "kind": "image",
+          "mimeType": "image/webp",
+          "role": "gallery",
+          "src": "/media/projects/hocapuanla/search.webp",
+          "width": 1600
+        },
+        {
+          "alt": {
+            "en": "HocaPuanla university profile",
+            "tr": "HocaPuanla üniversite profili"
+          },
+          "assetState": "ready",
+          "caption": {
+            "en": "University profile with stat cards and professor and review panels.",
+            "tr": "Üniversite profili: istatistik kartları ve hoca/değerlendirme panelleri."
+          },
+          "height": 1000,
+          "id": "hocapuanla-university",
+          "kind": "image",
+          "mimeType": "image/webp",
+          "role": "gallery",
+          "src": "/media/projects/hocapuanla/university.webp",
+          "width": 1600
+        }
+      ],
       "metrics": [],
       "order": 50,
       "relatedSlugs": [
-        "mailcrush",
+        "peakactivity",
         "archbuilder"
       ],
+      "releaseStage": "release-candidate",
       "seo": {
         "description": {
           "en": "A Next.js 16 product combining search, profiles, anonymous reviews, PIN-based review management, comparison, and moderation.",
@@ -828,34 +710,34 @@
       "blocks": [
         {
           "body": {
-            "en": "ArchBuilder gathers the initial information required for architectural project development through a guided dialogue. It aims to organise concept, programme, and presentation data within the same process.",
-            "tr": "ArchBuilder, mimari proje üretiminde gereken başlangıç bilgisini soru-cevap akışıyla toplar. Konsept, program ve sunum verilerini aynı süreç içinde düzenlemeyi hedefler."
+            "en": "ArchBuilder models measured walls, curtain walls, doors and windows, slabs, roofs, stairs, lifts, ramps, rooms, and furniture across multiple buildings and storeys. Plan, 3D, section, and sheet views share one model, so an element selected in one view stays selected in the others.",
+            "tr": "ArchBuilder; ölçülü duvarları, perde duvarları, kapı ve pencereleri, döşeme, çatı, merdiven, asansör, rampa, mahal ve mobilyaları birden fazla bina ve kat üzerinde modelliyor. Plan, 3D, kesit ve pafta görünümleri aynı modeli paylaşıyor; bir görünümde seçilen eleman diğerlerinde de seçili kalıyor."
           },
           "eyebrow": {
-            "en": "Product idea",
-            "tr": "Ürün fikri"
+            "en": "Product",
+            "tr": "Ürün"
           },
           "heading": {
-            "en": "Turning a fragmented brief into guided dialogue",
-            "tr": "Dağınık brief’i yönlendirilmiş diyaloğa çevirmek"
+            "en": "One model, linked views",
+            "tr": "Tek model, birbirine bağlı görünümler"
           },
-          "id": "archbuilder-brief",
+          "id": "archbuilder-model",
           "type": "text"
         },
         {
           "body": {
-            "en": "The project translates the sequence of architectural decisions into a software flow. TypeScript supports the product surface, the AI workflow supports guidance, and Firebase supports the application infrastructure.",
-            "tr": "Proje, mimari kararların sıralanışını bir yazılım akışına çevirir. TypeScript ürün yüzeyini, yapay zekâ iş akışı yönlendirmeyi, Firebase ise uygulama altyapısını destekler."
+            "en": "The Apache-2.0 open core is split into model, geometry, command, family, storage, and interoperability packages. The editor works offline without an account, stores projects locally or in portable .archbuilder files, and exports native IFC, DXF, and vector PDF. Optional sync, an AI extension API, and a Windows package are being developed in stages.",
+            "tr": "Apache-2.0 lisanslı açık çekirdek; model, geometri, komut, aile, depolama ve birlikte çalışabilirlik paketlerine ayrılıyor. Editör hesap gerektirmeden çevrimdışı çalışıyor, projeleri yerelde veya taşınabilir .archbuilder dosyalarında saklıyor ve doğrudan IFC, DXF ile vektör PDF üretiyor. İsteğe bağlı senkronizasyon, yapay zekâ eklenti API’si ve Windows paketi aşamalı olarak geliştiriliyor."
           },
           "eyebrow": {
-            "en": "Intersection",
-            "tr": "Kesişim"
+            "en": "Architecture",
+            "tr": "Mimari"
           },
           "heading": {
-            "en": "Where architectural thinking meets product flow",
-            "tr": "Mimari düşünce ile ürün akışının birleşimi"
+            "en": "Account-free, offline, and open-core",
+            "tr": "Hesapsız, çevrimdışı ve açık çekirdek"
           },
-          "id": "archbuilder-bridge",
+          "id": "archbuilder-open-core",
           "type": "text"
         },
         {
@@ -867,22 +749,32 @@
           "items": [
             {
               "label": {
-                "en": "Platform",
-                "tr": "Platform"
+                "en": "Status",
+                "tr": "Durum"
               },
               "value": {
-                "en": "Web platform",
-                "tr": "Web platformu"
+                "en": "Pre-alpha; active development continues",
+                "tr": "Pre-alpha; aktif geliştirme sürüyor"
               }
             },
             {
               "label": {
-                "en": "Input structure",
-                "tr": "Girdi yapısı"
+                "en": "File exchange",
+                "tr": "Dosya alışverişi"
               },
               "value": {
-                "en": "Guided question and answer",
-                "tr": "Yönlendirilmiş soru-cevap"
+                "en": "IFC, DXF, and vector PDF",
+                "tr": "IFC, DXF ve vektör PDF"
+              }
+            },
+            {
+              "label": {
+                "en": "Licence",
+                "tr": "Lisans"
+              },
+              "value": {
+                "en": "Apache-2.0 open core",
+                "tr": "Apache-2.0 açık çekirdek"
               }
             }
           ],
@@ -895,8 +787,8 @@
       },
       "cover": {
         "alt": {
-          "en": "ArchBuilder architectural workflow",
-          "tr": "ArchBuilder mimari üretim akışı"
+          "en": "ArchBuilder CAD/BIM editor",
+          "tr": "ArchBuilder CAD/BIM editörü"
         },
         "palette": [
           "#101828",
@@ -907,48 +799,114 @@
         "visualVariant": "architectural-grid"
       },
       "dek": {
-        "en": "An AI-assisted web platform that structures architectural concept, programme, and presentation data through a guided dialogue.",
-        "tr": "Soru-cevap akışıyla mimari konsept, program ve sunum verilerini düzenleyen yapay zekâ destekli web platformu."
+        "en": "An open-core architectural CAD/BIM editor with precise 2D drafting, a parametric building model, linked plan/3D/section views, and IFC, DXF, and PDF export.",
+        "tr": "Ölçülü 2D çizim, parametrik bina modeli, bağlantılı plan/3D/kesit görünümleri ve IFC, DXF, PDF dışa aktarımı sunan açık çekirdekli mimari CAD/BIM editörü."
       },
       "discipline": "hybrid",
       "featured": true,
       "format": "product",
-      "links": [
+      "links": [],
+      "media": [
         {
-          "href": "https://archbuilder.app",
-          "kind": "live",
-          "label": {
-            "en": "Open ArchBuilder",
-            "tr": "ArchBuilder’ı aç"
+          "alt": {
+            "en": "ArchBuilder linked plan and 3D view",
+            "tr": "ArchBuilder plan ve 3D bağlantılı görünüm"
           },
-          "newTab": true
+          "assetState": "ready",
+          "caption": {
+            "en": "The Plan + 3D layout, with the same wall selected in both views.",
+            "tr": "Plan + 3D düzeni: aynı duvar iki görünümde birlikte seçili."
+          },
+          "height": 1000,
+          "id": "archbuilder-cover",
+          "kind": "image",
+          "mimeType": "image/webp",
+          "role": "cover",
+          "src": "/media/projects/archbuilder/cover.webp",
+          "width": 1600
+        },
+        {
+          "alt": {
+            "en": "ArchBuilder ground-floor plan",
+            "tr": "ArchBuilder zemin kat planı"
+          },
+          "assetState": "ready",
+          "caption": {
+            "en": "Ground-floor plan with measured walls, doors and windows, stair, lift, and the properties panel.",
+            "tr": "Zemin kat planı: ölçülü duvarlar, kapı ve pencereler, merdiven, asansör ve özellikler paneli."
+          },
+          "height": 1000,
+          "id": "archbuilder-plan",
+          "kind": "image",
+          "mimeType": "image/webp",
+          "role": "gallery",
+          "src": "/media/projects/archbuilder/plan.webp",
+          "width": 1600
+        },
+        {
+          "alt": {
+            "en": "ArchBuilder 3D project view",
+            "tr": "ArchBuilder 3D proje görünümü"
+          },
+          "assetState": "ready",
+          "caption": {
+            "en": "Sample project: two 12-storey residential blocks on site.",
+            "tr": "Örnek proje: arazide iki adet 12 katlı konut bloğu."
+          },
+          "height": 1000,
+          "id": "archbuilder-model-3d",
+          "kind": "image",
+          "mimeType": "image/webp",
+          "role": "gallery",
+          "src": "/media/projects/archbuilder/model-3d.webp",
+          "width": 1600
+        },
+        {
+          "alt": {
+            "en": "ArchBuilder section A-A",
+            "tr": "ArchBuilder A-A kesiti"
+          },
+          "assetState": "ready",
+          "caption": {
+            "en": "Section A-A generated from the same model through the stair and lift core.",
+            "tr": "Aynı modelden üretilen A-A kesiti: merdiven ve asansör çekirdeği."
+          },
+          "height": 1000,
+          "id": "archbuilder-section",
+          "kind": "image",
+          "mimeType": "image/webp",
+          "role": "gallery",
+          "src": "/media/projects/archbuilder/section.webp",
+          "width": 1600
         }
       ],
-      "media": [],
       "metrics": [],
       "order": 20,
       "relatedSlugs": [
         "draw-or-die",
         "hocapuanla"
       ],
-      "releaseStage": "live",
+      "releaseStage": "pre-alpha",
       "seo": {
         "description": {
-          "en": "A TypeScript and Firebase platform structuring architectural concept, programme, and presentation data through guided dialogue.",
-          "tr": "Mimari konsept, program ve sunum verilerini yönlendirilmiş soru-cevap akışıyla düzenleyen TypeScript ve Firebase tabanlı platform."
+          "en": "An offline web editor with precise drafting, a parametric building model, linked plan/3D/section views, and IFC, DXF, and PDF export.",
+          "tr": "Ölçülü çizim, parametrik bina modeli, bağlantılı plan/3D/kesit görünümleri ve IFC, DXF, PDF dışa aktarımı sunan çevrimdışı web editörü."
         },
         "noIndex": false,
         "title": {
-          "en": "ArchBuilder — AI-Assisted Architectural Workflow",
-          "tr": "ArchBuilder — Yapay Zekâ Destekli Mimari Akış"
+          "en": "ArchBuilder — Open-Core Architectural CAD/BIM",
+          "tr": "ArchBuilder — Açık Çekirdekli Mimari CAD/BIM"
         }
       },
       "slug": "archbuilder",
       "status": "published",
       "technologies": [
         "TypeScript",
-        "AI Workflow",
-        "Firebase"
+        "React",
+        "Three.js",
+        "web-ifc",
+        "Vite",
+        "Electron"
       ],
       "title": {
         "en": "ArchBuilder",
@@ -956,8 +914,8 @@
       },
       "topics": [
         "architecture",
-        "ai",
-        "workflow"
+        "cad",
+        "bim"
       ]
     },
     {
@@ -1003,12 +961,12 @@
           "items": [
             {
               "label": {
-                "en": "README version",
-                "tr": "README sürümü"
+                "en": "Release",
+                "tr": "Sürüm"
               },
               "value": {
-                "en": "Stable v1.2.8",
-                "tr": "Kararlı v1.2.8"
+                "en": "Stable · quarterly updates",
+                "tr": "Kararlı · üç ayda bir güncelleme"
               }
             },
             {
@@ -1056,14 +1014,33 @@
           "newTab": false
         }
       ],
-      "media": [],
+      "media": [
+        {
+          "alt": {
+            "en": "DuaAPP home, prayer, qibla, and AI screens",
+            "tr": "DuaAPP ana ekran, dua, kıble ve yapay zekâ ekranları"
+          },
+          "assetState": "ready",
+          "caption": {
+            "en": "Real screens rendered by the app’s own preview tests: home, prayer detail, qibla finder, and spiritual guide.",
+            "tr": "Uygulamanın kendi önizleme testleriyle üretilmiş gerçek ekranlar: ana sayfa, dua detayı, kıble bulucu ve manevi rehber."
+          },
+          "height": 1000,
+          "id": "duaapp-cover",
+          "kind": "image",
+          "mimeType": "image/webp",
+          "role": "cover",
+          "src": "/media/projects/duaapp/cover.webp",
+          "width": 1600
+        }
+      ],
       "metrics": [],
       "order": 70,
       "relatedSlugs": [
         "where-to-go",
         "archbuilder"
       ],
-      "releaseStage": "maintained",
+      "releaseStage": "stable",
       "seo": {
         "description": {
           "en": "A Flutter and Appwrite companion combining prayers, a counter, AI guidance, dream journaling, and sacred texts across five faith traditions.",
@@ -1153,8 +1130,8 @@
                 "tr": "Geliştirme durumu"
               },
               "value": {
-                "en": "V1 issues documented; full rebuild planned",
-                "tr": "V1 sorunları belgeli; yeniden yapım planlı"
+                "en": "Release candidate; active development continues",
+                "tr": "Sürüm adayı; aktif geliştirme sürüyor"
               }
             }
           ],
@@ -1210,14 +1187,51 @@
           "newTab": false
         }
       ],
-      "media": [],
+      "media": [
+        {
+          "alt": {
+            "en": "Where To-Go onboarding screens",
+            "tr": "Where To-Go karşılama ekranları"
+          },
+          "assetState": "ready",
+          "caption": {
+            "en": "Onboarding steps from the live app: decide together, then swipe and match.",
+            "tr": "Yayındaki uygulamanın karşılama adımları: birlikte karar ver, kaydır ve eşleş."
+          },
+          "height": 1000,
+          "id": "where-to-go-cover",
+          "kind": "image",
+          "mimeType": "image/webp",
+          "role": "cover",
+          "src": "/media/projects/where-to-go/cover.webp",
+          "width": 1600
+        },
+        {
+          "alt": {
+            "en": "Where To-Go swipe and match designs",
+            "tr": "Where To-Go kaydırma ve eşleşme tasarımları"
+          },
+          "assetState": "ready",
+          "caption": {
+            "en": "Design mockups: the place swipe card and the match-found screen.",
+            "tr": "Tasarım maketi: mekân kaydırma kartı ve eşleşme bulundu ekranı."
+          },
+          "height": 1000,
+          "id": "where-to-go-mockups",
+          "kind": "image",
+          "mimeType": "image/webp",
+          "role": "gallery",
+          "src": "/media/projects/where-to-go/mockups.webp",
+          "width": 1600
+        }
+      ],
       "metrics": [],
       "order": 80,
       "relatedSlugs": [
         "duaapp",
         "peakactivity"
       ],
-      "releaseStage": "in-development",
+      "releaseStage": "release-candidate",
       "seo": {
         "description": {
           "en": "A two-person discovery app using Flutter, Riverpod, Firebase, and Google Places for real-time sessions, mutual matches, and deep links.",
@@ -1249,6 +1263,1062 @@
         "place-discovery",
         "realtime-sessions"
       ]
+    },
+    {
+      "blocks": [
+        {
+          "body": {
+            "en": "In 1995 a dirty bomb detonates in Heidelberg and bends the course of history. By 2017 much of Europe has fallen to a new alliance and Turkey is besieged on four fronts. You play as AAA, who witnessed that blast as a child, was deported from Germany with his family and grew up to become a soldier. The campaign runs from Aksu to Kaleiçi, from the Düden Falls to Konyaaltı Harbour, telling a grounded, character-driven story about survival, brotherhood and the price of hatred rather than heroics.",
+            "tr": "1995’te Heidelberg’de patlayan bir kirli bomba dünyanın gidişatını değiştirir. 2017’ye gelindiğinde Avrupa’nın büyük bölümü yeni bir ittifakın eline geçmiştir ve Türkiye dört cepheden kuşatılmıştır. Oyuncu, çocukken o patlamaya tanık olan, ailesiyle Almanya’dan sınır dışı edilen ve sonunda asker olan AAA’nın yerindedir. Aksu’dan Kaleiçi’ne, Düden Şelaleleri’nden Konyaaltı Limanı’na uzanan sefer; kahramanlık nutuklarından uzak, hayatta kalmayı, kardeşliği ve nefretin bedelini anlatan ağır ve karakter odaklı bir hikâye kurar."
+          },
+          "eyebrow": {
+            "en": "World and story",
+            "tr": "Dünya ve hikâye"
+          },
+          "heading": {
+            "en": "A war on familiar streets, in a history that took another turn",
+            "tr": "Başka yöne akan bir tarihte, tanıdık sokaklarda geçen bir savaş"
+          },
+          "id": "attalus-story-1",
+          "type": "text"
+        },
+        {
+          "body": {
+            "en": "Every encounter lets you reach the same objective in more than one way. Mark enemies with Leyla's drone, have Kaya lay down suppressive fire, blow a new entry point through a wall with Can, or move in quietly. Automatic cover, bullet drop, recoil, magazine management and weapons that need maintenance keep realism at the level of decisions. Missions begin with a briefing at the safe house, and the losses you take, the civilians you save and the scars you leave on the world carry forward into the story.",
+            "tr": "Her karşılaşma aynı hedefe birden fazla yoldan ulaşmaya izin verir. Leyla’nın dronuyla düşmanları işaretleyin, Kaya’ya baskı ateşi açtırın, Can’la duvarı patlatıp yeni bir giriş açın ya da sessizce ilerleyin. Otomatik siper, mermi düşüşü, tepme, şarjör yönetimi ve bakım isteyen silahlar gerçekçiliği karar düzeyinde tutar. Görevler güvenli evde brifingle başlar; bölüm sonunda kayıplarınız, kurtardığınız siviller ve dünyada bıraktığınız izler hikâyenin devamına taşınır."
+          },
+          "eyebrow": {
+            "en": "How it plays",
+            "tr": "Nasıl oynanır"
+          },
+          "heading": {
+            "en": "Observe first, then plan: every fight has more than one answer",
+            "tr": "Önce gözle, sonra planla: her çatışmanın birden fazla çözümü var"
+          },
+          "id": "attalus-story-2",
+          "type": "text"
+        },
+        {
+          "heading": {
+            "en": "Game profile",
+            "tr": "Oyun profili"
+          },
+          "id": "attalus-facts",
+          "items": [
+            {
+              "label": {
+                "en": "Genre",
+                "tr": "Tür"
+              },
+              "value": {
+                "en": "Tactical FPS",
+                "tr": "Taktiksel FPS"
+              }
+            },
+            {
+              "label": {
+                "en": "Platform",
+                "tr": "Platform"
+              },
+              "value": {
+                "en": "PC (Windows)",
+                "tr": "PC (Windows)"
+              }
+            },
+            {
+              "label": {
+                "en": "Setting",
+                "tr": "Mekân"
+              },
+              "value": {
+                "en": "Occupied Antalya, alternate 2017",
+                "tr": "İşgal altındaki Antalya, alternatif 2017"
+              }
+            },
+            {
+              "label": {
+                "en": "Status",
+                "tr": "Durum"
+              },
+              "value": {
+                "en": "Pre-alpha",
+                "tr": "Pre-alpha"
+              }
+            },
+            {
+              "label": {
+                "en": "Planned release",
+                "tr": "Planlanan çıkış"
+              },
+              "value": {
+                "en": "2027",
+                "tr": "2027"
+              }
+            }
+          ],
+          "type": "facts"
+        }
+      ],
+      "context": {
+        "en": "Game in development",
+        "tr": "Geliştirilen oyun"
+      },
+      "cover": {
+        "alt": {
+          "en": "Attalus cover illustration",
+          "tr": "Attalus kapak illüstrasyonu"
+        },
+        "palette": [
+          "#0b1220",
+          "#e89a4f",
+          "#f4efe8"
+        ],
+        "slug": "attalus",
+        "visualVariant": "spatial-gradient"
+      },
+      "dek": {
+        "en": "A tactical first-person shooter set in an alternate 2017, in occupied Antalya. Gather intel, plan with your squad, commit to an approach and see what each decision costs soldiers and civilians alike.",
+        "tr": "Alternatif bir 2017’de, işgal altındaki Antalya’da geçen taktiksel bir FPS. Bilgi topla, takımınla plan kur, harekete geç ve her kararın askerler ile siviller üzerindeki bedelini gör."
+      },
+      "discipline": "software",
+      "featured": false,
+      "format": "game",
+      "links": [],
+      "media": [
+        {
+          "alt": {
+            "en": "Attalus: Antalya coastline key art",
+            "tr": "Attalus: Antalya kıyı hattı kapak görseli"
+          },
+          "assetState": "ready",
+          "caption": {
+            "en": "Key art: mission 01 on the coastline of an occupied Antalya.",
+            "tr": "Kapak görseli: işgal altındaki Antalya kıyı hattında görev 01."
+          },
+          "height": 900,
+          "id": "attalus-cover",
+          "kind": "image",
+          "mimeType": "image/webp",
+          "role": "cover",
+          "src": "/media/projects/attalus/cover.webp",
+          "width": 1600
+        }
+      ],
+      "metrics": [],
+      "order": 110,
+      "relatedSlugs": [
+        "gsgame",
+        "mesai-bitti"
+      ],
+      "releaseStage": "pre-alpha",
+      "seo": {
+        "description": {
+          "en": "Attalus is a tactical FPS set in occupied Antalya in an alternate 2017, built around squad tactics and the human cost of war.",
+          "tr": "Attalus, alternatif bir 2017’de işgal altındaki Antalya’da geçen; takım taktikleri ve savaşın insani bedeli üzerine kurulu bir FPS."
+        },
+        "noIndex": false,
+        "title": {
+          "en": "Attalus — Tactical FPS set in occupied Antalya",
+          "tr": "Attalus — İşgal altındaki Antalya’da taktiksel FPS"
+        }
+      },
+      "slug": "attalus",
+      "status": "published",
+      "technologies": [
+        "Unreal Engine 5",
+        "Blueprints",
+        "Advanced Locomotion System"
+      ],
+      "title": {
+        "en": "Attalus",
+        "tr": "Attalus"
+      },
+      "topics": [
+        "game",
+        "tactical-fps",
+        "alternate-history"
+      ],
+      "year": 2027
+    },
+    {
+      "blocks": [
+        {
+          "body": {
+            "en": "Pick a market opportunity or a corporate tender, then assemble your model from parts in a node-based architecture editor. Queue experiments, choose the data mix and product persona, and see the expected outcome and risks before training starts. Models are scored across language, reasoning, knowledge, coding, creation and alignment. After launch, real feedback arrives with a delay: drift alerts, customer reports and incident response shape how you grow the next model family.",
+            "tr": "Bir pazar fırsatı ya da kurumsal ihale seçin, ardından modelinizi düğüm tabanlı bir mimari editöründe parçalardan kurun. Deneyleri sıraya koyun, veri karışımını ve ürün kişiliğini belirleyin, eğitime başlamadan önce beklenen sonucu ve riskleri görün. Modeller dil, akıl yürütme, bilgi, kod, yaratıcılık ve hizalama eksenlerinde ölçülür. Yayından sonra gerçek geri bildirim gecikmeli gelir: kayma alarmları, müşteri raporları ve olay müdahaleleri, bir sonraki model ailesini nasıl büyüteceğinizi belirler."
+          },
+          "eyebrow": {
+            "en": "Model lab",
+            "tr": "Model laboratuvarı"
+          },
+          "heading": {
+            "en": "No sliders, real design: build your models piece by piece",
+            "tr": "Kaydırıcı yok, tasarım var: modelini parça parça kur"
+          },
+          "id": "ai-tycoon-story-1",
+          "type": "text"
+        },
+        {
+          "body": {
+            "en": "Your company grows along a timeline running from 2009 to 2035. You start by renting capacity from fictional cloud vendors, then build a cloud of your own. The multi-floor data center appears in a cutaway view: draw a zone, pick a template and the racks fill in automatically, while power, cooling and network overlays reveal bottlenecks. Hardware shortages, rival moves and regulation test your plans. As the company grows, you stop micromanaging and steer it through policies and delegation.",
+            "tr": "Şirketiniz 2009’dan 2035’e uzanan bir zaman çizelgesinde büyür. Kapasiteyi önce kurgusal bulut sağlayıcılarından kiralar, sonra kendi bulutunuzu kurarsınız. Çok katlı veri merkezi bina kesitinde görünür; bir alan çizip şablon seçtiğinizde raflar otomatik yerleşir, güç, soğutma ve ağ katmanları darboğazları gösterir. Donanım kıtlıkları, rakip hamleleri ve regülasyonlar planları sınar. Şirket büyüdükçe her işe tek tek dokunmak yerine politikalarla yönetir, işi yöneticilere devredersiniz."
+          },
+          "eyebrow": {
+            "en": "Facility and company",
+            "tr": "Tesis ve şirket"
+          },
+          "heading": {
+            "en": "Grow the building floor by floor, run the company year by year",
+            "tr": "Binayı kat kat büyüt, şirketi yıl yıl yönet"
+          },
+          "id": "ai-tycoon-story-2",
+          "type": "text"
+        },
+        {
+          "heading": {
+            "en": "Game profile",
+            "tr": "Oyun profili"
+          },
+          "id": "ai-tycoon-facts",
+          "items": [
+            {
+              "label": {
+                "en": "Genre",
+                "tr": "Tür"
+              },
+              "value": {
+                "en": "Business and building sim",
+                "tr": "İşletme ve inşa simülasyonu"
+              }
+            },
+            {
+              "label": {
+                "en": "Platform",
+                "tr": "Platform"
+              },
+              "value": {
+                "en": "PC and mobile",
+                "tr": "PC ve mobil"
+              }
+            },
+            {
+              "label": {
+                "en": "View",
+                "tr": "Görünüm"
+              },
+              "value": {
+                "en": "2.5D cutaway with isometric floors",
+                "tr": "2.5D bina kesiti ve izometrik katlar"
+              }
+            },
+            {
+              "label": {
+                "en": "Status",
+                "tr": "Durum"
+              },
+              "value": {
+                "en": "Feature-complete",
+                "tr": "Özellikleri tamamlandı"
+              }
+            },
+            {
+              "label": {
+                "en": "Planned release",
+                "tr": "Planlanan çıkış"
+              },
+              "value": {
+                "en": "2027",
+                "tr": "2027"
+              }
+            }
+          ],
+          "type": "facts"
+        }
+      ],
+      "context": {
+        "en": "Game in development",
+        "tr": "Geliştirilen oyun"
+      },
+      "cover": {
+        "alt": {
+          "en": "AI Tycoon gameplay screen",
+          "tr": "AI Tycoon oyun ekranı"
+        },
+        "palette": [
+          "#0f172a",
+          "#38bdf8",
+          "#f8fafc"
+        ],
+        "slug": "ai-tycoon",
+        "visualVariant": "signal-field"
+      },
+      "dek": {
+        "en": "A business and building sim about growing a small AI lab into a cloud provider and AI product company. Design your models, build your data center floor by floor and stay ahead of the market.",
+        "tr": "Küçük bir yapay zekâ laboratuvarından bulut sağlayıcısına ve yapay zekâ ürün şirketine uzanan bir işletme ve inşa simülasyonu. Modellerini tasarla, veri merkezini kat kat kur, pazarda ayakta kal."
+      },
+      "discipline": "software",
+      "featured": false,
+      "format": "game",
+      "links": [],
+      "media": [
+        {
+          "alt": {
+            "en": "AI Tycoon company and facility view",
+            "tr": "AI Tycoon şirket ve tesis görünümü"
+          },
+          "assetState": "ready",
+          "caption": {
+            "en": "Company panel and the 2.5D facility view with server racks, finance, and industry news.",
+            "tr": "Şirket paneli ve 2.5D tesis görünümü: sunucu rafları, finans ve sektör haberleri."
+          },
+          "height": 900,
+          "id": "ai-tycoon-cover",
+          "kind": "image",
+          "mimeType": "image/webp",
+          "role": "cover",
+          "src": "/media/projects/ai-tycoon/cover.webp",
+          "width": 1600
+        },
+        {
+          "alt": {
+            "en": "AI Tycoon construction and power overlay",
+            "tr": "AI Tycoon inşaat ve güç katmanı"
+          },
+          "assetState": "ready",
+          "caption": {
+            "en": "Construction tab with rack load on the power overlay and the zone plan editor.",
+            "tr": "İnşaat sekmesi: güç katmanında raf yükü ve bölge planı düzenleyicisi."
+          },
+          "height": 900,
+          "id": "ai-tycoon-construction",
+          "kind": "image",
+          "mimeType": "image/webp",
+          "role": "gallery",
+          "src": "/media/projects/ai-tycoon/construction.webp",
+          "width": 1600
+        },
+        {
+          "alt": {
+            "en": "AI Tycoon Model Lab",
+            "tr": "AI Tycoon Model Lab"
+          },
+          "assetState": "ready",
+          "caption": {
+            "en": "Model Lab with the training queue, the encoder→decoder blueprint graph, and the forecast radar.",
+            "tr": "Model Lab: eğitim kuyruğu, encoder→decoder plan grafiği ve tahmin radarı."
+          },
+          "height": 900,
+          "id": "ai-tycoon-model-lab",
+          "kind": "image",
+          "mimeType": "image/webp",
+          "role": "gallery",
+          "src": "/media/projects/ai-tycoon/model-lab.webp",
+          "width": 1600
+        },
+        {
+          "alt": {
+            "en": "AI Tycoon operations telemetry",
+            "tr": "AI Tycoon operasyon telemetrisi"
+          },
+          "assetState": "ready",
+          "caption": {
+            "en": "Operations screen with the monitoring budget, customer permissions, and delayed daily reports.",
+            "tr": "Operasyon ekranı: izleme bütçesi, müşteri izinleri ve gecikmeli günlük raporlar."
+          },
+          "height": 900,
+          "id": "ai-tycoon-ops",
+          "kind": "image",
+          "mimeType": "image/webp",
+          "role": "gallery",
+          "src": "/media/projects/ai-tycoon/ops.webp",
+          "width": 1600
+        }
+      ],
+      "metrics": [],
+      "order": 120,
+      "relatedSlugs": [
+        "mesai-bitti",
+        "gsgame"
+      ],
+      "releaseStage": "feature-complete",
+      "seo": {
+        "description": {
+          "en": "In AI Tycoon, grow a small AI lab into a cloud giant through model design, data center construction and company management.",
+          "tr": "AI Tycoon’da küçük bir yapay zekâ laboratuvarını model tasarımı, veri merkezi inşası ve şirket yönetimiyle bulut devine dönüştür."
+        },
+        "noIndex": false,
+        "title": {
+          "en": "AI Tycoon — Build and run an AI company",
+          "tr": "AI Tycoon — Yapay zekâ şirketi kurma simülasyonu"
+        }
+      },
+      "slug": "ai-tycoon",
+      "status": "published",
+      "technologies": [
+        "Godot 4",
+        "C#",
+        ".NET"
+      ],
+      "title": {
+        "en": "AI Tycoon",
+        "tr": "AI Tycoon"
+      },
+      "topics": [
+        "game",
+        "business-simulation",
+        "tycoon"
+      ],
+      "year": 2027
+    },
+    {
+      "blocks": [
+        {
+          "body": {
+            "en": "Work is done in order, with real tools: mark and dig the foundation, hammer the formwork, tie the rebar, call the mixer, pour the concrete and screed it level. Then lay bricks in mortar, run the plumbing, plaster, paint and tile. Materials arrive by truck and you unload them with a forklift. There are no classes or required roles: one friend mixes mortar while another hauls bricks, and a solo player can do every job. First you hand over a two-storey house, then a five-storey apartment block.",
+            "tr": "İşler gerçek aletlerle, sırayla yapılır: temeli işaretleyip kazın, kalıbı çakın, donatıyı bağlayın, mikseri çağırıp betonu dökün ve mastarla düzleyin. Ardından harçla tuğla örün, tesisatı çekin, sıvayı ve boyayı yapın, karoyu döşeyin. Kamyonla gelen malzemeyi forkliftle indirip şantiyeye taşırsınız. Sınıf ya da rol zorunluluğu yoktur; biri harç hazırlarken diğeri malzeme taşır, tek başına oynayan da her işi yapabilir. Önce iki katlı bir ev, ardından beş katlı bir apartman teslim edilir."
+          },
+          "eyebrow": {
+            "en": "On site",
+            "tr": "Şantiye"
+          },
+          "heading": {
+            "en": "No one-click buildings: every wall goes up by hand",
+            "tr": "Tek tuşla bina yok: her duvar elle yükselir"
+          },
+          "id": "mesai-bitti-story-1",
+          "type": "text"
+        },
+        {
+          "body": {
+            "en": "The architect arrives by taxi, walks the site and reacts to the quality of your work. Good work earns a nod, sloppy work a shouting fit, worse work a sledgehammer, and truly bad craftsmanship makes him grow giant and chase the crew. You can knock him out and carry him back to the taxi, but fixing the damage is still on you. Losses are capped, so mishaps make stories without wiping progress. After the shift, the eight-seat minibus takes everyone to the nightlife street to dance and play the casino with in-game coins before heading back to camp to sleep.",
+            "tr": "Mimar şantiyeye taksiyle gelir, işi gezip kaliteye göre tepki verir. İyi işe kısa bir onay, özensiz işe bağırış, daha kötüsüne balyoz düşer; sınırı aşan işçilikte mimar devleşip ekibin peşine takılır. Onu bayıltıp taksiye taşıyabilirsiniz, ama hasarı onarmak yine size kalır. Kayıplar sınırlıdır; aksilik hikâye üretir, ilerlemeyi silmez. Mesai bitince sekiz kişilik minibüse binip eğlence sokağında dans eder, oyun parasıyla kumarhaneye uğrar, sonra kampa dönüp uyursunuz."
+          },
+          "eyebrow": {
+            "en": "The boss and the evening",
+            "tr": "Şef ve paydos"
+          },
+          "heading": {
+            "en": "Bad work turns into comic chaos, the end of a shift into a night out",
+            "tr": "Kötü iş komik bir krize, mesai sonu ortak bir kaçamağa döner"
+          },
+          "id": "mesai-bitti-story-2",
+          "type": "text"
+        },
+        {
+          "heading": {
+            "en": "Game profile",
+            "tr": "Oyun profili"
+          },
+          "id": "mesai-bitti-facts",
+          "items": [
+            {
+              "label": {
+                "en": "Genre",
+                "tr": "Tür"
+              },
+              "value": {
+                "en": "First-person co-op construction",
+                "tr": "Birinci şahıs co-op inşaat"
+              }
+            },
+            {
+              "label": {
+                "en": "Players",
+                "tr": "Oyuncu"
+              },
+              "value": {
+                "en": "1–8 players, solo supported",
+                "tr": "1–8 kişi, tek başına da oynanabilir"
+              }
+            },
+            {
+              "label": {
+                "en": "Platform",
+                "tr": "Platform"
+              },
+              "value": {
+                "en": "PC",
+                "tr": "PC"
+              }
+            },
+            {
+              "label": {
+                "en": "Status",
+                "tr": "Durum"
+              },
+              "value": {
+                "en": "Feature-complete",
+                "tr": "Özellikleri tamamlandı"
+              }
+            },
+            {
+              "label": {
+                "en": "Planned release",
+                "tr": "Planlanan çıkış"
+              },
+              "value": {
+                "en": "2027",
+                "tr": "2027"
+              }
+            }
+          ],
+          "type": "facts"
+        }
+      ],
+      "context": {
+        "en": "Game in development",
+        "tr": "Geliştirilen oyun"
+      },
+      "cover": {
+        "alt": {
+          "en": "Mesai Bitti construction site view",
+          "tr": "Mesai Bitti şantiye görünümü"
+        },
+        "palette": [
+          "#26363d",
+          "#f4a340",
+          "#fffdf0"
+        ],
+        "slug": "mesai-bitti",
+        "visualVariant": "architectural-grid"
+      },
+      "dek": {
+        "en": "A first-person co-op building game for one to eight players. Work the site by day, run from the architect who turns giant over sloppy work, then pile into the minibus when the shift ends and head out for the night.",
+        "tr": "Arkadaşlarınla birinci şahıs bakışla ev ve apartman inşa ettiğin, 1–8 kişilik bir co-op oyunu. Gündüz şantiyede çalış, kötü işçiliğe sinirlenip devleşen mimardan kaç, mesai bitince minibüse doluşup eğlenceye git."
+      },
+      "discipline": "software",
+      "featured": false,
+      "format": "game",
+      "links": [],
+      "media": [
+        {
+          "alt": {
+            "en": "Mesai Bitti five-storey apartment site",
+            "tr": "Mesai Bitti beş katlı apartman şantiyesi"
+          },
+          "assetState": "ready",
+          "caption": {
+            "en": "The five-storey brick apartment with the crew in front.",
+            "tr": "Beş katlı tuğla apartman ve önünde işçi ekibi."
+          },
+          "height": 900,
+          "id": "mesai-bitti-cover",
+          "kind": "image",
+          "mimeType": "image/webp",
+          "role": "cover",
+          "src": "/media/projects/mesai-bitti/cover.webp",
+          "width": 1440
+        },
+        {
+          "alt": {
+            "en": "Mesai Bitti two-storey house site",
+            "tr": "Mesai Bitti iki katlı ev şantiyesi"
+          },
+          "assetState": "ready",
+          "caption": {
+            "en": "The day site: a two-storey house under construction and an eight-person crew.",
+            "tr": "Gündüz şantiyesi: yapım aşamasındaki iki katlı ev ve sekiz kişilik ekip."
+          },
+          "height": 900,
+          "id": "mesai-bitti-site-crew",
+          "kind": "image",
+          "mimeType": "image/webp",
+          "role": "gallery",
+          "src": "/media/projects/mesai-bitti/site-crew.webp",
+          "width": 1440
+        },
+        {
+          "alt": {
+            "en": "Mesai Bitti crew minibus and camp",
+            "tr": "Mesai Bitti işçi minibüsü ve kamp"
+          },
+          "assetState": "ready",
+          "caption": {
+            "en": "The eight-seat crew minibus outside the worker camp.",
+            "tr": "Sekiz koltuklu işçi minibüsü ve kamp."
+          },
+          "height": 1000,
+          "id": "mesai-bitti-minibus",
+          "kind": "image",
+          "mimeType": "image/webp",
+          "role": "gallery",
+          "src": "/media/projects/mesai-bitti/minibus.webp",
+          "width": 1600
+        },
+        {
+          "alt": {
+            "en": "Mesai Bitti night street",
+            "tr": "Mesai Bitti eğlence sokağı"
+          },
+          "assetState": "ready",
+          "caption": {
+            "en": "The evening street with the Yazı/Tura casino and the Paydos club.",
+            "tr": "Akşam eğlence sokağı: Yazı/Tura ve Paydos Disko."
+          },
+          "height": 1000,
+          "id": "mesai-bitti-night-street",
+          "kind": "image",
+          "mimeType": "image/webp",
+          "role": "gallery",
+          "src": "/media/projects/mesai-bitti/night-street.webp",
+          "width": 1600
+        }
+      ],
+      "metrics": [],
+      "order": 130,
+      "relatedSlugs": [
+        "ai-tycoon",
+        "attalus"
+      ],
+      "releaseStage": "feature-complete",
+      "seo": {
+        "description": {
+          "en": "In Mesai Bitti, build houses and apartments by hand with friends, escape an angry architect and ride the minibus out after work.",
+          "tr": "Mesai Bitti’de arkadaşlarınla ev ve apartmanı elle inşa et, öfkeli mimardan kaç, mesai sonunda minibüsle eğlenceye git."
+        },
+        "noIndex": false,
+        "title": {
+          "en": "Mesai Bitti — First-person co-op construction for 1–8",
+          "tr": "Mesai Bitti — 1–8 kişilik co-op inşaat oyunu"
+        }
+      },
+      "slug": "mesai-bitti",
+      "status": "published",
+      "technologies": [
+        "Godot 4",
+        "GDScript",
+        "Jolt Physics",
+        "Blender"
+      ],
+      "title": {
+        "en": "Mesai Bitti",
+        "tr": "Mesai Bitti"
+      },
+      "topics": [
+        "game",
+        "co-op",
+        "construction"
+      ],
+      "year": 2027
+    },
+    {
+      "blocks": [
+        {
+          "body": {
+            "en": "Hyp Classic takes genres everyone knows and rebuilds them for touch screens: chess with AI opponents and tactics drills, Turkish draughts, backgammon, solitaire, minesweeper, match-3, block and bubble puzzles. Alongside them sit quick arcade games such as endless runners, rhythm, pool, air hockey, pinball and tower defense. Many games offer local two-player matches on one device, undo, explained hints, practice modes and the option to resume an unfinished game.",
+            "tr": "Hyp Classic, herkesin bildiği türleri dokunmatik ekran için yeniden ele alır: yapay zekâ rakipli ve taktik alıştırmalı satranç, Türk daması, tavla, solitaire, mayın tarlası, match-3, blok ve balon bulmacaları. Yanında sonsuz koşu, ritim, bilardo, hava hokeyi, pinball ve kule savunması gibi kısa arcade oyunları yer alır. Pek çok oyunda aynı cihazda iki kişilik maç, geri alma, açıklamalı ipuçları, alıştırma modları ve yarım kalan oyuna dönüş bulunur."
+          },
+          "eyebrow": {
+            "en": "Hyp Classic",
+            "tr": "Hyp Classic"
+          },
+          "heading": {
+            "en": "Familiar genres, rethought for mobile",
+            "tr": "Tanıdık türler, mobil için baştan düşünülmüş"
+          },
+          "id": "hypcas-story-1",
+          "type": "text"
+        },
+        {
+          "body": {
+            "en": "HYPOG gathers the collection's more ambitious original games, built around lasting progress. In Sea Dig you pilot a research submarine and dig ever deeper into the ocean floor; elsewhere you manage traffic along a highway corridor, mine on Mars, build an arena team, lead campaigns across the ages or take on 3D space combat. Every game launches full-screen from the same touch-friendly hub, and each one keeps its progress saved separately on your device.",
+            "tr": "HYPOG, koleksiyonun daha iddialı ve kalıcı ilerlemeli özgün oyunlarını bir araya getirir. Sea Dig’de bir araştırma denizaltısıyla okyanus tabanını kazıp derinlere inersiniz; başka oyunlarda bir otoyol koridorunun trafiğini yönetir, Mars’ta maden arar, arenada takım kurar, çağlar boyunca sefer yönetir ya da 3D uzay çatışmalarına girersiniz. Tüm oyunlar tam ekran, dokunmaya uygun aynı merkezden açılır ve her oyunun ilerlemesi cihazınızda ayrı ayrı korunur."
+          },
+          "eyebrow": {
+            "en": "HYPOG originals",
+            "tr": "HYPOG özgün oyunları"
+          },
+          "heading": {
+            "en": "Original games that stretch from quick breaks to long campaigns",
+            "tr": "Kısa molalardan uzun seferlere uzanan özgün oyunlar"
+          },
+          "id": "hypcas-story-2",
+          "type": "text"
+        },
+        {
+          "heading": {
+            "en": "Game profile",
+            "tr": "Oyun profili"
+          },
+          "id": "hypcas-facts",
+          "items": [
+            {
+              "label": {
+                "en": "Genre",
+                "tr": "Tür"
+              },
+              "value": {
+                "en": "Mobile game collection",
+                "tr": "Mobil oyun koleksiyonu"
+              }
+            },
+            {
+              "label": {
+                "en": "Platform",
+                "tr": "Platform"
+              },
+              "value": {
+                "en": "Mobile, Android first",
+                "tr": "Android öncelikli mobil"
+              }
+            },
+            {
+              "label": {
+                "en": "Collections",
+                "tr": "Koleksiyonlar"
+              },
+              "value": {
+                "en": "Hyp Classic and HYPOG",
+                "tr": "Hyp Classic ve HYPOG"
+              }
+            },
+            {
+              "label": {
+                "en": "Status",
+                "tr": "Durum"
+              },
+              "value": {
+                "en": "Beta",
+                "tr": "Beta"
+              }
+            },
+            {
+              "label": {
+                "en": "Planned release",
+                "tr": "Planlanan çıkış"
+              },
+              "value": {
+                "en": "Q4 2026",
+                "tr": "2026 4. çeyrek"
+              }
+            }
+          ],
+          "type": "facts"
+        }
+      ],
+      "context": {
+        "en": "Game in development",
+        "tr": "Geliştirilen oyun"
+      },
+      "cover": {
+        "alt": {
+          "en": "HypCas game collection",
+          "tr": "HypCas oyun koleksiyonu"
+        },
+        "palette": [
+          "#0b1020",
+          "#22d3ee",
+          "#f472b6"
+        ],
+        "slug": "hypcas",
+        "visualVariant": "product-orbit"
+      },
+      "dek": {
+        "en": "A mobile game collection that brings classics and original titles together in one hub. Hyp Classic covers quick sessions from chess to backgammon; the HYPOG line holds longer games with lasting progress.",
+        "tr": "Klasik oyunları ve özgün yapımları tek bir mobil merkezde toplayan oyun koleksiyonu. Satrançtan tavlaya kısa oturumlar Hyp Classic’te; kalıcı ilerlemeli, daha uzun soluklu oyunlar HYPOG serisinde."
+      },
+      "discipline": "software",
+      "featured": false,
+      "format": "game",
+      "links": [
+        {
+          "href": "/hypcas/privacy-policy",
+          "kind": "privacy",
+          "label": {
+            "en": "Privacy policy",
+            "tr": "Gizlilik politikası"
+          },
+          "newTab": false
+        }
+      ],
+      "media": [
+        {
+          "alt": {
+            "en": "HypCas Hub, chess, and train simulation screens",
+            "tr": "HypCas Hub, satranç ve tren simülasyonu ekranları"
+          },
+          "assetState": "ready",
+          "caption": {
+            "en": "The Hub home screen with in-game views of Classic Chess and Continental Rails.",
+            "tr": "Hub ana ekranı, Classic Chess ve Continental Rails oyun içi görüntüleri."
+          },
+          "height": 1000,
+          "id": "hypcas-cover",
+          "kind": "image",
+          "mimeType": "image/webp",
+          "role": "cover",
+          "src": "/media/projects/hypcas/cover.webp",
+          "width": 1600
+        },
+        {
+          "alt": {
+            "en": "HypCas Continental Rails",
+            "tr": "HypCas Continental Rails"
+          },
+          "assetState": "ready",
+          "caption": {
+            "en": "Continental Rails: a Babylon.js 3D train drive with speed, brake, and signal readouts.",
+            "tr": "Continental Rails: Babylon.js ile 3D tren sürüşü, hız, fren ve sinyal göstergeleri."
+          },
+          "height": 740,
+          "id": "hypcas-continental-rails",
+          "kind": "image",
+          "mimeType": "image/webp",
+          "role": "gallery",
+          "src": "/media/projects/hypcas/continental-rails.webp",
+          "width": 1600
+        }
+      ],
+      "metrics": [],
+      "order": 140,
+      "relatedSlugs": [
+        "ai-tycoon",
+        "mesai-bitti"
+      ],
+      "releaseStage": "beta",
+      "seo": {
+        "description": {
+          "en": "HypCas brings classics from chess to backgammon and original HYPOG games with lasting progress together in one mobile hub.",
+          "tr": "HypCas, satrançtan tavlaya klasik oyunları ve kalıcı ilerlemeli özgün HYPOG yapımlarını tek bir mobil merkezde toplar."
+        },
+        "noIndex": false,
+        "title": {
+          "en": "HypCas — Classic and original mobile games in one hub",
+          "tr": "HypCas — Klasik ve özgün mobil oyun koleksiyonu"
+        }
+      },
+      "slug": "hypcas",
+      "status": "published",
+      "technologies": [
+        "React",
+        "TypeScript",
+        "Capacitor",
+        "Babylon.js",
+        "PixiJS"
+      ],
+      "title": {
+        "en": "HypCas",
+        "tr": "HypCas"
+      },
+      "topics": [
+        "game",
+        "mobile",
+        "game-collection"
+      ],
+      "year": 2026
+    },
+    {
+      "blocks": [
+        {
+          "body": {
+            "en": "Pick a country and start in 1930, 1990 or 2020; the campaign is open-ended. Your army's strength comes from your budget, industry and supply network: you issue production orders, get equipment to the units and command divisions on the map. Every battle report explains why things went the way they did, and a failed offensive often traces back to missing equipment or a broken supply line. Turning a small country into a great power is possible, but resources are genuinely limited.",
+            "tr": "Bir ülkeyi seçip 1930, 1990 ya da 2020’den başlarsınız; kampanya açık uçludur. Ordunuzun gücü bütçenizden, sanayinizden ve ikmal ağınızdan gelir: fabrikalara üretim emri verir, ekipmanı birliklere ulaştırır, tümenleri harita üzerinde yönetirsiniz. Her savaş raporu sonucun nedenini açıklar; kaybettiğiniz bir harekâtın arkasında çoğu zaman eksik ekipman ya da kopan bir ikmal hattı vardır. Küçük bir ülkeyi büyük güce dönüştürmek mümkündür, ama kaynakların sınırı gerçektir."
+          },
+          "eyebrow": {
+            "en": "From economy to front line",
+            "tr": "Ekonomiden cepheye"
+          },
+          "heading": {
+            "en": "Victory at the front starts in the factory and the supply line",
+            "tr": "Cephedeki zafer fabrikada ve ikmal hattında başlar"
+          },
+          "id": "gsgame-story-1",
+          "type": "text"
+        },
+        {
+          "body": {
+            "en": "The simulation always runs at full depth; simplification comes from the interface and automation, not from different rules. Ministers are more than portraits with bonuses: they make decisions within the authority you grant them and show the reasoning behind each one. Your long-term national strategy runs alongside shorter focus trees. Diplomacy, domestic politics, crises and strategic tension shift the balance of the world. You can pause or speed up time whenever you like and follow everything from the economy to the front on the same map.",
+            "tr": "Simülasyon her zaman tam derinlikte çalışır; sadeleştirme kurallardan değil arayüzden ve otomasyondan gelir. Bakanlar yalnızca bonus veren portreler değildir: verdiğiniz yetki içinde karar alır ve her kararın gerekçesini gösterirler. Uzun vadeli ulusal stratejiniz kısa vadeli odak ağaçlarıyla yan yana ilerler. Diplomasi, iç politika, krizler ve stratejik gerilim dünyanın dengesini değiştirir. Oyunu dilediğiniz an durdurup hızlandırabilir, ekonomiden cepheye her şeyi aynı haritada izleyebilirsiniz."
+          },
+          "eyebrow": {
+            "en": "Deep but manageable",
+            "tr": "Derin ama yönetilebilir"
+          },
+          "heading": {
+            "en": "Run every system yourself, or let your ministers take over",
+            "tr": "Her sistemi kendin yönet ya da işi bakanlarına bırak"
+          },
+          "id": "gsgame-story-2",
+          "type": "text"
+        },
+        {
+          "heading": {
+            "en": "Game profile",
+            "tr": "Oyun profili"
+          },
+          "id": "gsgame-facts",
+          "items": [
+            {
+              "label": {
+                "en": "Genre",
+                "tr": "Tür"
+              },
+              "value": {
+                "en": "Modern grand strategy",
+                "tr": "Modern grand strateji"
+              }
+            },
+            {
+              "label": {
+                "en": "Platform",
+                "tr": "Platform"
+              },
+              "value": {
+                "en": "PC (Windows first)",
+                "tr": "PC (Windows öncelikli)"
+              }
+            },
+            {
+              "label": {
+                "en": "Start dates",
+                "tr": "Başlangıçlar"
+              },
+              "value": {
+                "en": "1930, 1990 and 2020",
+                "tr": "1930, 1990 ve 2020"
+              }
+            },
+            {
+              "label": {
+                "en": "Status",
+                "tr": "Durum"
+              },
+              "value": {
+                "en": "Feature-complete",
+                "tr": "Özellikleri tamamlandı"
+              }
+            },
+            {
+              "label": {
+                "en": "Planned release",
+                "tr": "Planlanan çıkış"
+              },
+              "value": {
+                "en": "2027",
+                "tr": "2027"
+              }
+            }
+          ],
+          "type": "facts"
+        }
+      ],
+      "context": {
+        "en": "Game in development",
+        "tr": "Geliştirilen oyun"
+      },
+      "cover": {
+        "alt": {
+          "en": "GSGame map view",
+          "tr": "GSGame harita görünümü"
+        },
+        "palette": [
+          "#14202b",
+          "#c9a227",
+          "#e8e1cf"
+        ],
+        "slug": "gsgame",
+        "visualVariant": "architectural-grid"
+      },
+      "dek": {
+        "en": "A modern grand strategy game played on a real-world map at district scale. Economy, industry, supply and war are tightly linked, and any area you'd rather not run can be handed to ministers who explain their decisions.",
+        "tr": "Gerçek dünya haritasında, ilçe ölçeğinde oynanan modern bir grand strateji oyunu. Ekonomi, sanayi, ikmal ve savaş birbirine bağlı; istemediğin alanları kararlarının gerekçesini gösteren bakanlara devredebilirsin."
+      },
+      "discipline": "software",
+      "featured": false,
+      "format": "game",
+      "links": [],
+      "media": [
+        {
+          "alt": {
+            "en": "GSGame economy and production panel",
+            "tr": "GSGame ekonomi ve üretim paneli"
+          },
+          "assetState": "ready",
+          "caption": {
+            "en": "Freiburg selected at district level with the economy and production panel (sample scenario).",
+            "tr": "Bölge seviyesinde seçili Freiburg ve ekonomi/üretim paneli (örnek senaryo)."
+          },
+          "height": 720,
+          "id": "gsgame-cover",
+          "kind": "image",
+          "mimeType": "image/webp",
+          "role": "cover",
+          "src": "/media/projects/gsgame/cover.webp",
+          "width": 1280
+        },
+        {
+          "alt": {
+            "en": "GSGame military panel",
+            "tr": "GSGame askerî panel"
+          },
+          "assetState": "ready",
+          "caption": {
+            "en": "Military panel with unit, movement, war, and engagement controls.",
+            "tr": "Askerî panel: birlik, hareket, savaş ve çatışma kontrolleri."
+          },
+          "height": 720,
+          "id": "gsgame-military",
+          "kind": "image",
+          "mimeType": "image/webp",
+          "role": "gallery",
+          "src": "/media/projects/gsgame/military.webp",
+          "width": 1280
+        },
+        {
+          "alt": {
+            "en": "GSGame treasury panel",
+            "tr": "GSGame hazine paneli"
+          },
+          "assetState": "ready",
+          "caption": {
+            "en": "Economy treasury panel with balance, cash, and interest.",
+            "tr": "Ekonomi/hazine paneli: bakiye, nakit ve faiz."
+          },
+          "height": 720,
+          "id": "gsgame-treasury",
+          "kind": "image",
+          "mimeType": "image/webp",
+          "role": "gallery",
+          "src": "/media/projects/gsgame/treasury.webp",
+          "width": 1280
+        }
+      ],
+      "metrics": [],
+      "order": 150,
+      "relatedSlugs": [
+        "attalus",
+        "ai-tycoon"
+      ],
+      "releaseStage": "feature-complete",
+      "seo": {
+        "description": {
+          "en": "In GSGame, run a nation: grow its economy and industry, command divisions on the map and delegate to ministers who explain their decisions.",
+          "tr": "GSGame’de bir ülkeyi yönet: ekonomiyi ve sanayiyi büyüt, tümenleri haritada komuta et, işleri gerekçeli kararlar veren bakanlara devret."
+        },
+        "noIndex": false,
+        "title": {
+          "en": "GSGame — Modern grand strategy at district scale",
+          "tr": "GSGame — İlçe ölçeğinde modern grand strateji"
+        }
+      },
+      "slug": "gsgame",
+      "status": "published",
+      "technologies": [
+        "C#",
+        ".NET",
+        "OpenGL",
+        "Silk.NET"
+      ],
+      "title": {
+        "en": "GSGame",
+        "tr": "GSGame"
+      },
+      "topics": [
+        "game",
+        "grand-strategy",
+        "simulation"
+      ],
+      "year": 2027
     }
   ],
   "settings": {

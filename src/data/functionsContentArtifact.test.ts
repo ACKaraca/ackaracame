@@ -10,7 +10,7 @@ describe('canonical Functions content artifact', () => {
     expect(artifact).toEqual(fallbackContentBundle);
     // This immutable source must not inherit generated-content.json precedence:
     // a stale but schema-valid 2/0 production snapshot cannot shrink recovery.
-    expect(artifact.projects).toHaveLength(8);
+    expect(artifact.projects).toHaveLength(11);
     expect(artifact.journal).toHaveLength(2);
   });
 });

@@ -15,8 +15,8 @@ const cloneArtifact = () => JSON.parse(JSON.stringify(artifact));
 test('the checked-in canonical artifact expands to the complete create-only data plane', () => {
   assert.match(CANONICAL_CONTENT_ARTIFACT_SHA256, /^[a-f0-9]{64}$/u);
   const entries = validateCanonicalContentArtifact(artifact);
-  assert.equal(entries.length, 11);
-  assert.equal(entries.filter(({ collection }) => collection === 'projects').length, 8);
+  assert.equal(entries.length, 14);
+  assert.equal(entries.filter(({ collection }) => collection === 'projects').length, 11);
   assert.equal(entries.filter(({ collection }) => collection === 'journal').length, 2);
   assert.deepEqual(entries.map(({ path }) => path), [...entries.map(({ path }) => path)].sort((a, b) => {
     if (a === 'siteSettings/main') return -1;

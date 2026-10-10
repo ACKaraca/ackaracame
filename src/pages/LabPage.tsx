@@ -67,14 +67,16 @@ export default function LabPage() {
         <div>{rules.map(({ icon: Icon, title, body }, index) => <article key={title}><span>0{index + 1}</span><Icon aria-hidden="true" /><h3>{title}</h3><p>{body}</p></article>)}</div>
       </section>
 
+      {experiments.length ? (
       <section className="section shell lab-experiments">
         <header className="section-heading section-heading--split"><div><span className="eyebrow">01 / {t.experiments}</span><h2>{t.experiments}</h2></div><p>{locale === 'tr' ? 'Kod, çizim ve zaman tabanlı üretim arasında dolaşan küçük sistemler.' : 'Small systems moving between code, drawing, and time-based making.'}</p></header>
         <div className="project-grid">{experiments.map((project, index) => <ProjectCard key={project.slug} project={project} index={index} />)}</div>
       </section>
+      ) : null}
 
       <section className="section field-notes">
         <div className="shell">
-          <header className="section-heading"><span className="eyebrow">02 / {t.notes}</span><h2>{t.notes}</h2></header>
+          <header className="section-heading"><span className="eyebrow">{experiments.length ? '02' : '01'} / {t.notes}</span><h2>{t.notes}</h2></header>
           {lab.length ? (
             <div className="field-notes__grid">
               {lab.map((entry) => <Link key={entry.slug} href={`/lab/${entry.slug}`}><span>{entry.publishedAt?.slice(0, 10)}</span><h3>{localize(entry.title, locale)}</h3><p>{localize(entry.excerpt, locale)}</p><ArrowUpRight aria-hidden="true" /></Link>)}

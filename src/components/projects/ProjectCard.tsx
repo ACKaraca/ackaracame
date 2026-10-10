@@ -26,6 +26,8 @@ const disciplineLabels = {
   },
 } as const;
 
+const gameLabel = { tr: 'Oyun', en: 'Game' } as const;
+
 const MAX_TILT = 5;
 
 export const ProjectCard = ({ project, index = 0, compact = false }: ProjectCardProps) => {
@@ -34,6 +36,9 @@ export const ProjectCard = ({ project, index = 0, compact = false }: ProjectCard
   const title = localize(project.title, locale);
   const dek = localize(project.dek, locale);
   const primaryMetric = project.metrics.find((metric) => metric.verified);
+  const coverImage = project.media.find(
+    (media) => media.role === 'cover' && media.kind === 'image' && media.assetState === 'ready',
+  );
 
   const handlePointerMove = (event: React.PointerEvent<HTMLAnchorElement>) => {
     const element = linkRef.current;
@@ -64,17 +69,30 @@ export const ProjectCard = ({ project, index = 0, compact = false }: ProjectCard
         onPointerMove={handlePointerMove}
         onPointerLeave={handlePointerLeave}
       >
-        <ProjectArtwork
-          slug={project.slug}
-          variant={project.cover.visualVariant}
-          palette={project.cover.palette}
-          title={title}
-          caption={localize(project.cover.alt, locale)}
-          className="project-card__artwork"
-        />
+        {coverImage?.src ? (
+          <div className="project-card__artwork project-card__cover">
+            <img
+              src={coverImage.src}
+              alt={localize(coverImage.alt, locale)}
+              width={coverImage.width}
+              height={coverImage.height}
+              loading={index < 2 ? 'eager' : 'lazy'}
+              decoding="async"
+            />
+          </div>
+        ) : (
+          <ProjectArtwork
+            slug={project.slug}
+            variant={project.cover.visualVariant}
+            palette={project.cover.palette}
+            title={title}
+            caption={localize(project.cover.alt, locale)}
+            className="project-card__artwork"
+          />
+        )}
         <div className="project-card__body">
           <div className="project-card__meta">
-            <span>{disciplineLabels[locale][project.discipline]}</span>
+            <span>{project.format === 'game' ? gameLabel[locale] : disciplineLabels[locale][project.discipline]}</span>
             <span aria-hidden="true">/</span>
             <span>{project.year ?? '—'}</span>
           </div>

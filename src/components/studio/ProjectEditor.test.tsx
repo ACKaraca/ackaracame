@@ -1,6 +1,9 @@
 import { fireEvent, render, screen, waitFor, within } from '@testing-library/react';
 import { vi } from 'vitest';
 import { portfolioProjects } from '../../data/portfolio';
+
+// Media flows below stage their own uploads, so start from a fixture without published media.
+const mediaFreeFixtures = portfolioProjects.map((project) => ({ ...project, media: [] }));
 import {
   deletePromotedAdminImage,
   promoteAdminImage,
@@ -68,7 +71,7 @@ describe('ProjectEditor', () => {
   afterEach(() => vi.unstubAllGlobals());
 
   it('locks an existing slug, tracks changes, and saves structured fields', async () => {
-    const project = portfolioProjects[0];
+    const project = mediaFreeFixtures[0];
     if (!project) throw new Error('Expected a project fixture.');
     const onSaved = vi.fn();
     const onDirtyChange = vi.fn();
@@ -99,7 +102,7 @@ describe('ProjectEditor', () => {
   });
 
   it('adds an editable callout without exposing raw JSON', () => {
-    const project = portfolioProjects[0];
+    const project = mediaFreeFixtures[0];
     if (!project) throw new Error('Expected a project fixture.');
     render(
       <ProjectEditor
@@ -116,7 +119,7 @@ describe('ProjectEditor', () => {
   });
 
   it('persists project metadata and normalizes blank optional values', async () => {
-    const fixture = portfolioProjects[0];
+    const fixture = mediaFreeFixtures[0];
     if (!fixture) throw new Error('Expected a project fixture.');
     const project = {
       ...fixture,
@@ -162,7 +165,7 @@ describe('ProjectEditor', () => {
   });
 
   it('promotes staged media before allowing its public URL into saved content', async () => {
-    const project = portfolioProjects[0];
+    const project = mediaFreeFixtures[0];
     if (!project) throw new Error('Expected a project fixture.');
     const repository = await import('../../lib/firebase/adminRepository');
     const { unmount } = render(
@@ -199,7 +202,7 @@ describe('ProjectEditor', () => {
   });
 
   it('transfers a promotion retained as a block poster after its main media reference is detached', async () => {
-    const project = portfolioProjects[0];
+    const project = mediaFreeFixtures[0];
     if (!project) throw new Error('Expected a project fixture.');
     const { unmount } = render(
       <ProjectEditor
@@ -245,7 +248,7 @@ describe('ProjectEditor', () => {
   });
 
   it('fences navigation, submit, and beforeunload while an upload is active', async () => {
-    const project = portfolioProjects[0];
+    const project = mediaFreeFixtures[0];
     if (!project) throw new Error('Expected a project fixture.');
     let resolveUpload: ((value: Awaited<ReturnType<typeof uploadAdminImage>>) => void) | undefined;
     vi.mocked(uploadAdminImage).mockImplementationOnce(() => new Promise((resolve) => {
@@ -284,7 +287,7 @@ describe('ProjectEditor', () => {
   });
 
   it('rejects Firebase media bound to another bucket before repository access', () => {
-    const project = portfolioProjects[0];
+    const project = mediaFreeFixtures[0];
     if (!project) throw new Error('Expected a project fixture.');
     render(
       <ProjectEditor
@@ -313,7 +316,7 @@ describe('ProjectEditor', () => {
   });
 
   it('keeps a current-session deletion capability when save fails and cleans it on abandon', async () => {
-    const project = portfolioProjects[0];
+    const project = mediaFreeFixtures[0];
     if (!project) throw new Error('Expected a project fixture.');
     const onSaved = vi.fn();
     const { unmount } = render(
@@ -345,7 +348,7 @@ describe('ProjectEditor', () => {
   });
 
   it('retries retained cleanup when the editor unmounts during a successful save', async () => {
-    const project = portfolioProjects[0];
+    const project = mediaFreeFixtures[0];
     if (!project) throw new Error('Expected a project fixture.');
     let resolveSave: ((value: Awaited<ReturnType<typeof saveProject>>) => void) | undefined;
     vi.mocked(saveProject).mockImplementationOnce(() => new Promise((resolve) => {
@@ -396,7 +399,7 @@ describe('ProjectEditor', () => {
   });
 
   it('serializes cleanup and retains only failed unreferenced promotions for retry', async () => {
-    const project = portfolioProjects[0];
+    const project = mediaFreeFixtures[0];
     if (!project) throw new Error('Expected a project fixture.');
     const firstPath = 'media/projects/draw-or-die/first.webp';
     const secondPath = 'media/projects/draw-or-die/second.webp';
@@ -488,7 +491,7 @@ describe('ProjectEditor', () => {
   }, 15_000);
 
   it('never tracks a previously promoted object without a deletion capability', async () => {
-    const project = portfolioProjects[0];
+    const project = mediaFreeFixtures[0];
     if (!project) throw new Error('Expected a project fixture.');
     vi.mocked(promoteAdminImage).mockResolvedValueOnce({
       ok: true,
@@ -518,7 +521,7 @@ describe('ProjectEditor', () => {
   });
 
   it('cleans media promoted during an abandoned unsaved session', async () => {
-    const project = portfolioProjects[0];
+    const project = mediaFreeFixtures[0];
     if (!project) throw new Error('Expected a project fixture.');
     const { unmount } = render(
       <ProjectEditor

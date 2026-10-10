@@ -4,10 +4,11 @@ import { Link } from 'wouter';
 import { useAppPreferences, localize } from '../context/AppPreferences';
 import { useContent } from '../context/Content';
 import { ProjectCard } from '../components/projects/ProjectCard';
+import type { PortfolioProject } from '../domain/content';
 import { useDocumentMeta } from '../hooks/useDocumentMeta';
 import { isAcceptingInquiries } from '../lib/availability';
 
-type WorkFilter = 'all' | 'software' | 'architecture' | 'hybrid' | 'experiment';
+type WorkFilter = 'all' | 'software' | 'architecture' | 'hybrid' | 'game' | 'experiment';
 
 const labels = {
   tr: {
@@ -15,7 +16,7 @@ const labels = {
     title: 'Ürünler, sistemler ve deneyler.',
     intro: 'Her çalışma; problem, kararlar ve teknik omurga üzerinden okunabilecek bağımsız bir vaka çalışmasıdır.',
     search: 'Projelerde ara',
-    all: 'Tümü', software: 'Yazılım', architecture: 'Mimarlık', hybrid: 'Hibrit', experiment: 'Deneyler',
+    all: 'Tümü', software: 'Yazılım', architecture: 'Mimarlık', hybrid: 'Hibrit', game: 'Oyunlar', experiment: 'Deneyler',
     result: 'sonuç', empty: 'Bu filtrelerle eşleşen bir çalışma yok.', reset: 'Filtreleri temizle', filters: 'Filtreler', archive: 'Proje arşivi',
   },
   en: {
@@ -23,10 +24,19 @@ const labels = {
     title: 'Products, systems, and experiments.',
     intro: 'Each project is a self-contained case study, readable through its problem, decisions, and technical spine.',
     search: 'Search projects',
-    all: 'All', software: 'Software', architecture: 'Architecture', hybrid: 'Hybrid', experiment: 'Experiments',
+    all: 'All', software: 'Software', architecture: 'Architecture', hybrid: 'Hybrid', game: 'Games', experiment: 'Experiments',
     result: 'results', empty: 'No work matches these filters.', reset: 'Clear filters', filters: 'Filters', archive: 'Project archive',
   },
 } as const;
+
+const WORK_FILTERS: WorkFilter[] = ['all', 'software', 'architecture', 'hybrid', 'game', 'experiment'];
+
+const matchesWorkFilter = (project: PortfolioProject, filter: WorkFilter): boolean => {
+  if (filter === 'all') return true;
+  if (filter === 'game' || filter === 'experiment') return project.format === filter;
+  // Games are listed under their own filter rather than mixed into discipline views.
+  return project.discipline === filter && project.format !== 'game';
+};
 
 const normalize = (value: string) => value.normalize('NFKD').replace(/[\u0300-\u036f]/g, '').replace(/ı/g, 'i').toLowerCase();
 
@@ -41,8 +51,7 @@ export default function WorkPage() {
   const filtered = useMemo(() => {
     const needle = normalize(search.trim());
     return projects.filter((project) => {
-      const matchesFilter = filter === 'all'
-        || (filter === 'experiment' ? project.format === 'experiment' : project.discipline === filter);
+      const matchesFilter = matchesWorkFilter(project, filter);
       const haystack = normalize([
         localize(project.title, locale),
         localize(project.dek, locale),
@@ -62,7 +71,9 @@ export default function WorkPage() {
     locale,
   });
 
-  const filters: WorkFilter[] = ['all', 'software', 'architecture', 'hybrid', 'experiment'];
+  const filters = WORK_FILTERS.filter(
+    (item) => item === 'all' || projects.some((project) => matchesWorkFilter(project, item)),
+  );
 
   return (
     <main id="main-content" tabIndex={-1} className="page work-page">

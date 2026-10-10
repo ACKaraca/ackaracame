@@ -3,7 +3,7 @@ import { z } from 'zod';
 export const SUPPORTED_LOCALES = ['tr', 'en'] as const;
 export const CONTENT_STATUSES = ['draft', 'published', 'archived'] as const;
 export const PROJECT_DISCIPLINES = ['architecture', 'software', 'hybrid', 'research'] as const;
-export const PROJECT_FORMATS = ['case-study', 'product', 'experiment', 'academic'] as const;
+export const PROJECT_FORMATS = ['case-study', 'product', 'experiment', 'academic', 'game'] as const;
 export const MAX_CONTENT_DOCUMENT_BYTES = 750 * 1024;
 export const MAX_PUBLIC_CONTENT_BUNDLE_BYTES = 2 * 1024 * 1024;
 
@@ -468,7 +468,19 @@ export const PortfolioProjectSchema = z
     context: LocalizedLabelSchema.optional(),
     location: LocalizedLabelSchema.optional(),
     releaseStage: z
-      .enum(['concept', 'prototype', 'in-development', 'live', 'maintained', 'archived'])
+      .enum([
+        'concept',
+        'prototype',
+        'pre-alpha',
+        'in-development',
+        'feature-complete',
+        'beta',
+        'release-candidate',
+        'stable',
+        'live',
+        'maintained',
+        'archived',
+      ])
       .optional(),
     technologies: uniqueSanitizedStringArray(1, 20, 40),
     topics: uniqueSanitizedStringArray(1, 12, 40),

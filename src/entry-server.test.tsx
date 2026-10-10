@@ -45,7 +45,7 @@ describe('localized static portfolio output', () => {
     expect(staticPaths).toContain('/en/work');
     expect(staticPaths).toContain('/journal');
     expect(staticPaths).toContain('/en/journal');
-    expect(staticPaths).toContain('/en/work/mailcrush');
+    expect(staticPaths).toContain('/en/work/attalus');
     expect(staticPaths).not.toContain('/en/wheretogo/privacy');
   });
 
