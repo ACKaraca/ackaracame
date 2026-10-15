@@ -12,6 +12,8 @@ const LOCALE_NEUTRAL_PUBLIC_ROUTES = [
   '/account-delete',
   '/dua',
   '/wheretogo',
+  '/hypcas',
+  '/drawordie',
   '/all',
   '/pafta',
 ] as const;

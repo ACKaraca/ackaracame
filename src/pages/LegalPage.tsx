@@ -4,15 +4,19 @@ import { useAppPreferences } from '../context/AppPreferences';
 import { useContent } from '../context/Content';
 import { useDocumentMeta } from '../hooks/useDocumentMeta';
 import { useLocaleHref } from '../hooks/useLocaleHref';
+import { productPolicies } from './legalProductPolicies';
 
-export type LegalPageKind = 'privacy' | 'terms' | 'account-deletion' | 'wheretogo-privacy' | 'wheretogo-terms' | 'wheretogo-csam' | 'dua-news' | 'wheretogo-news';
+export type LegalPageKind = 'privacy' | 'terms' | 'account-deletion' | 'wheretogo-privacy' | 'wheretogo-terms' | 'wheretogo-csam' | 'dua-news' | 'wheretogo-news'
+  | 'hypcas-privacy' | 'hypcas-terms' | 'dua-privacy' | 'dua-terms' | 'drawordie-privacy' | 'drawordie-terms';
 
 type LocalizedText = { tr: string; en: string };
 type LegalSection = { heading: LocalizedText; paragraphs: LocalizedText[]; items?: LocalizedText[] };
+export type LegalPolicy = { eyebrow: LocalizedText; title: LocalizedText; intro: LocalizedText; updated?: boolean; date?: LocalizedText; sections: LegalSection[] };
 
 const localized = (tr: string, en: string): LocalizedText => ({ tr, en });
 
-const policies: Record<LegalPageKind, { eyebrow: LocalizedText; title: LocalizedText; intro: LocalizedText; updated: boolean; sections: LegalSection[] }> = {
+const policies: Record<LegalPageKind, LegalPolicy> = {
+  ...productPolicies,
   privacy: {
     eyebrow: localized('Yasal / web sitesi', 'Legal / website'),
     title: localized('Gizlilik politikası', 'Privacy policy'),
@@ -189,6 +193,9 @@ export default function LegalPage({ kind }: { kind: LegalPageKind }) {
     privacy: '/privacy', terms: '/terms', 'account-deletion': '/account-delete',
     'wheretogo-privacy': '/wheretogo/privacy', 'wheretogo-terms': '/wheretogo/terms',
     'wheretogo-csam': '/wheretogo/csam', 'dua-news': '/dua/news', 'wheretogo-news': '/wheretogo/news',
+    'hypcas-privacy': '/hypcas/privacy', 'hypcas-terms': '/hypcas/terms',
+    'dua-privacy': '/dua/privacy', 'dua-terms': '/dua/terms',
+    'drawordie-privacy': '/drawordie/privacy', 'drawordie-terms': '/drawordie/terms',
   };
 
   useDocumentMeta({
@@ -206,7 +213,7 @@ export default function LegalPage({ kind }: { kind: LegalPageKind }) {
         <span className="eyebrow">{value(policy.eyebrow)}</span>
         <h1>{value(policy.title)}</h1>
         <p>{value(policy.intro)}</p>
-        {policy.updated ? <small>{locale === 'tr' ? 'Son güncelleme: 4 Ağustos 2026' : 'Last updated: 4 August 2026'}</small> : null}
+        {policy.date ? <small>{value(policy.date)}</small> : policy.updated ? <small>{locale === 'tr' ? 'Son güncelleme: 4 Ağustos 2026' : 'Last updated: 4 August 2026'}</small> : null}
       </header>
 
       <div className="shell legal-layout">

@@ -121,6 +121,12 @@ const PublicRoutes = () => {
       {permanentRoutes ? <Route path="/wheretogo/csam">{() => <LegalPage kind="wheretogo-csam" />}</Route> : null}
       {permanentRoutes ? <Route path="/wheretogo/privacy">{() => <LegalPage kind="wheretogo-privacy" />}</Route> : null}
       {permanentRoutes ? <Route path="/wheretogo/terms">{() => <LegalPage kind="wheretogo-terms" />}</Route> : null}
+      {permanentRoutes ? <Route path="/hypcas/privacy">{() => <LegalPage kind="hypcas-privacy" />}</Route> : null}
+      {permanentRoutes ? <Route path="/hypcas/terms">{() => <LegalPage kind="hypcas-terms" />}</Route> : null}
+      {permanentRoutes ? <Route path="/dua/privacy">{() => <LegalPage kind="dua-privacy" />}</Route> : null}
+      {permanentRoutes ? <Route path="/dua/terms">{() => <LegalPage kind="dua-terms" />}</Route> : null}
+      {permanentRoutes ? <Route path="/drawordie/privacy">{() => <LegalPage kind="drawordie-privacy" />}</Route> : null}
+      {permanentRoutes ? <Route path="/drawordie/terms">{() => <LegalPage kind="drawordie-terms" />}</Route> : null}
       {permanentRoutes ? <Route path="/all/privacy">{() => <LegalDirectoryPage documentType="privacy" />}</Route> : null}
       {permanentRoutes ? <Route path="/all/terms">{() => <LegalDirectoryPage documentType="terms" />}</Route> : null}
       {permanentRoutes ? <Route path="/pafta/:qrCode" component={LegacyPaftaPage} /> : null}

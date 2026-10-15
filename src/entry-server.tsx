@@ -62,6 +62,12 @@ const StaticRoutes = () => {
       {permanentRoutes ? <Route path="/wheretogo/csam">{() => <LegalPage kind="wheretogo-csam" />}</Route> : null}
       {permanentRoutes ? <Route path="/wheretogo/privacy">{() => <LegalPage kind="wheretogo-privacy" />}</Route> : null}
       {permanentRoutes ? <Route path="/wheretogo/terms">{() => <LegalPage kind="wheretogo-terms" />}</Route> : null}
+      {permanentRoutes ? <Route path="/hypcas/privacy">{() => <LegalPage kind="hypcas-privacy" />}</Route> : null}
+      {permanentRoutes ? <Route path="/hypcas/terms">{() => <LegalPage kind="hypcas-terms" />}</Route> : null}
+      {permanentRoutes ? <Route path="/dua/privacy">{() => <LegalPage kind="dua-privacy" />}</Route> : null}
+      {permanentRoutes ? <Route path="/dua/terms">{() => <LegalPage kind="dua-terms" />}</Route> : null}
+      {permanentRoutes ? <Route path="/drawordie/privacy">{() => <LegalPage kind="drawordie-privacy" />}</Route> : null}
+      {permanentRoutes ? <Route path="/drawordie/terms">{() => <LegalPage kind="drawordie-terms" />}</Route> : null}
       {permanentRoutes ? <Route path="/all/privacy">{() => <LegalDirectoryPage documentType="privacy" />}</Route> : null}
       {permanentRoutes ? <Route path="/all/terms">{() => <LegalDirectoryPage documentType="terms" />}</Route> : null}
       <Route component={NotFoundPage} />
@@ -151,6 +157,30 @@ const permanentMeta: Record<string, LocalizedStaticMetaCopy> = {
   '/wheretogo/terms': localizedMeta(
     { title: 'WhereToGo kullanım koşulları', description: 'WhereToGo konum keşfi, oturum, eşleşme ve güvenli kullanım koşulları.', type: 'website' },
     { title: 'WhereToGo terms of use', description: 'Terms for WhereToGo location discovery, sessions, matching, and safe use.', type: 'website' },
+  ),
+  '/hypcas/privacy': localizedMeta(
+    { title: 'HypCas gizlilik politikası', description: 'HypCas mini oyun koleksiyonunda reklam, analiz ve abonelik verilerinin işlenmesine ilişkin gizlilik politikası.', type: 'website' },
+    { title: 'HypCas privacy policy', description: 'How the HypCas mini-game collection processes ad, analytics, and subscription data.', type: 'website' },
+  ),
+  '/hypcas/terms': localizedMeta(
+    { title: 'HypCas kullanım koşulları', description: 'HypCas mini oyunları, reklamlar ve premium abonelik için kullanım koşulları.', type: 'website' },
+    { title: 'HypCas terms of use', description: 'Terms for HypCas mini-games, ads, and the premium subscription.', type: 'website' },
+  ),
+  '/dua/privacy': localizedMeta(
+    { title: 'DuaAPP gizlilik politikası', description: 'DuaAPP hesap, içerik, konum, yapay zekâ ve topluluk verilerinin işlenmesine ilişkin gizlilik politikası.', type: 'website' },
+    { title: 'DuaAPP privacy policy', description: 'How DuaAPP processes account, content, location, AI, and community data.', type: 'website' },
+  ),
+  '/dua/terms': localizedMeta(
+    { title: 'DuaAPP kullanım koşulları', description: 'DuaAPP dua, günlük, yapay zekâ ve topluluk özellikleri için kullanım koşulları.', type: 'website' },
+    { title: 'DuaAPP terms of use', description: 'Terms for DuaAPP prayer, journal, AI, and community features.', type: 'website' },
+  ),
+  '/drawordie/privacy': localizedMeta(
+    { title: 'Draw or Die gizlilik politikası', description: 'Draw or Die yüklenen çalışmalar, hesap, yapay zekâ ve ödeme verilerinin işlenmesine ilişkin gizlilik politikası.', type: 'website' },
+    { title: 'Draw or Die privacy policy', description: 'How Draw or Die processes uploaded work, account, AI, and payment data.', type: 'website' },
+  ),
+  '/drawordie/terms': localizedMeta(
+    { title: 'Draw or Die kullanım koşulları', description: 'Draw or Die jüri simülasyonu, Rapido kredileri ve topluluk özellikleri için kullanım koşulları.', type: 'website' },
+    { title: 'Draw or Die terms of use', description: 'Terms for the Draw or Die jury simulation, Rapido credits, and community features.', type: 'website' },
   ),
   '/all/privacy': localizedMeta(
     { title: 'Gizlilik politikaları — ACKaraca', description: 'ACKARACA ürünleri için güncel gizlilik politikaları dizini.', type: 'website', noIndex: true },
@@ -242,5 +272,6 @@ const localizablePaths = [
 export const staticPaths = [
   ...localizablePaths,
   ...localizablePaths.map((path) => localePath(path, 'en')),
-  '/account-delete', '/dua/news', '/wheretogo/news', '/wheretogo/csam', '/wheretogo/privacy', '/wheretogo/terms', '/all/privacy', '/all/terms',
+  '/account-delete', '/dua/news', '/wheretogo/news', '/wheretogo/csam', '/wheretogo/privacy', '/wheretogo/terms',
+  '/hypcas/privacy', '/hypcas/terms', '/dua/privacy', '/dua/terms', '/drawordie/privacy', '/drawordie/terms', '/all/privacy', '/all/terms',
 ];

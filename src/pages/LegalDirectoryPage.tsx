@@ -26,6 +26,27 @@ export default function LegalDirectoryPage({ documentType }: { documentType: 'pr
         : (locale === 'tr' ? 'Konum keşfi ve güvenli kullanım sınırları' : 'Location discovery and safe-use boundaries'),
       href: privacy ? '/wheretogo/privacy' : '/wheretogo/terms',
     },
+    {
+      name: 'HypCas',
+      description: privacy
+        ? (locale === 'tr' ? 'Mini oyunlar, reklamlar ve premium abonelik' : 'Mini-games, ads, and premium subscription')
+        : (locale === 'tr' ? 'Mini oyunlar, sanal jetonlar ve abonelik' : 'Mini-games, virtual coins, and subscription'),
+      href: privacy ? '/hypcas/privacy' : '/hypcas/terms',
+    },
+    {
+      name: 'DuaAPP',
+      description: privacy
+        ? (locale === 'tr' ? 'Dua, günlük, yapay zekâ ve topluluk verileri' : 'Prayer, journal, AI, and community data')
+        : (locale === 'tr' ? 'Manevi destek, yapay zekâ ve topluluk kuralları' : 'Spiritual support, AI, and community rules'),
+      href: privacy ? '/dua/privacy' : '/dua/terms',
+    },
+    {
+      name: 'Draw or Die',
+      description: privacy
+        ? (locale === 'tr' ? 'Yüklenen çalışmalar, yapay zekâ ve ödeme verileri' : 'Uploaded work, AI, and payment data')
+        : (locale === 'tr' ? 'Jüri simülasyonu, Rapido kredileri ve topluluk' : 'Jury simulation, Rapido credits, and community'),
+      href: privacy ? '/drawordie/privacy' : '/drawordie/terms',
+    },
   ];
 
   useDocumentMeta({
