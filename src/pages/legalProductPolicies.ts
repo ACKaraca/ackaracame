@@ -21,44 +21,38 @@ export const productPolicies: Record<
     eyebrow: l('HypCas / yasal', 'HypCas / legal'),
     title: l('HypCas gizlilik politikası', 'HypCas privacy policy'),
     intro: l(
-      'HypCas, ACKARACA tarafından yayımlanan bir mini oyun koleksiyonudur. Bu politika uygulamanın hangi verileri neden işlediğini açıklar.',
-      'HypCas is a collection of casual mini-games published by ACKARACA. This policy explains what data the app processes and why.',
+      'HypCas, ACKARACA tarafından yayımlanan bir mini oyun koleksiyonudur. Bu politika uygulamanın hangi verileri işlediğini ve işlemediğini açıklar.',
+      'HypCas is a collection of casual mini-games published by ACKARACA. This policy explains what data the app does and does not process.',
     ),
     date: updated,
     sections: [
       {
         heading: l('Özet', 'Summary'),
-        paragraphs: [l('HypCas’ta hesap veya kayıt yoktur. Ad, e-posta, telefon, rehber, fotoğraf veya kesin konum istemeyiz. Oyun ilerlemeniz cihazınızda tutulur. Ağ trafiği HTTPS ile şifrelenir ve kişisel verileriniz satılmaz.', 'HypCas has no account or sign-up. We do not ask for your name, email, phone number, contacts, photos, or precise location. Your game progress stays on your device. Network traffic is encrypted over HTTPS and your personal data is not sold.')],
+        paragraphs: [l('HypCas’ın ilk Google Play sürümü reklamsızdır: reklam SDK’sı, analiz SDK’sı veya satın alma SDK’sı çalışmaz ve reklam kimliği (AAID) kullanılmaz. Hesap veya kayıt yoktur; ad, e-posta, telefon, rehber, fotoğraf veya konum istemeyiz. Oyun ilerlemeniz cihazınızda tutulur ve kişisel verileriniz satılmaz.', 'The first Google Play release of HypCas is ad-free: no advertising SDK, analytics SDK, or purchase SDK runs, and the advertising ID (AAID) is not used. There is no account or sign-up; we do not ask for your name, email, phone number, contacts, photos, or location. Your game progress stays on your device and your personal data is not sold.')],
       },
       {
         heading: l('Cihazınızda saklanan veriler', 'Data stored on your device'),
-        paragraphs: [l('Aşağıdaki veriler yalnızca uygulamanın yerel depolama alanında tutulur ve uygulama verisini temizlediğinizde ya da uygulamayı kaldırdığınızda silinir.', 'The following is kept only in the app’s local storage and is deleted when you clear the app data or uninstall the app.')],
+        paragraphs: [l('Aşağıdaki veriler yalnızca uygulamanın yerel depolama alanında tutulur, sunucularımıza gönderilmez ve uygulama verisini temizlediğinizde ya da uygulamayı kaldırdığınızda silinir.', 'The following is kept only in the app’s local storage, is not sent to our servers, and is deleted when you clear the app data or uninstall the app.')],
         items: [
-          l('Jeton bakiyesi, açılan içerikler, başarımlar ve yüksek skorlar.', 'Coin balance, unlocked items, achievements, and high scores.'),
-          l('Ses, titreşim ve dil gibi ayarlar.', 'Settings such as sound, haptics, and language.'),
-          l('Premium durumunun önbelleği.', 'A cache of premium status.'),
+          l('HypCoin bakiyesi (yeni kurulumlarda 50 ile başlar), açılan içerikler, başarımlar ve yüksek skorlar.', 'HypCoin balance (new installs start at 50), unlocked items, achievements, and high scores.'),
+          l('Ses, titreşim, grafik kalitesi ve dil gibi ayarlar.', 'Settings such as sound, haptics, graphics quality, and language.'),
         ],
       },
       {
-        heading: l('Üçüncü taraf hizmetler', 'Third-party services'),
-        paragraphs: [l('Uygulama aşağıdaki hizmetleri kullanır; bu hizmetler kendi gizlilik politikalarına göre sınırlı cihaz ve kullanım verisi alır.', 'The app uses the services below; they receive limited device and usage data under their own privacy policies.')],
-        items: [
-          l('Google AdMob: banner, geçiş ve ödüllü reklamlar; reklam kimliği (AAID), IP adresi, cihaz modeli ve işletim sistemi, reklam etkileşimleri.', 'Google AdMob: banner, interstitial, and rewarded ads; advertising ID (AAID), IP address, device model and OS, ad interactions.'),
-          l('Google Firebase Analytics: hangi oyunların açıldığı/bitirildiği, ekran görüntülemeleri, jeton ve premium olayları; uygulama örneği kimliği, yaklaşık konum (IP’den).', 'Google Firebase Analytics: which games are opened or finished, screen views, coin and premium events; app-instance ID, approximate location (from IP).'),
-          l('RevenueCat + Google Play Faturalandırma: isteğe bağlı premium abonelik; anonim RevenueCat kimliği ve satın alma geçmişi. Ödeme bilgilerinizi Google Play işler, biz görmeyiz.', 'RevenueCat + Google Play Billing: the optional premium subscription; anonymous RevenueCat ID and purchase history. Google Play handles your payment details; we never see them.'),
-        ],
+        heading: l('Reklamlar, analiz ve satın almalar', 'Ads, analytics, and purchases'),
+        paragraphs: [l('Mevcut sürümde reklam gösterilmez, kullanım analizi toplanmaz ve gerçek parayla satın alma sunulmaz. Uygulama Android manifestinde reklam kimliği izinlerini (AD_ID ve ilgili Ads izinleri) kaldırır ve Google Mobile Ads SDK’sının otomatik başlamasını engeller.', 'The current release shows no ads, collects no usage analytics, and offers no real-money purchases. The app removes the advertising-ID permissions (AD_ID and related Ads permissions) from its Android manifest and prevents the Google Mobile Ads SDK from starting automatically.')],
+      },
+      {
+        heading: l('Gelecek sürümlerde olası değişiklikler', 'Possible changes in future versions'),
+        paragraphs: [l('Kod tabanı, ileride etkinleştirilebilecek Google AdMob (reklamlar; EEA/UK için Google UMP onay akışıyla), Firebase Analytics (kullanım istatistikleri) ve RevenueCat + Google Play Faturalandırma (satın almalar) entegrasyonlarını içerir. Bunlardan biri etkinleştirilmeden önce bu politika güncellenir, gerekli izinler ve onay akışları eklenir ve değişiklik uygulama içinde veya mağaza sayfasında duyurulur. Bu hizmetler etkinleştiğinde reklam kimliği, cihaz modeli, işletim sistemi, IP adresinden türetilen yaklaşık konum ve uygulama içi etkileşimler gibi sınırlı veriyi kendi gizlilik politikalarına göre alabilir.', 'The codebase includes integrations that may be enabled later: Google AdMob (ads; with the Google UMP consent flow for the EEA/UK), Firebase Analytics (usage statistics), and RevenueCat + Google Play Billing (purchases). Before any of them is enabled, this policy will be updated, the necessary permissions and consent flows added, and the change announced in the app or on the store listing. When enabled, these services may receive limited data such as the advertising ID, device model, OS, approximate location derived from IP, and in-app interactions under their own privacy policies.')],
       },
       {
         heading: l('Android izinleri', 'Android permissions'),
-        paragraphs: [l('Uygulama yalnızca kullanıcı onayı gerektirmeyen izinleri ister: INTERNET ve ACCESS_NETWORK_STATE (reklam, analiz ve satın alma kontrolü), WAKE_LOCK (analiz olaylarının güvenilir iletimi), AD_ID (reklam kimliği) ve BILLING (Google Play satın alımları). Kamera, mikrofon, rehber, dosya veya kesin konuma erişmez.', 'The app requests only permissions that need no user prompt: INTERNET and ACCESS_NETWORK_STATE (ads, analytics, purchase checks), WAKE_LOCK (reliable delivery of analytics events), AD_ID (advertising ID), and BILLING (Google Play purchases). It does not access your camera, microphone, contacts, files, or precise location.')],
+        paragraphs: [l('Uygulama yalnızca INTERNET iznini bildirir. Kamera, mikrofon, rehber, dosya veya konuma erişmez. Geri bildirim için Google Form bağlantısı ve Google Play uygulama içi değerlendirme penceresi kullanılabilir; bunlar Google’ın kendi gizlilik politikalarına tabidir.', 'The app declares only the INTERNET permission. It does not access your camera, microphone, contacts, files, or location. A Google Form link and the Google Play in-app review prompt may be used for feedback; these are subject to Google’s own privacy policies.')],
       },
       {
-        heading: l('Seçimleriniz ve saklama', 'Your choices and retention'),
-        paragraphs: [l('Kişiselleştirilmiş reklamları Android Ayarları → Google → Reklamlar bölümünden kapatabilir ya da reklam kimliğinizi silebilirsiniz. Aboneliği Google Play → Ödemeler ve abonelikler bölümünden yönetebilirsiniz. Firebase Analytics olay verisi en fazla 14 ay saklanır; AdMob ve RevenueCat verileri kendi saklama politikalarına tabidir. Hesap olmadığından abonelikle ilgili taleplerde satın alma tarihini veya Google Play sipariş numarasını belirtin.', 'You can turn off personalised ads in Android Settings → Google → Ads or delete your advertising ID. Manage the subscription in Google Play → Payments & subscriptions. Firebase Analytics event data is kept for up to 14 months; AdMob and RevenueCat data follow their own retention policies. Because there are no accounts, include the purchase date or Google Play order ID for subscription requests.')],
-      },
-      {
-        heading: l('Haklarınız', 'Your rights'),
-        paragraphs: [rightsParagraph],
+        heading: l('Haklarınız ve saklama', 'Your rights and retention'),
+        paragraphs: [l('Veriler yalnızca cihazınızda tutulduğundan, uygulama verisini silerek veya uygulamayı kaldırarak tümünü silebilirsiniz. Geri bildirim formunda paylaştığınız bilgiler Google Form üzerinden bize ulaşır ve yalnızca geri bildirimi yanıtlamak için kullanılır.', 'Because data is kept only on your device, you can delete all of it by clearing app data or uninstalling the app. Information you share in the feedback form reaches us through Google Forms and is used only to respond to your feedback.'), rightsParagraph],
       },
       {
         heading: l('Çocuklar', 'Children'),
@@ -74,26 +68,26 @@ export const productPolicies: Record<
     eyebrow: l('HypCas / yasal', 'HypCas / legal'),
     title: l('HypCas kullanım koşulları', 'HypCas terms of use'),
     intro: l(
-      'Bu koşullar HypCas mini oyun koleksiyonunu, reklamları ve isteğe bağlı premium aboneliği kullanırken geçerli kuralları açıklar.',
-      'These terms set out the rules that apply when using the HypCas mini-game collection, its ads, and the optional premium subscription.',
+      'Bu koşullar HypCas mini oyun koleksiyonunu ve HypCoin’i kullanırken geçerli kuralları açıklar.',
+      'These terms set out the rules that apply when using the HypCas mini-game collection and HypCoin.',
     ),
     date: updated,
     sections: [
       {
         heading: l('Kabul ve uygunluk', 'Acceptance and eligibility'),
-        paragraphs: [l('Uygulamayı yüklediğinizde veya kullandığınızda bu koşulları kabul etmiş olursunuz. HypCas 13 yaş ve üzeri kullanıcılar içindir; reşit olmayan kullanıcıların premium satın alması için ebeveyn veya yasal vasi onayı gerekebilir.', 'By installing or using the app you accept these terms. HypCas is for users aged 13 and over; purchases by minors may require the consent of a parent or legal guardian.')],
+        paragraphs: [l('Uygulamayı yüklediğinizde veya kullandığınızda bu koşulları kabul etmiş olursunuz. HypCas 13 yaş ve üzeri kullanıcılar içindir.', 'By installing or using the app you accept these terms. HypCas is for users aged 13 and over.')],
       },
       {
         heading: l('Lisans', 'Licence'),
-        paragraphs: [l('Size kişisel, devredilemez, münhasır olmayan ve kişisel eğlence amaçlı bir kullanım lisansı verilir. Uygulamayı kopyalayamaz, tersine mühendislik yapamaz, hile veya otomasyon araçlarıyla bozamaz, yeniden dağıtamaz ya da ticari amaçla kullanamazsınız. Uygulamanın tüm içeriği ve fikri mülkiyeti ACKARACA veya lisans verenlerine aittir.', 'You receive a personal, non-transferable, non-exclusive licence to use the app for personal entertainment. You may not copy, reverse engineer, tamper with (including through cheats or automation), redistribute, or commercially exploit it. All content and intellectual property in the app belongs to ACKARACA or its licensors.')],
+        paragraphs: [l('Size kişisel, devredilemez, münhasır olmayan ve kişisel eğlence amaçlı bir kullanım lisansı verilir. Uygulamayı kopyalayamaz, tersine mühendislik yapamaz, hile veya otomasyon araçlarıyla bozamaz, yeniden dağıtamaz ya da ticari amaçla kullanamazsınız. Uygulamanın tüm içeriği ve fikri mülkiyeti ACKARACA veya lisans verenlerine aittir; açık kaynak bileşenler kendi lisanslarına tabidir.', 'You receive a personal, non-transferable, non-exclusive licence to use the app for personal entertainment. You may not copy, reverse engineer, tamper with (including through cheats or automation), redistribute, or commercially exploit it. All content and intellectual property in the app belongs to ACKARACA or its licensors; open-source components are subject to their own licences.')],
       },
       {
-        heading: l('Jetonlar ve sanal öğeler', 'Coins and virtual items'),
-        paragraphs: [l('Oyun içi jetonlar, açılan içerikler ve skorlar nakit değeri olmayan sanal öğelerdir; paraya çevrilemez ve devredilemez. İlerlemeniz cihazınızda saklandığından uygulama verisini silmek, cihaz değiştirmek veya uygulamayı kaldırmak ilerlemenin kaybına yol açabilir.', 'In-game coins, unlocked items, and scores are virtual items with no cash value; they cannot be exchanged for money or transferred. Because progress is stored on your device, clearing app data, changing devices, or uninstalling may lose it.')],
+        heading: l('HypCoin ve sanal öğeler', 'HypCoin and virtual items'),
+        paragraphs: [l('HypCoin, oyun içi kazanılan ve harcanan nakit değeri olmayan sanal bir birimdir; paraya çevrilemez ve devredilemez. Açılan içerikler ve skorlar da sanal öğelerdir. İlerlemeniz cihazınızda saklandığından uygulama verisini silmek, cihaz değiştirmek veya uygulamayı kaldırmak ilerlemenin kaybına yol açabilir.', 'HypCoin is a virtual unit earned and spent in-game, with no cash value; it cannot be exchanged for money or transferred. Unlocked items and scores are also virtual items. Because progress is stored on your device, clearing app data, changing devices, or uninstalling may lose it.')],
       },
       {
-        heading: l('Reklamlar ve premium abonelik', 'Ads and premium subscription'),
-        paragraphs: [l('Ücretsiz sürümde reklamlar gösterilir. Premium abonelik Google Play üzerinden satın alınır, fiyat ve süre satın alma ekranında gösterilir ve dönem sonunda iptal edilmediği sürece Google Play kurallarına göre otomatik yenilenir. İptal ve iade işlemleri Google Play → Ödemeler ve abonelikler üzerinden yapılır; yasal cayma ve iade hakları saklıdır. Yeniden yükleme sonrasında “Satın alımları geri yükle” ile erişiminizi geri alabilirsiniz.', 'The free version shows ads. The premium subscription is bought through Google Play; price and period are shown at purchase and it renews automatically under Google Play rules unless cancelled before the period ends. Cancellation and refunds are handled in Google Play → Payments & subscriptions; statutory withdrawal and refund rights are unaffected. After reinstalling, use “Restore purchases” to regain access.')],
+        heading: l('Reklamlar ve satın almalar', 'Ads and purchases'),
+        paragraphs: [l('Mevcut sürüm reklamsızdır ve gerçek parayla satın alma sunmaz. İleride reklam veya satın alma eklenirse fiyat, süre ve koşullar satın alma ekranında gösterilir, ödemeler Google Play üzerinden yapılır ve yasal cayma ve iade haklarınız saklıdır; bu durumda bu koşullar ve gizlilik politikası önceden güncellenir.', 'The current release is ad-free and offers no real-money purchases. If ads or purchases are added later, price, period, and conditions will be shown at purchase, payments will go through Google Play, and your statutory withdrawal and refund rights are unaffected; in that case these terms and the privacy policy will be updated beforehand.')],
       },
       {
         heading: l('Kullanılabilirlik ve sorumluluk', 'Availability and liability'),
@@ -134,6 +128,7 @@ export const productPolicies: Record<
           l('Bildirimler: cihaz bildirim belirteci (FCM) ve planladığınız hatırlatıcılar.', 'Notifications: device push token (FCM) and the reminders you schedule.'),
           l('Teknik veri: cihaz modeli, işletim sistemi, uygulama sürümü, hata ve kötüye kullanım önleme kayıtları, kullanım olayları.', 'Technical data: device model, OS, app version, error and abuse-prevention logs, and usage events.'),
           l('Satın alma: abonelik durumu ve işlem kimliği; ödeme bilgilerinizi Google Play işler.', 'Purchases: subscription status and transaction ID; Google Play handles your payment details.'),
+          l('Reklamlar: Uygulamada Google AdMob (Google Mobile Ads SDK) entegredir ve uygulama açılırken başlatılır; kodda banner, yerel (native) ve geçiş (interstitial) reklam biçimleri bulunur (topluluk gönderileri görüntülenirken her 7 gönderide bir geçiş reklamı planlıdır). Şu anki sürümde yalnızca Google’ın test reklam birimleri yapılandırılmıştır ve gerçek reklam yayını etkin değildir; üretim reklam birimleri yapılandırıldığında ücretsiz kullanıcılara reklam gösterilir. Reklam SDK’sı reklam kimliği, IP adresi, cihaz modeli ve işletim sistemi, reklam etkileşimleri ve tanılama verilerini Google’a iletebilir. Cihaz ayarlarından reklam kimliğinizi silebilir veya reklam kişiselleştirmeyi kapatabilirsiniz. Dini inanç, dua içeriği veya rüya günlüğü verileriniz reklam hedeflemesi için kullanılmaz.', 'Ads: Google AdMob (Google Mobile Ads SDK) is integrated and initialised when the app starts; the code includes banner, native, and interstitial formats (an interstitial is planned once every 7 community posts viewed). The current build is configured only with Google’s test ad units and live ad serving is not enabled; once production ad units are configured, free users will see ads. The ad SDK may send the advertising ID, IP address, device model and OS, ad interactions, and diagnostics to Google. You can delete your advertising ID or turn off ad personalisation in your device settings. Your religious belief, prayer content, and dream-journal data are not used for ad targeting.'),
         ],
       },
       {
@@ -142,7 +137,7 @@ export const productPolicies: Record<
       },
       {
         heading: l('Hizmet sağlayıcılar ve aktarım', 'Service providers and transfers'),
-        paragraphs: [l('Veriler; kimlik doğrulama, veritabanı, depolama ve sunucu fonksiyonları için Supabase’de, yapay zekâ istekleri için Vercel AI Gateway üzerinden bağlı model sağlayıcılarında, bildirimler için Firebase Cloud Messaging’de, reklamlar için Google AdMob’da (reklam gösterilen sürümlerde) ve satın almalar için Google Play’de işlenebilir. Bu sağlayıcılar verileri bizim adımıza veya kendi sorumluluklarıyla işler ve verileriniz Türkiye dışındaki ülkelere aktarılabilir; aktarımlar uygulanabilir mevzuattaki güvencelere (standart sözleşme maddeleri, açık rıza vb.) dayanır. Yapay zekâ sohbetlerine kişisel, sağlık veya finansal bilgi yazmamanızı öneririz.', 'Data may be processed by Supabase (authentication, database, storage, server functions), by model providers reached through Vercel AI Gateway (AI requests), Firebase Cloud Messaging (notifications), Google AdMob (ads, where shown), and Google Play (purchases). These providers process data on our behalf or under their own responsibility, and data may be transferred outside Türkiye on the basis of safeguards available under applicable law (standard contractual clauses, explicit consent, etc.). We recommend not entering personal, health, or financial information into AI chats.')],
+        paragraphs: [l('Veriler; kimlik doğrulama, veritabanı, depolama ve sunucu fonksiyonları için Supabase’de, yapay zekâ istekleri için Vercel AI Gateway üzerinden bağlı model sağlayıcılarında, bildirimler için Firebase Cloud Messaging’de, reklamlar için reklam SDK’sı olarak Google AdMob’da ve satın almalar için Google Play’de işlenebilir. Bu sağlayıcılar verileri bizim adımıza veya kendi sorumluluklarıyla işler ve verileriniz Türkiye dışındaki ülkelere aktarılabilir; aktarımlar uygulanabilir mevzuattaki güvencelere (standart sözleşme maddeleri, açık rıza vb.) dayanır. Yapay zekâ sohbetlerine kişisel, sağlık veya finansal bilgi yazmamanızı öneririz.', 'Data may be processed by Supabase (authentication, database, storage, server functions), by model providers reached through Vercel AI Gateway (AI requests), Firebase Cloud Messaging (notifications), Google AdMob (ad SDK), and Google Play (purchases). These providers process data on our behalf or under their own responsibility, and data may be transferred outside Türkiye on the basis of safeguards available under applicable law (standard contractual clauses, explicit consent, etc.). We recommend not entering personal, health, or financial information into AI chats.')],
       },
       {
         heading: l('Topluluk görünürlüğü', 'Community visibility'),
@@ -193,7 +188,7 @@ export const productPolicies: Record<
       },
       {
         heading: l('Abonelik ve ödemeler', 'Subscriptions and payments'),
-        paragraphs: [l('Ücretli özellikler Google Play üzerinden satın alınır; fiyat, süre ve yenileme koşulları satın alma ekranında gösterilir ve iptal/iade işlemleri Google Play üzerinden yapılır. Yasal cayma ve iade hakları saklıdır.', 'Paid features are bought through Google Play; price, period, and renewal terms are shown at purchase, and cancellation and refunds are handled through Google Play. Statutory withdrawal and refund rights are unaffected.')],
+        paragraphs: [l('Ücretsiz sürümde Google AdMob reklamları gösterilebilir; reklam işleme ayrıntıları gizlilik politikasındadır. Ücretli özellikler Google Play üzerinden satın alınır; fiyat, süre ve yenileme koşulları satın alma ekranında gösterilir ve iptal/iade işlemleri Google Play üzerinden yapılır. Yasal cayma ve iade hakları saklıdır.', 'The free version may show Google AdMob ads; ad-processing details are in the privacy policy. Paid features are bought through Google Play; price, period, and renewal terms are shown at purchase, and cancellation and refunds are handled through Google Play. Statutory withdrawal and refund rights are unaffected.')],
       },
       {
         heading: l('Fikri mülkiyet', 'Intellectual property'),
@@ -228,6 +223,7 @@ export const productPolicies: Record<
           l('Ödeme ve Rapido kredisi: Stripe müşteri/abonelik/fatura referansları, satın alma, kazanım ve harcama kayıtları. Kart bilgilerinizi Stripe işler, biz görmeyiz.', 'Payments and Rapido credits: Stripe customer, subscription, and invoice references, and purchase, earn, and spend records. Stripe handles your card details; we never see them.'),
           l('Topluluk ve iş birliği: yalnızca siz yayımlamayı seçerseniz galeri gönderileri; Peer Review, arkadaş ekibi üyeliği ve paylaşılan projeler.', 'Community and collaboration: gallery posts only if you choose to publish; Peer Review, friends-team membership, and shared projects.'),
           l('Teknik veri: kötüye kullanım önleme, güvenlik ve hata kayıtları, çerez/yerel depolama tercihleri ve kullanım olayları.', 'Technical data: abuse-prevention, security, and error logs, cookie/local-storage preferences, and usage events.'),
+          l('Reklam: Draw or Die reklam ağı veya reklam SDK’sı kullanmaz, reklam kimliği toplamaz ve verilerinizi reklam amacıyla paylaşmaz ya da satmaz.', 'Advertising: Draw or Die uses no ad network or ad SDK, does not collect advertising IDs, and does not share or sell your data for advertising.'),
         ],
       },
       {

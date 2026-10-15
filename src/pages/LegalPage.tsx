@@ -93,7 +93,7 @@ const policies: Record<LegalPageKind, LegalPolicy> = {
     eyebrow: localized('WhereToGo / yasal', 'WhereToGo / legal'),
     title: localized('WhereToGo gizlilik politikası', 'WhereToGo privacy policy'),
     intro: localized('Bu politika, iki kişinin birlikte yer keşfetmesini sağlayan WhereToGo uygulamasında konum, hesap, oturum ve tercih verilerinin nasıl işlendiğini açıklar.', 'This policy explains how location, account, session, and preference data is processed in WhereToGo, an app for two people to discover places together.'),
-    updated: true,
+    date: localized('Son güncelleme: 15 Ekim 2026', 'Last updated: 15 October 2026'),
     sections: [
       {
         heading: localized('İşlenen veriler', 'Data we process'),
@@ -102,7 +102,8 @@ const policies: Record<LegalPageKind, LegalPolicy> = {
           localized('Hesap açtığınızda kullanıcı kimliği, e-posta ve sınırlı profil bilgileri.', 'User ID, email, and limited profile information when you create an account.'),
           localized('İki kişilik gerçek zamanlı oturum kodu, katılımcı durumu ve bağlantı zamanı.', 'Two-person real-time session code, participant state, and connection time.'),
           localized('Kaydırma tercihleri, atlanan veya beğenilen yerler ve karşılıklı eşleşmeler.', 'Swipe preferences, skipped or liked places, and mutual matches.'),
-          localized('Hata ayıklama, kötüye kullanım önleme ve hizmet güvenliği için sınırlı teknik kayıtlar.', 'Limited technical records for troubleshooting, abuse prevention, and service security.'),
+          localized('Hata ayıklama, kötüye kullanım önleme ve hizmet güvenliği için sınırlı teknik kayıtlar; Firebase Analytics kullanım olayları ve Firebase Crashlytics çökme raporları.', 'Limited technical records for troubleshooting, abuse prevention, and service security; Firebase Analytics usage events and Firebase Crashlytics crash reports.'),
+          localized('Reklam: ücretsiz sürümde Google AdMob; kaydırma ve eşleşme ekranlarında banner reklam, uygulamaya geri dönüşte (önceden yüklenmiş reklam 4 saatten eskiyse gösterilmez) uygulama açılış reklamı. Reklam SDK’sı reklam kimliği, IP adresi, cihaz modeli ve işletim sistemi, reklam etkileşimleri ve tanılama verilerini Google’a iletebilir. Reklam isteklerine konumunuz veya eşleşme/tercih verileriniz eklenmez; Google yaklaşık konumu IP adresinden çıkarabilir. Reklam kimliğinizi cihaz ayarlarından silebilir veya reklam kişiselleştirmeyi kapatabilirsiniz.', 'Advertising: Google AdMob in the free version; banner ads on the swipe and match screens and an app-open ad when you return to the app (a preloaded ad older than 4 hours is not shown). The ad SDK may send the advertising ID, IP address, device model and OS, ad interactions, and diagnostics to Google. Your location and match or preference data are not added to ad requests; Google may infer approximate location from your IP address. You can delete your advertising ID or turn off ad personalisation in your device settings.'),
         ],
       },
       {
@@ -111,7 +112,7 @@ const policies: Record<LegalPageKind, LegalPolicy> = {
       },
       {
         heading: localized('Sağlayıcılar ve paylaşım', 'Providers and sharing'),
-        paragraphs: [localized('Firebase kimlik doğrulama, gerçek zamanlı oturum ve veri saklama katmanlarını; Google Places veya ilgili harita sağlayıcısı yer sonuçlarını ve harita yönlendirmesini destekleyebilir. Bir oturumdaki seçimler yalnızca oturumun çalışması için diğer katılımcının sonucu ile karşılaştırılır; tek taraflı tercihler karşı tarafa açık biçimde gösterilmez. Hukuken zorunlu olmadıkça kişisel veri üçüncü taraflara satılmaz.', 'Firebase may support authentication, real-time sessions, and data storage; Google Places or the relevant map provider may support place results and map directions. Choices in a session are compared with the other participant only to operate matching; one-sided preferences are not shown openly to the other participant. Personal data is not sold to third parties unless disclosure is legally required.')],
+        paragraphs: [localized('Firebase kimlik doğrulama, gerçek zamanlı oturum, veri saklama, analiz, çökme raporlama, bildirim ve uygulama doğrulama (App Check) katmanlarını; Google AdMob reklamları; Google Places veya ilgili harita sağlayıcısı yer sonuçlarını ve harita yönlendirmesini destekleyebilir. Bir oturumdaki seçimler yalnızca oturumun çalışması için diğer katılımcının sonucu ile karşılaştırılır; tek taraflı tercihler karşı tarafa açık biçimde gösterilmez. Hukuken zorunlu olmadıkça kişisel veri üçüncü taraflara satılmaz.', 'Firebase may support authentication, real-time sessions, data storage, analytics, crash reporting, notifications, and app verification (App Check); Google AdMob serves ads; Google Places or the relevant map provider may support place results and map directions. Choices in a session are compared with the other participant only to operate matching; one-sided preferences are not shown openly to the other participant. Personal data is not sold to third parties unless disclosure is legally required.')],
       },
       {
         heading: localized('Saklama, silme ve haklar', 'Retention, deletion, and your rights'),
@@ -127,7 +128,7 @@ const policies: Record<LegalPageKind, LegalPolicy> = {
     eyebrow: localized('WhereToGo / yasal', 'WhereToGo / legal'),
     title: localized('WhereToGo kullanım koşulları', 'WhereToGo terms of use'),
     intro: localized('Bu koşullar; konum keşfi, iki kişilik oturum, kaydırma ve karşılıklı eşleşme özelliklerini kullanırken geçerli sınırları açıklar.', 'These terms explain the boundaries that apply when using location discovery, two-person sessions, swiping, and mutual-match features.'),
-    updated: true,
+    date: localized('Son güncelleme: 15 Ekim 2026', 'Last updated: 15 October 2026'),
     sections: [
       {
         heading: localized('Hizmet ve hesap', 'Service and account'),
@@ -143,7 +144,7 @@ const policies: Record<LegalPageKind, LegalPolicy> = {
       },
       {
         heading: localized('Fikri mülkiyet ve üçüncü taraflar', 'Intellectual property and third parties'),
-        paragraphs: [localized('Uygulama arayüzü ve özgün içeriği, uygulanabilir fikri mülkiyet haklarıyla korunur. Harita, yer verisi ve harici uygulama bağlantıları ilgili sağlayıcının şartlarına tabidir. Üçüncü taraf hizmetlerinin kesintisi veya içeriği kontrolümüz dışında olabilir.', 'The app interface and original content are protected by applicable intellectual-property rights. Maps, place data, and external-app links are subject to the relevant provider’s terms. Third-party service availability and content may be outside our control.')],
+        paragraphs: [localized('Uygulama arayüzü ve özgün içeriği, uygulanabilir fikri mülkiyet haklarıyla korunur. Harita, yer verisi ve harici uygulama bağlantıları ilgili sağlayıcının şartlarına tabidir. Üçüncü taraf hizmetlerinin kesintisi veya içeriği kontrolümüz dışında olabilir.', 'The app interface and original content are protected by applicable intellectual-property rights. Maps, place data, and external-app links are subject to the relevant provider’s terms. Third-party service availability and content may be outside our control.'), localized('Ücretsiz sürümde Google AdMob reklamları (banner ve uygulama açılış reklamı) gösterilir; reklam içerikleri reklam verenlere aittir ve kontrolümüz dışındadır. Reklam işleme ayrıntıları gizlilik politikasındadır.', 'The free version shows Google AdMob ads (banner and app-open); ad content belongs to advertisers and is outside our control. Ad-processing details are in the privacy policy.')],
       },
       {
         heading: localized('Kullanılabilirlik, askıya alma ve sorumluluk', 'Availability, suspension, and liability'),

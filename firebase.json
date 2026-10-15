@@ -52,6 +52,8 @@
       }
     ],
     "redirects": [
+      { "source": "/hypcas/privacy-policy", "destination": "/hypcas/privacy", "type": 301 },
+      { "source": "/hypcas/privacy-policy.html", "destination": "/hypcas/privacy", "type": 301 },
       { "source": "/admin", "destination": "/studio", "type": 301 },
       { "source": "/en/portfolio/:slug/changelog", "destination": "/en/work/:slug", "type": 301 },
       { "source": "/en/portfolio/:slug", "destination": "/en/work/:slug", "type": 301 },
