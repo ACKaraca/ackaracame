@@ -1,150 +1,130 @@
-import { useEffect, useMemo, useRef } from 'react';
-import { animate, motion, useInView, useMotionValue, useTransform } from 'framer-motion';
-import { ArrowDown, ArrowRight, ArrowUpRight, Command } from 'lucide-react';
-import { Link } from 'wouter';
-import { useAppPreferences, localize } from '../context/AppPreferences';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
+import { ArrowRight, ArrowUpRight, Moon, Sun, X } from 'lucide-react';
+import { Link, useLocation } from 'wouter';
+import { localize, useAppPreferences } from '../context/AppPreferences';
 import { useContent } from '../context/Content';
-import { Marquee } from '../components/experience/Marquee';
-import { ProjectConstellation } from '../components/experience/ProjectConstellation';
-import { Reveal } from '../components/experience/Reveal';
-import { ProjectCard } from '../components/projects/ProjectCard';
+import { activeIndexFor, corridorLayout } from '../components/corridor/corridorLayout';
+import type { CorridorScene } from '../components/corridor/CorridorScene';
+import { disciplineLabels, gameLabel } from '../components/projects/ProjectCard';
+import type { PortfolioProject } from '../domain/content';
 import { useDocumentMeta } from '../hooks/useDocumentMeta';
-import { usePointerGlow } from '../hooks/usePointerGlow';
-import { availabilityLabel, isAcceptingInquiries } from '../lib/availability';
+import '../components/corridor/corridor.css';
 
 const copy = {
   tr: {
-    status: 'Yeni iş ve işbirliği görüşmelerine açık',
-    kicker: 'Portfolyo',
-    headlineA: 'Tasarlar,',
-    headlineB: 'kodlar,',
-    headlineC: 'uygulamalar.',
-    intro: 'Seçili projeler: yapay zekâ destekli mimarlık araçları, üretkenlik sistemleri, birçok dalda mobil uygulamalar.',
-    exploreWork: 'Seçili işleri incele',
-    search: 'Projelerimde ara',
-    searchHint: 'AI, mimarlık, mobil veya kullandığım araçları yazın',
-    selectedEyebrow: 'Seçili işler / 2025—2026',
-    selectedTitle: 'Fikirden çalışan sisteme.',
-    selectedBody: 'Araştırma, mimari düşünce ve yazılımın birbirine karıştığı seçilmiş deneyler.',
-    allWork: 'Tüm işleri gör',
-    methodEyebrow: 'Odak alanları',
-    methodTitle: 'Dört alan, tek portfolyo.',
-    focus1: 'AI × Mimarlık',
-    focus1Body: 'Yapay zekâ destekli mimari araçlar, brief toplama ve tasarım süreçleri.',
-    focus2: 'Mobil',
-    focus2Body: 'iOS ve Android için keşif, üretkenlik ve niş alan uygulamaları.',
-    focus3: 'Web',
-    focus3Body: 'Portfolyo, dashboard ve tam stack web ürünleri.',
-    focus4: 'Üretkenlik',
-    focus4Body: 'İş akışı, otomasyon ve kişisel sistem araçları.',
-    profileEyebrow: 'Kısa profil',
-    profileTitle: 'Mimarlık öğrencisi, ürün kurucusu ve bağımsız geliştirici.',
-    profileBody: 'ACKARACA LIMITED çatısı altında; yapay zekâ destekli mimarlık araçlarından üretkenlik ve mobil keşif ürünlerine uzanan projeler geliştiriyorum.',
-    readProfile: 'Profili oku',
-    projectCount: 'seçili proje',
-    disciplineCount: 'çalışma alanı',
-    technologyCount: 'araç ve teknoloji',
-    languages: 'TR + EN',
-    languagesLabel: 'iki dilli anlatım',
-    scroll: 'Kaydır',
-    statsLabel: 'Pratik özeti',
+    tagline: 'Mimarlık · Yazılım · Yapay zekâ',
+    index: 'Index',
+    contact: 'İletişim',
+    hint: 'Koridorda yürümek için kaydır • Açmak için bir işe tıkla',
+    open: 'Aç',
+    medium: 'Araçlar',
+    context: 'Bağlam',
+    place: 'Yer',
+    year: 'Yıl',
+    openProject: 'Projeyi aç',
+    next: 'Sıradaki',
+    close: 'Kapat',
+    page: 'Sayfa',
+    allItems: 'Koridordaki her şey',
+    work: 'Tüm işler',
+    about: 'Hakkımda',
+    lab: 'Lab',
+    journal: 'Günlük',
+    heading: 'Ahmet Cem Karaca — portfolyo koridoru',
+    theme: 'Renk temasını değiştir',
+    locale: 'Switch to English',
   },
   en: {
-    status: 'Open to work and collaboration conversations',
-    kicker: 'Portfolio',
-    headlineA: 'Designs,',
-    headlineB: 'codes,',
-    headlineC: 'applications.',
-    intro: 'Selected projects: AI-assisted architecture tools, productivity systems, and mobile applications across many domains.',
-    exploreWork: 'Explore selected work',
-    search: 'Search my work',
-    searchHint: 'Try AI, architecture, mobile, or a tool I use',
-    selectedEyebrow: 'Selected work / 2025—2026',
-    selectedTitle: 'From an idea to a working system.',
-    selectedBody: 'Selected experiments where research, architectural thinking, and software start to overlap.',
-    allWork: 'View all work',
-    methodEyebrow: 'Focus areas',
-    methodTitle: 'Four domains, one portfolio.',
-    focus1: 'AI × Architecture',
-    focus1Body: 'AI-assisted architecture tools, brief gathering, and design workflows.',
-    focus2: 'Mobile',
-    focus2Body: 'Discovery, productivity, and niche apps for iOS and Android.',
-    focus3: 'Web',
-    focus3Body: 'Portfolios, dashboards, and full-stack web products.',
-    focus4: 'Productivity',
-    focus4Body: 'Workflow, automation, and personal system tools.',
-    profileEyebrow: 'Short profile',
-    profileTitle: 'Architecture student, product founder, and independent developer.',
-    profileBody: 'Through ACKARACA LIMITED, I build projects spanning AI-assisted architecture tools, productivity systems, and mobile discovery products.',
-    readProfile: 'Read the profile',
-    projectCount: 'selected projects',
-    disciplineCount: 'practice areas',
-    technologyCount: 'tools & technologies',
-    languages: 'TR + EN',
-    languagesLabel: 'bilingual narrative',
-    scroll: 'Scroll',
-    statsLabel: 'Practice summary',
+    tagline: 'Architecture · Software · AI',
+    index: 'Index',
+    contact: 'Contact',
+    hint: 'Scroll to walk the corridor • Click a piece to open it',
+    open: 'Open',
+    medium: 'Medium',
+    context: 'Context',
+    place: 'Place',
+    year: 'Year',
+    openProject: 'Open project',
+    next: 'Next',
+    close: 'Close',
+    page: 'Page',
+    allItems: 'Everything in the corridor',
+    work: 'All work',
+    about: 'About',
+    lab: 'Lab',
+    journal: 'Journal',
+    heading: 'Ahmet Cem Karaca — portfolio corridor',
+    theme: 'Toggle colour theme',
+    locale: 'Türkçeye geç',
   },
 } as const;
 
-const CountUp = ({ value }: { value: number }) => {
-  const ref = useRef<HTMLSpanElement>(null);
-  const inView = useInView(ref, { once: true, margin: '0px 0px -10% 0px' });
-  const raw = useMotionValue(0);
-  const rounded = useTransform(raw, (latest) => Math.round(latest).toString());
+interface CorridorEntry {
+  id: string;
+  title: string;
+  eyebrow: string;
+  href: string;
+  image?: string;
+  aspect: number;
+  palette: string[];
+  project?: PortfolioProject;
+}
 
-  useEffect(() => {
-    if (!inView) return undefined;
-    const controls = animate(raw, value, { duration: 1.5, ease: [0.22, 1, 0.36, 1] });
-    return () => controls.stop();
-  }, [inView, raw, value]);
+const PAGE_PALETTES: string[][] = [['#5c74ff', '#45d0bf'], ['#e8a33d', '#ff5c8a'], ['#45d0bf', '#a6ff5c'], ['#93a7ff', '#ff5ce1'], ['#ff8a3d', '#5c74ff']];
 
-  return (
-    <strong>
-      <motion.span ref={ref}>{rounded}</motion.span>
-    </strong>
-  );
+const pad = (value: number) => String(value).padStart(2, '0');
+
+const webglAvailable = () => {
+  try {
+    const canvas = document.createElement('canvas');
+    return Boolean(canvas.getContext('webgl2') ?? canvas.getContext('webgl'));
+  } catch {
+    return false;
+  }
 };
 
-const HOME_PROJECT_SLUGS = ['draw-or-die', 'archbuilder', 'peakactivity', 'attalus', 'duaapp', 'hypcas'];
-
-// Hidden until the hero search is wired to real project search.
-const HERO_SEARCH_ENABLED = false;
-
 export default function HomePage() {
-  const { settings, projects } = useContent();
-  const { locale, motionEnabled } = useAppPreferences();
+  const { settings, projects, journal, lab } = useContent();
+  const { locale, setLocale, resolvedTheme, setTheme, motionEnabled } = useAppPreferences();
+  const [, navigate] = useLocation();
   const t = copy[locale];
-  const heroGlowRef = usePointerGlow<HTMLElement>();
 
-  const selectedProjects = useMemo(() => {
-    const curated = HOME_PROJECT_SLUGS
-      .map((slug) => projects.find((project) => project.slug === slug))
-      .filter((project): project is NonNullable<typeof project> => Boolean(project));
-    const rest = [...projects]
-      .filter((project) => !curated.includes(project))
-      .sort((left, right) => (left.order ?? 100) - (right.order ?? 100));
-    return [...curated, ...rest].slice(0, HOME_PROJECT_SLUGS.length);
-  }, [projects]);
+  const entries = useMemo<CorridorEntry[]>(() => {
+    const projectEntries = projects.map((project) => {
+      const cover = project.media.find((media) => media.role === 'cover' && media.kind === 'image' && media.assetState === 'ready' && media.src);
+      const category = project.format === 'game' ? gameLabel[locale] : disciplineLabels[locale][project.discipline];
+      return {
+        id: project.slug,
+        title: localize(project.title, locale),
+        eyebrow: [category, project.year].filter(Boolean).join(' · '),
+        href: `/work/${project.slug}`,
+        image: cover?.src,
+        aspect: cover?.width && cover.height ? cover.width / cover.height : 16 / 10,
+        palette: project.cover.palette,
+        project,
+      };
+    });
+    const pages = [
+      { id: 'work', title: t.work, href: '/work' },
+      { id: 'about', title: t.about, href: '/about' },
+      ...(lab.length > 0 ? [{ id: 'lab', title: t.lab, href: '/lab' }] : []),
+      ...(journal.length > 0 ? [{ id: 'journal', title: t.journal, href: '/journal' }] : []),
+      { id: 'contact', title: t.contact, href: '/contact' },
+    ].map((page, index) => ({ ...page, eyebrow: t.page, aspect: 16 / 10, palette: PAGE_PALETTES[index % PAGE_PALETTES.length]! }));
+    return [...projectEntries, ...pages];
+  }, [projects, journal.length, lab.length, locale, t]);
 
-  const disciplineCount = new Set(projects.map((project) => project.discipline)).size;
-  const technologyCount = new Set(projects.flatMap((project) => project.technologies)).size;
-  const acceptingInquiries = isAcceptingInquiries(settings.availability);
-  const availabilityCopy = availabilityLabel(settings.availability, locale);
-
-  const marqueeItems = useMemo(() => [
-    ...new Set([
-      ...projects.slice(0, 6).map((project) => localize(project.title, locale)),
-      ...projects.flatMap((project) => project.technologies.slice(0, 1)),
-    ]),
-  ], [projects, locale]);
-
-  const focusAreas = [
-    { title: t.focus1, body: t.focus1Body },
-    { title: t.focus2, body: t.focus2Body },
-    { title: t.focus3, body: t.focus3Body },
-    { title: t.focus4, body: t.focus4Body },
-  ];
+  const stops = useMemo(() => corridorLayout(entries.length).stops, [entries.length]);
+  const stageRef = useRef<HTMLDivElement>(null);
+  const pillRef = useRef<HTMLDivElement>(null);
+  const sceneRef = useRef<CorridorScene | null>(null);
+  const [active, setActive] = useState(0);
+  const [hovered, setHovered] = useState<number | null>(null);
+  const [focused, setFocused] = useState<number | null>(null);
+  const [indexOpen, setIndexOpen] = useState(false);
+  const [fallback, setFallback] = useState(false);
+  const selectRef = useRef<(index: number) => void>(() => undefined);
 
   useDocumentMeta({
     title: localize(settings.defaultSeo.title, locale),
@@ -163,121 +143,228 @@ export default function HomePage() {
     },
   });
 
-  const openSearch = () => window.dispatchEvent(new KeyboardEvent('keydown', { key: 'k', metaKey: true }));
-  const heroLines = [t.headlineA, t.headlineB, t.headlineC];
+  const scrollProgress = () => {
+    const max = document.documentElement.scrollHeight - window.innerHeight;
+    return max > 0 ? window.scrollY / max : 0;
+  };
+
+  const scrollToEntry = (index: number) => {
+    const max = document.documentElement.scrollHeight - window.innerHeight;
+    window.scrollTo({ top: (stops[index] ?? 0) * max, behavior: motionEnabled ? 'smooth' : 'instant' });
+  };
+
+  const select = useCallback((index: number) => {
+    const entry = entries[index];
+    if (!entry) return;
+    setIndexOpen(false);
+    if (entry.project) {
+      setFocused(index);
+      sceneRef.current?.focus(index);
+      return;
+    }
+    const scene = sceneRef.current;
+    if (!scene) {
+      navigate(entry.href);
+      return;
+    }
+    void scene.dive(index).then(() => navigate(entry.href));
+  }, [entries, navigate]);
+  useEffect(() => { selectRef.current = select; }, [select]);
+
+  const closeFocus = useCallback(() => {
+    setFocused(null);
+    sceneRef.current?.focus(null);
+  }, []);
+
+  // Build the WebGL scene; three.js is loaded on demand so SSR and other routes never pay for it.
+  useEffect(() => {
+    const container = stageRef.current;
+    const pill = pillRef.current;
+    if (!container || !pill) return undefined;
+    let disposed = false;
+    void import('../components/corridor/CorridorScene').then(({ createCorridorScene }) => {
+      if (disposed) return;
+      if (!webglAvailable()) {
+        setFallback(true);
+        return;
+      }
+      try {
+        sceneRef.current = createCorridorScene({
+          container,
+          pill,
+          items: entries.map((entry) => ({ label: entry.title, kind: entry.project ? 'project' : 'page', image: entry.image, aspect: entry.aspect, palette: entry.palette })),
+          dark: document.documentElement.dataset.theme !== 'light',
+          reducedMotion: document.documentElement.dataset.motion === 'off',
+          onHover: setHovered,
+          onSelect: (index) => selectRef.current(index),
+        });
+        sceneRef.current.setProgress(scrollProgress());
+      } catch {
+        setFallback(true);
+      }
+    }).catch(() => setFallback(true));
+    return () => {
+      disposed = true;
+      sceneRef.current?.dispose();
+      sceneRef.current = null;
+    };
+  }, [entries]);
+
+  useEffect(() => { sceneRef.current?.setTheme(resolvedTheme === 'dark'); }, [resolvedTheme]);
+
+  useEffect(() => {
+    const onScroll = () => {
+      const progress = scrollProgress();
+      sceneRef.current?.setProgress(progress);
+      setActive(activeIndexFor(progress, stops));
+    };
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll);
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('resize', onScroll);
+    };
+  }, [stops]);
+
+  // Freeze the walk while a piece is open, and let Escape back out of any overlay.
+  useEffect(() => {
+    const root = document.documentElement;
+    root.classList.toggle('corridor-locked', focused !== null || indexOpen);
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key !== 'Escape') return;
+      if (indexOpen) setIndexOpen(false);
+      else if (focused !== null) closeFocus();
+    };
+    window.addEventListener('keydown', onKey);
+    return () => {
+      root.classList.remove('corridor-locked');
+      window.removeEventListener('keydown', onKey);
+    };
+  }, [focused, indexOpen, closeFocus]);
+
+  const current = entries[active];
+  const focusedEntry = focused === null ? null : entries[focused];
+  const focusedProject = focusedEntry?.project;
+  const nextProjectIndex = focused === null ? null : (() => {
+    for (let step = 1; step <= entries.length; step += 1) {
+      const candidate = (focused + step) % entries.length;
+      if (entries[candidate]?.project) return candidate;
+    }
+    return null;
+  })();
 
   return (
-    <main id="main-content" tabIndex={-1} className="home-page">
-      <section className="home-hero" ref={heroGlowRef}>
-        <span className="home-hero__aura" aria-hidden="true" />
-        <ProjectConstellation
-          projects={projects}
-          motionEnabled={motionEnabled}
-          palette={['#2b3fee', '#0c8a6d', '#c97a15']}
-          className="home-hero__constellation"
-        />
-        <div className="shell home-hero__grid">
-          <div className="home-hero__copy">
-            <motion.div
-              className="availability"
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-            >
-              <i aria-hidden="true" /> {availabilityCopy}
-            </motion.div>
-            <p className="home-hero__kicker">{t.kicker}</p>
-            <h1>
-              {heroLines.map((line, index) => (
-                <span key={line}>
-                  <span className={index === 1 ? 'home-hero__serif' : ''} style={{ '--line-i': index } as React.CSSProperties}>{line}</span>
-                </span>
-              ))}
-            </h1>
-            <p className="home-hero__intro">{t.intro}</p>
-            <div className="home-hero__actions">
-              <Link href="/work" className="button button--primary">{t.exploreWork}<ArrowRight aria-hidden="true" /></Link>
-              {acceptingInquiries ? (
-                <Link href="/contact" className="button button--ghost">{locale === 'tr' ? 'İletişime geç' : 'Get in touch'}<ArrowUpRight aria-hidden="true" /></Link>
-              ) : (
-                <Link href="/about" className="button button--ghost">{locale === 'tr' ? 'Profili oku' : 'Read the profile'}<ArrowUpRight aria-hidden="true" /></Link>
-              )}
-            </div>
-          </div>
+    <main id="main-content" tabIndex={-1} className={`corridor${fallback ? ' corridor--fallback' : ''}`} data-focused={focused !== null ? 'true' : undefined}>
+      <h1 className="sr-only">{t.heading}</h1>
+      <div className="corridor__stage" ref={stageRef} aria-hidden="true" />
+      <div className="corridor__pill" ref={pillRef} aria-hidden="true">
+        {hovered !== null ? `${t.open} ${entries[hovered]?.title ?? ''}` : null}
+      </div>
+      <div className="corridor__track" style={{ height: `${entries.length * 70 + 100}vh` }} aria-hidden="true" />
 
-          {HERO_SEARCH_ENABLED ? (
-          <div className="home-hero__utility">
-            <button type="button" className="hero-search" onClick={openSearch}>
-              <span className="hero-search__icon"><Command aria-hidden="true" /></span>
-              <span><strong>{t.search}</strong><small>{t.searchHint}</small></span>
-              <kbd>⌘ K</kbd>
-            </button>
-          </div>
-          ) : null}
-        </div>
-        <div className="shell">
-          <a className="home-hero__scroll" href="#selected-work"><ArrowDown aria-hidden="true" /> {t.scroll}</a>
-        </div>
-      </section>
+      <header className="corridor-hud corridor-hud--top">
+        <Link href="/" className="corridor-brand">
+          <strong>{localize(settings.ownerName, locale)}</strong>
+          <span>{t.tagline}</span>
+        </Link>
+        <nav className="corridor-hud__actions" aria-label={locale === 'tr' ? 'Ana navigasyon' : 'Primary navigation'}>
+          <button type="button" className="corridor-chip" onClick={() => setTheme(resolvedTheme === 'dark' ? 'light' : 'dark')} aria-label={t.theme}>
+            {resolvedTheme === 'dark' ? <Sun aria-hidden="true" /> : <Moon aria-hidden="true" />}
+          </button>
+          <button type="button" className="corridor-chip" onClick={() => setLocale(locale === 'tr' ? 'en' : 'tr')} aria-label={t.locale}>
+            {locale === 'tr' ? 'EN' : 'TR'}
+          </button>
+          <button type="button" className="corridor-chip" onClick={() => setIndexOpen((open) => !open)} aria-expanded={indexOpen || fallback} aria-controls="corridor-index">{t.index}</button>
+          <Link href="/contact" className="corridor-chip">{t.contact}</Link>
+        </nav>
+      </header>
 
-      <Marquee items={marqueeItems} />
+      {current && !fallback ? (
+        <section className="corridor-hud corridor-hud--info" aria-live="polite">
+          <p className="corridor-count">{pad(active + 1)} / {pad(entries.length)}</p>
+          <button type="button" className="corridor-title" onClick={() => select(active)}>
+            <AnimatePresence mode="popLayout" initial={false}>
+              <motion.span key={current.id} className="corridor-title__word" aria-label={current.title}>
+                {[...current.title].map((letter, index) => (
+                  <span className="corridor-title__mask" key={`${letter}-${index}`} aria-hidden="true">
+                    <motion.span
+                      initial={{ y: '105%' }}
+                      animate={{ y: '0%' }}
+                      exit={{ y: '-105%' }}
+                      transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1], delay: index * 0.018 }}
+                    >
+                      {letter === ' ' ? ' ' : letter}
+                    </motion.span>
+                  </span>
+                ))}
+              </motion.span>
+            </AnimatePresence>
+          </button>
+          <p className="corridor-meta">{current.eyebrow}</p>
+          <p className="corridor-hint">{t.hint}</p>
+        </section>
+      ) : null}
 
-      <section className="section" aria-label={t.statsLabel}>
-        <div className="shell">
-          <Reveal className="stats-band">
-            <div className="stat"><CountUp value={projects.length} /><span>{t.projectCount}</span></div>
-            <div className="stat"><CountUp value={disciplineCount} /><span>{t.disciplineCount}</span></div>
-            <div className="stat"><CountUp value={technologyCount} /><span>{t.technologyCount}</span></div>
-          </Reveal>
-        </div>
-      </section>
-
-      <section className="section selected-work" id="selected-work">
-        <div className="shell">
-          <Reveal as="header" className="section-heading section-heading--split">
-            <div><span className="eyebrow">{t.selectedEyebrow}</span><h2>{t.selectedTitle}</h2></div>
-            <div><p>{t.selectedBody}</p><Link href="/work" className="text-link">{t.allWork}<ArrowUpRight aria-hidden="true" /></Link></div>
-          </Reveal>
-          <div className="project-grid project-grid--triple">
-            {selectedProjects.map((project, index) => <ProjectCard key={project.slug} project={project} index={index} />)}
-          </div>
-        </div>
-      </section>
-
-      <section className="section focus-section">
-        <div className="shell focus-section__grid">
-          <Reveal className="focus-section__intro">
-            <span className="eyebrow">{t.methodEyebrow}</span>
-            <h2>{t.methodTitle}</h2>
-          </Reveal>
-          <div className="focus-grid">
-            {focusAreas.map(({ title, body }, index) => (
-              <Reveal as="article" key={title} className="focus-card" delay={index * 0.06}>
-                <h3>{title}</h3>
-                <p>{body}</p>
-              </Reveal>
+      {!fallback ? (
+        <nav className="corridor-hud corridor-scrubber" aria-label={t.allItems}>
+          <ol>
+            {entries.map((entry, index) => (
+              <li key={entry.id}>
+                <button type="button" onClick={() => scrollToEntry(index)} aria-current={index === active ? 'true' : undefined}>
+                  <span>{entry.title}</span>
+                </button>
+              </li>
             ))}
-          </div>
-        </div>
-      </section>
+          </ol>
+        </nav>
+      ) : null}
 
-      <section className="section profile-teaser">
-        <div className="shell profile-teaser__grid">
-          <Reveal className="profile-teaser__portrait">
-            <span>AC</span><i /><i /><i />
-          </Reveal>
-          <Reveal className="profile-teaser__copy" delay={0.08}>
-            <span className="eyebrow">{t.profileEyebrow}</span>
-            <h2>{t.profileTitle}</h2>
-            <p>{t.profileBody}</p>
-            <Link href="/about" className="text-link text-link--large">{t.readProfile}<ArrowUpRight aria-hidden="true" /></Link>
-          </Reveal>
-          <dl className="profile-teaser__facts">
-            <div><dt>{projects.length}</dt><dd>{t.projectCount}</dd></div>
-            <div><dt>{disciplineCount}</dt><dd>{t.disciplineCount}</dd></div>
+      <nav id="corridor-index" className="corridor-index" hidden={!indexOpen && !fallback} aria-label={t.allItems}>
+        <ol>
+          {entries.map((entry, index) => (
+            <li key={entry.id}>
+              <Link href={entry.href} onClick={(event) => { if (!fallback) { event.preventDefault(); if (entry.project) scrollToEntry(index); select(index); } }}>
+                <span className="corridor-index__num">{pad(index + 1)}</span>
+                <span className="corridor-index__title">{entry.title}</span>
+                <span className="corridor-index__meta">{entry.eyebrow}</span>
+              </Link>
+            </li>
+          ))}
+        </ol>
+      </nav>
+
+      {focusedEntry && focusedProject ? (
+        <motion.aside
+          key={focusedEntry.id}
+          className="corridor-detail"
+          role="dialog"
+          aria-modal="false"
+          aria-labelledby="corridor-detail-title"
+          initial={{ x: '8%', opacity: 0 }}
+          animate={{ x: 0, opacity: 1 }}
+          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1], delay: 0.25 }}
+        >
+          <button type="button" className="corridor-detail__close" onClick={closeFocus} aria-label={t.close} autoFocus><X aria-hidden="true" /></button>
+          <p className="corridor-count">{pad((focused ?? 0) + 1)} / {pad(entries.length)} · {focusedEntry.eyebrow}</p>
+          <h2 id="corridor-detail-title">{focusedEntry.title}</h2>
+          <p className="corridor-detail__dek">{localize(focusedProject.dek, locale)}</p>
+          <dl>
+            <div><dt>{t.medium}</dt><dd>{focusedProject.technologies.slice(0, 4).join(', ')}</dd></div>
+            {focusedProject.context ? <div><dt>{t.context}</dt><dd>{localize(focusedProject.context, locale)}</dd></div> : null}
+            {focusedProject.location ? <div><dt>{t.place}</dt><dd>{localize(focusedProject.location, locale)}</dd></div> : null}
+            {focusedProject.year ? <div><dt>{t.year}</dt><dd>{focusedProject.year}</dd></div> : null}
           </dl>
-        </div>
-      </section>
+          <div className="corridor-detail__actions">
+            <Link href={focusedEntry.href} className="corridor-cta">{t.openProject}<ArrowUpRight aria-hidden="true" /></Link>
+            {nextProjectIndex !== null && nextProjectIndex !== focused ? (
+              <button type="button" className="corridor-next" onClick={() => { scrollToEntry(nextProjectIndex); select(nextProjectIndex); }}>
+                {t.next}: {entries[nextProjectIndex]?.title}<ArrowRight aria-hidden="true" />
+              </button>
+            ) : null}
+          </div>
+        </motion.aside>
+      ) : null}
     </main>
   );
 }

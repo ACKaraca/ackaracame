@@ -151,12 +151,14 @@ const PublicRoutes = () => {
 
 const PublicFrame = () => {
   const { settings, projects, journal } = useContent();
+  // The home corridor draws its own HUD in place of the site chrome.
+  const corridor = useLocation()[0] === '/';
   return (
     <>
       <a className="skip-link" href="#main-content">İçeriğe geç / Skip to content</a>
-      <SiteHeader settings={settings} projects={projects} journal={journal} />
+      {corridor ? null : <SiteHeader settings={settings} projects={projects} journal={journal} />}
       <PublicRoutes />
-      <SiteFooter settings={settings} showJournal={journal.length > 0} />
+      {corridor ? null : <SiteFooter settings={settings} showJournal={journal.length > 0} />}
     </>
   );
 };

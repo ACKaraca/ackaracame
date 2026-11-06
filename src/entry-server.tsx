@@ -1,6 +1,6 @@
 import { Suspense } from 'react';
 import { renderToString } from 'react-dom/server';
-import { Route, Router, Switch, useRouter } from 'wouter';
+import { Route, Router, Switch, useLocation, useRouter } from 'wouter';
 import { SiteFooter } from './components/layout/SiteFooter';
 import { SiteHeader } from './components/layout/SiteHeader';
 import { AppPreferencesProvider, localize, type Locale } from './context/AppPreferences';
@@ -77,12 +77,14 @@ const StaticRoutes = () => {
 
 const StaticFrame = () => {
   const { settings, projects, journal } = useContent();
+  // The home corridor draws its own HUD in place of the site chrome.
+  const corridor = useLocation()[0] === '/';
   return (
     <>
       <a className="skip-link" href="#main-content">İçeriğe geç / Skip to content</a>
-      <SiteHeader settings={settings} projects={projects} journal={journal} />
+      {corridor ? null : <SiteHeader settings={settings} projects={projects} journal={journal} />}
       <StaticRoutes />
-      <SiteFooter settings={settings} showJournal={journal.length > 0} />
+      {corridor ? null : <SiteFooter settings={settings} showJournal={journal.length > 0} />}
     </>
   );
 };
