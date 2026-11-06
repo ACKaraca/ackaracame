@@ -7,30 +7,11 @@ import { useContent } from '../context/Content';
 import type { ContentBlock, Media } from '../domain/content';
 import { useDocumentMeta } from '../hooks/useDocumentMeta';
 import { useLocaleHref } from '../hooks/useLocaleHref';
-
-const textParagraphs = (value: string) => value.split(/\n{2,}/).filter(Boolean);
+import { stageLabels, textParagraphs, toneLabels } from '../lib/projectLabels';
 
 const disciplineLabels = {
   tr: { architecture: 'Mimarlık', software: 'Yazılım', hybrid: 'Hibrit', research: 'Araştırma' },
   en: { architecture: 'Architecture', software: 'Software', hybrid: 'Hybrid', research: 'Research' },
-} as const;
-
-const stageLabels = {
-  tr: {
-    concept: 'Konsept', prototype: 'Prototip', 'pre-alpha': 'Pre-alpha', 'in-development': 'Geliştirme aşamasında',
-    'feature-complete': 'Özellikleri tamamlandı', beta: 'Beta', 'release-candidate': 'Sürüm adayı (RC)',
-    stable: 'Kararlı sürüm', live: 'Yayında', maintained: 'Aktif bakımda', archived: 'Arşivlendi',
-  },
-  en: {
-    concept: 'Concept', prototype: 'Prototype', 'pre-alpha': 'Pre-alpha', 'in-development': 'In development',
-    'feature-complete': 'Feature-complete', beta: 'Beta', 'release-candidate': 'Release candidate',
-    stable: 'Stable release', live: 'Live', maintained: 'Actively maintained', archived: 'Archived',
-  },
-} as const;
-
-const toneLabels = {
-  tr: { note: 'Not', decision: 'Karar', constraint: 'Kısıt', outcome: 'Sonuç' },
-  en: { note: 'Note', decision: 'Decision', constraint: 'Constraint', outcome: 'Outcome' },
 } as const;
 
 const safeEmbedUrl = (value: string) => {

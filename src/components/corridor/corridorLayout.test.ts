@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { activeIndexFor, corridorLayout, easeInOutCubic, flightSeconds } from './corridorLayout';
+import { activeIndexFor, corridorLayout, easeInOutCubic, flightSeconds, titleScale } from './corridorLayout';
 
 describe('corridorLayout', () => {
   it('spreads stops monotonically across the scroll and ends on the facing panel', () => {
@@ -18,9 +18,14 @@ describe('corridorLayout', () => {
     expect(activeIndexFor(1, stops)).toBe(8);
   });
 
-  it('keeps text panels on the side walls', () => {
-    const { surfaces } = corridorLayout(12, (index) => index >= 6);
-    surfaces.slice(6, -1).forEach((surface) => expect(['left', 'right']).toContain(surface));
+  it('alternates wall items left/right and overhead items ceiling/floor', () => {
+    const { surfaces } = corridorLayout(7, (index) => (index >= 4 ? 'overhead' : 'wall'));
+    expect(surfaces).toEqual(['right', 'left', 'right', 'left', 'ceiling', 'floor', 'end']);
+  });
+
+  it('shrinks long HUD titles', () => {
+    expect(titleScale('HypCas')).toBe(1);
+    expect(titleScale('Architecture student, product founder, and independent developer.')).toBeLessThan(0.5);
   });
 
   it('eases flights from rest to rest and scales their length with distance', () => {

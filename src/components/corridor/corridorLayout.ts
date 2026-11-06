@@ -1,13 +1,13 @@
 // Pure layout math for the corridor, kept free of three.js so SSR and tests can use it.
 
 export type Surface = 'left' | 'right' | 'ceiling' | 'floor' | 'end';
+export type Placement = 'wall' | 'overhead';
 
 export const SPACING = 14;
 export const FIRST_ITEM_AT = 20;
 export const CAMERA_START = 2;
 const LEAD = 8;
 const END_VIEW_DISTANCE = 8;
-const SURFACE_CYCLE: Surface[] = ['right', 'left', 'ceiling', 'left', 'right', 'floor'];
 
 export interface CorridorLayout {
   /** Distance along the curve where each item hangs. */
@@ -19,16 +19,21 @@ export interface CorridorLayout {
   tunnelLength: number;
 }
 
-/** `wallOnly` items (text panels) stay on the side walls so they read head-on. */
-export const corridorLayout = (count: number, wallOnly: (index: number) => boolean = () => false): CorridorLayout => {
+/**
+ * Wall items alternate left/right among themselves, overhead items alternate ceiling/floor,
+ * and the last item faces the camera at the end of the corridor.
+ */
+export const corridorLayout = (count: number, placement: (index: number) => Placement = () => 'wall'): CorridorLayout => {
   const itemDistance = Array.from({ length: count }, (_, index) => FIRST_ITEM_AT + index * SPACING);
   const last = itemDistance[count - 1] ?? FIRST_ITEM_AT;
   const cameraEnd = Math.max(CAMERA_START + 1, last - END_VIEW_DISTANCE);
   const span = cameraEnd - CAMERA_START;
+  let walls = 0;
+  let overheads = 0;
   const surfaces = itemDistance.map((_, index): Surface => {
     if (index === count - 1) return 'end';
-    if (wallOnly(index)) return index % 2 === 0 ? 'right' : 'left';
-    return SURFACE_CYCLE[index % SURFACE_CYCLE.length]!;
+    if (placement(index) === 'overhead') return overheads++ % 2 === 0 ? 'ceiling' : 'floor';
+    return walls++ % 2 === 0 ? 'right' : 'left';
   });
   const stops = itemDistance.map((distance, index) => {
     const lead = index === count - 1 ? END_VIEW_DISTANCE : LEAD;
@@ -51,3 +56,12 @@ export const easeInOutCubic = (t: number) => (t < 0.5 ? 4 * t * t * t : 1 - (-2 
 /** Longer jumps along the corridor get more flight time, within a readable range. */
 export const flightSeconds = (fromProgress: number, toProgress: number) =>
   Math.min(2.6, 0.9 + Math.abs(toProgress - fromProgress) * 3.2);
+
+/** HUD title scale so long headings stay within two or three lines. */
+export const titleScale = (title: string) => {
+  const length = title.length;
+  if (length > 40) return 0.42;
+  if (length > 26) return 0.55;
+  if (length > 16) return 0.72;
+  return 1;
+};

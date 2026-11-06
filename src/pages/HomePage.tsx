@@ -1,15 +1,17 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { AnimatePresence, MotionConfig, motion } from 'framer-motion';
-import { ArrowDown, ArrowRight, ArrowUpRight, Moon, Sun, X } from 'lucide-react';
+import { ArrowDown, ArrowLeft, ArrowRight, ArrowUpRight, ExternalLink, Moon, Sun, X } from 'lucide-react';
 import { Link, useLocation } from 'wouter';
 import { localize, useAppPreferences } from '../context/AppPreferences';
 import { useContent } from '../context/Content';
-import { activeIndexFor, corridorLayout, flightSeconds } from '../components/corridor/corridorLayout';
-import type { CorridorScene } from '../components/corridor/CorridorScene';
-import { disciplineLabels, gameLabel } from '../components/projects/ProjectCard';
-import type { PortfolioProject } from '../domain/content';
+import { activeIndexFor, corridorLayout, flightSeconds, titleScale } from '../components/corridor/corridorLayout';
+import type { CorridorScene, CorridorSceneItem } from '../components/corridor/CorridorScene';
+import {
+  coverImage, galleryImage, projectCategory, projectCorridorEntries, type CorridorEntry,
+} from '../components/corridor/projectCorridor';
 import { useDocumentMeta } from '../hooks/useDocumentMeta';
 import { availabilityLabel, isAcceptingInquiries } from '../lib/availability';
+import { textParagraphs } from '../lib/projectLabels';
 import '../components/corridor/corridor.css';
 
 const copy = {
@@ -18,14 +20,17 @@ const copy = {
     index: 'Index',
     contact: 'İletişim',
     hint: 'Koridorda yürümek için kaydır · Açmak için bir işe tıkla',
+    branchHint: 'Projede ilerlemek için kaydır · Okumak için bir panele tıkla',
     open: 'Aç',
     medium: 'Araçlar',
     context: 'Bağlam',
     place: 'Yer',
     stage: 'Aşama',
-    viewProject: 'Projeyi incele',
+    enterProject: 'Projeyi incele',
+    openPage: 'Sayfayı aç',
     nextPiece: 'Sıradaki',
     close: 'Kapat',
+    back: 'Ana koridor',
     page: 'Sayfa',
     allItems: 'Koridordaki her şey',
     work: 'Tüm işler',
@@ -46,7 +51,6 @@ const copy = {
     projectCount: 'seçili proje',
     disciplineCount: 'çalışma alanı',
     technologyCount: 'araç ve teknoloji',
-    scroll: 'Kaydır',
     focusEyebrow: 'Odak alanları',
     focus: [
       ['AI × Mimarlık', 'Yapay zekâ destekli mimari araçlar, brief toplama ve tasarım süreçleri.'],
@@ -63,14 +67,17 @@ const copy = {
     index: 'Index',
     contact: 'Contact',
     hint: 'Scroll to walk the corridor · Click a piece to open it',
+    branchHint: 'Scroll through the project · Click a panel to read it',
     open: 'Open',
     medium: 'Medium',
     context: 'Context',
     place: 'Place',
     stage: 'Stage',
-    viewProject: 'View the project',
+    enterProject: 'Step into the project',
+    openPage: 'Open the page',
     nextPiece: 'Next piece',
     close: 'Close',
+    back: 'Main corridor',
     page: 'Page',
     allItems: 'Everything in the corridor',
     work: 'All work',
@@ -91,7 +98,6 @@ const copy = {
     projectCount: 'selected projects',
     disciplineCount: 'practice areas',
     technologyCount: 'tools & technologies',
-    scroll: 'Scroll',
     focusEyebrow: 'Focus areas',
     focus: [
       ['AI × Architecture', 'AI-assisted architecture tools, brief gathering, and design workflows.'],
@@ -104,23 +110,6 @@ const copy = {
     profileBody: 'Through ACKARACA LIMITED, I build projects spanning AI-assisted architecture tools, productivity systems, and mobile discovery products.',
   },
 } as const;
-
-type EntryKind = 'project' | 'page' | 'note';
-
-interface CorridorEntry {
-  id: string;
-  kind: EntryKind;
-  title: string;
-  /** Short category line under the HUD title and in the detail panel. */
-  meta: string;
-  href?: string;
-  image?: string;
-  aspect: number;
-  palette: string[];
-  project?: PortfolioProject;
-  body?: string;
-  cta?: { label: string; href: string };
-}
 
 const PAGE_PALETTES: string[][] = [['#5c74ff', '#45d0bf'], ['#e8a33d', '#ff5c8a'], ['#45d0bf', '#a6ff5c'], ['#93a7ff', '#ff5ce1'], ['#ff8a3d', '#5c74ff']];
 const NOTE_PALETTES: string[][] = [['#ff5c8a', '#e8a33d'], ['#45d0bf', '#5c74ff'], ['#a6ff5c', '#45d0bf'], ['#93a7ff', '#ff5ce1'], ['#e8a33d', '#ff8a3d']];
@@ -142,6 +131,49 @@ const scrollProgress = () => {
   return max > 0 ? window.scrollY / max : 0;
 };
 
+const sceneItem = (entry: CorridorEntry, inMain: boolean): CorridorSceneItem => ({
+  label: entry.title,
+  kind: entry.kind === 'project' ? 'image' : entry.kind,
+  image: entry.image,
+  aspect: entry.aspect,
+  palette: entry.palette,
+  eyebrow: entry.meta,
+  body: entry.body,
+  placement: entry.kind === 'page' ? 'overhead' : 'wall',
+  door: inMain && entry.kind === 'project',
+  extra: inMain ? entry.extra : undefined,
+});
+
+/** Kinetic title: letters rise in, grouped per word so lines only break between words. */
+const KineticTitle = ({ id, title }: { id: string; title: string }) => {
+  let letter = 0;
+  return (
+    <AnimatePresence mode="popLayout" initial={false}>
+      <motion.span key={id} className="corridor-title__word" aria-label={title} style={{ '--title-scale': titleScale(title) } as React.CSSProperties}>
+        {title.split(' ').map((word, wordIndex) => (
+          <span className="corridor-title__group" key={`${word}-${wordIndex}`} aria-hidden="true">
+            {[...word].map((character) => {
+              const order = letter++;
+              return (
+                <span className="corridor-title__mask" key={`${character}-${order}`}>
+                  <motion.span
+                    initial={{ y: '105%' }}
+                    animate={{ y: '0%' }}
+                    exit={{ y: '-105%' }}
+                    transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1], delay: Math.min(order, 24) * 0.016 }}
+                  >
+                    {character}
+                  </motion.span>
+                </span>
+              );
+            })}
+          </span>
+        ))}
+      </motion.span>
+    </AnimatePresence>
+  );
+};
+
 export default function HomePage() {
   const { settings, projects, journal, lab } = useContent();
   const { locale, setLocale, resolvedTheme, setTheme } = useAppPreferences();
@@ -149,20 +181,21 @@ export default function HomePage() {
   const t = copy[locale];
   const acceptingInquiries = isAcceptingInquiries(settings.availability);
 
-  const entries = useMemo<CorridorEntry[]>(() => {
+  const mainEntries = useMemo<CorridorEntry[]>(() => {
     const projectEntries = projects.map((project): CorridorEntry => {
-      const cover = project.media.find((media) => media.role === 'cover' && media.kind === 'image' && media.assetState === 'ready' && media.src);
-      const category = project.format === 'game' ? gameLabel[locale] : disciplineLabels[locale][project.discipline];
+      const cover = coverImage(project);
+      const gallery = galleryImage(project);
       return {
         id: project.slug,
         kind: 'project',
         title: localize(project.title, locale),
-        meta: [category, project.context ? localize(project.context, locale) : null, project.year].filter(Boolean).join(' · '),
+        meta: [projectCategory(project, locale), project.context ? localize(project.context, locale) : null, project.year].filter(Boolean).join(' · '),
         href: `/work/${project.slug}`,
         image: cover?.src,
         aspect: cover?.width && cover.height ? cover.width / cover.height : 16 / 10,
         palette: project.cover.palette,
         project,
+        extra: gallery?.src ? { image: gallery.src, aspect: gallery.width && gallery.height ? gallery.width / gallery.height : 16 / 10 } : undefined,
       };
     });
     const focusNotes = t.focus.map(([title, body], index): CorridorEntry => ({
@@ -186,20 +219,29 @@ export default function HomePage() {
     ];
   }, [projects, journal.length, lab.length, locale, t]);
 
+  const [branch, setBranch] = useState<{ parent: number; entries: CorridorEntry[] } | null>(null);
+  const entries = branch?.entries ?? mainEntries;
   const stops = useMemo(() => corridorLayout(entries.length).stops, [entries.length]);
   const stageRef = useRef<HTMLDivElement>(null);
   const pillRef = useRef<HTMLDivElement>(null);
   const sceneRef = useRef<CorridorScene | null>(null);
+  const mainScrollRef = useRef(0);
+  const restoreScrollRef = useRef<number | null>(null);
+  const transitioningRef = useRef(false);
   const [active, setActive] = useState(0);
   const [atStart, setAtStart] = useState(true);
   const [hovered, setHovered] = useState<number | null>(null);
   const [focused, setFocused] = useState<number | null>(null);
   const [indexOpen, setIndexOpen] = useState(false);
   const [fallback, setFallback] = useState(false);
-  const selectRef = useRef<(index: number) => void>(() => undefined);
+  const handlersRef = useRef<{ select: (index: number) => void; activate: (index: number) => void; dismiss: () => void }>({
+    select: () => undefined, activate: () => undefined, dismiss: () => undefined,
+  });
 
   const disciplineCount = new Set(projects.map((project) => project.discipline)).size;
   const technologyCount = new Set(projects.flatMap((project) => project.technologies)).size;
+  const showIntro = !branch && atStart;
+  const branchProject = branch ? mainEntries[branch.parent] : null;
 
   useDocumentMeta({
     title: localize(settings.defaultSeo.title, locale),
@@ -218,7 +260,7 @@ export default function HomePage() {
     },
   });
 
-  /** Fly along the corridor to an entry; resolves with the flight length in ms. */
+  /** Fly along the current corridor to an entry; returns the flight length in ms. */
   const travelTo = useCallback((index: number) => {
     const stop = stops[index] ?? 0;
     const scene = sceneRef.current;
@@ -228,9 +270,14 @@ export default function HomePage() {
     return duration;
   }, [stops]);
 
+  const closeFocus = useCallback(() => {
+    setFocused(null);
+    sceneRef.current?.focus(null);
+  }, []);
+
   const select = useCallback((index: number) => {
     const entry = entries[index];
-    if (!entry) return;
+    if (!entry || transitioningRef.current) return;
     setIndexOpen(false);
     const scene = sceneRef.current;
     if (entry.kind !== 'page') {
@@ -244,19 +291,64 @@ export default function HomePage() {
     }
     void scene.dive(index).then(() => navigate(entry.href ?? '/'));
   }, [entries, navigate]);
-  useEffect(() => { selectRef.current = select; }, [select]);
+
+  /** Slide the project panel away and walk into the project's own corridor. */
+  const enterProject = useCallback((index: number) => {
+    const entry = mainEntries[index];
+    if (!entry?.project || branch || transitioningRef.current) return;
+    const scene = sceneRef.current;
+    if (!scene) {
+      navigate(entry.href ?? '/work');
+      return;
+    }
+    const list = projectCorridorEntries(entry.project, locale);
+    mainScrollRef.current = window.scrollY;
+    transitioningRef.current = true;
+    setFocused(null);
+    setIndexOpen(false);
+    void scene.enterBranch(index, list.map((item) => sceneItem(item, false))).finally(() => { transitioningRef.current = false; });
+    window.scrollTo({ top: 0, behavior: 'instant' });
+    setBranch({ parent: index, entries: list });
+  }, [branch, locale, mainEntries, navigate]);
+
+  const exitProject = useCallback(() => {
+    if (!branch || transitioningRef.current) return;
+    setFocused(null);
+    setIndexOpen(false);
+    const scene = sceneRef.current;
+    const leave = () => {
+      restoreScrollRef.current = mainScrollRef.current;
+      setBranch(null);
+    };
+    if (!scene) {
+      leave();
+      return;
+    }
+    transitioningRef.current = true;
+    void scene.exitBranch().then(leave).finally(() => { transitioningRef.current = false; });
+  }, [branch]);
+
+  // Back in the main corridor: put the scroll where the walk left off, before scroll listeners read it.
+  useLayoutEffect(() => {
+    if (branch || restoreScrollRef.current === null) return;
+    window.scrollTo({ top: restoreScrollRef.current, behavior: 'instant' });
+    restoreScrollRef.current = null;
+  }, [branch]);
+
+  useEffect(() => {
+    handlersRef.current = {
+      select,
+      activate: (index) => { if (!branch && mainEntries[index]?.kind === 'project') enterProject(index); },
+      dismiss: closeFocus,
+    };
+  }, [select, enterProject, closeFocus, branch, mainEntries]);
 
   /** Index links: walk to the piece first, then open it. */
   const travelAndSelect = (index: number) => {
     setIndexOpen(false);
     const duration = travelTo(index);
-    window.setTimeout(() => selectRef.current(index), duration);
+    window.setTimeout(() => handlersRef.current.select(index), duration);
   };
-
-  const closeFocus = useCallback(() => {
-    setFocused(null);
-    sceneRef.current?.focus(null);
-  }, []);
 
   // Build the WebGL scene; three.js is loaded on demand so SSR and other routes never pay for it.
   useEffect(() => {
@@ -274,13 +366,13 @@ export default function HomePage() {
         sceneRef.current = createCorridorScene({
           container,
           pill,
-          items: entries.map((entry) => ({
-            label: entry.title, kind: entry.kind, image: entry.image, aspect: entry.aspect, palette: entry.palette, eyebrow: entry.meta, body: entry.body,
-          })),
+          items: mainEntries.map((entry) => sceneItem(entry, true)),
           dark: document.documentElement.dataset.theme !== 'light',
           reducedMotion: document.documentElement.dataset.motion === 'off',
           onHover: setHovered,
-          onSelect: (index) => selectRef.current(index),
+          onSelect: (index) => handlersRef.current.select(index),
+          onActivate: (index) => handlersRef.current.activate(index),
+          onDismiss: () => handlersRef.current.dismiss(),
         });
         sceneRef.current.setProgress(scrollProgress());
       } catch {
@@ -292,7 +384,7 @@ export default function HomePage() {
       sceneRef.current?.dispose();
       sceneRef.current = null;
     };
-  }, [entries]);
+  }, [mainEntries]);
 
   useEffect(() => { sceneRef.current?.setTheme(resolvedTheme === 'dark'); }, [resolvedTheme]);
 
@@ -312,7 +404,7 @@ export default function HomePage() {
     };
   }, [stops]);
 
-  // Freeze the walk while a piece is open, and let Escape back out of any overlay.
+  // Freeze the walk while a piece is open, and let Escape back out one level at a time.
   useEffect(() => {
     const root = document.documentElement;
     root.classList.toggle('corridor-locked', focused !== null || indexOpen);
@@ -320,16 +412,17 @@ export default function HomePage() {
       if (event.key !== 'Escape') return;
       if (indexOpen) setIndexOpen(false);
       else if (focused !== null) closeFocus();
+      else if (branch) exitProject();
     };
     window.addEventListener('keydown', onKey);
     return () => {
       root.classList.remove('corridor-locked');
       window.removeEventListener('keydown', onKey);
     };
-  }, [focused, indexOpen, closeFocus]);
+  }, [focused, indexOpen, branch, closeFocus, exitProject]);
 
   const current = entries[active];
-  const focusedEntry = focused === null ? null : entries[focused];
+  const focusedEntry = focused === null ? null : entries[focused] ?? null;
   const nextIndex = focused === null ? null : (() => {
     for (let step = 1; step < entries.length; step += 1) {
       const candidate = (focused + step) % entries.length;
@@ -346,36 +439,63 @@ export default function HomePage() {
     select(nextIndex);
   };
 
-  const project = focusedEntry?.project;
-  const detailRows = project ? [
+  const project = focusedEntry?.kind === 'project' ? focusedEntry.project : undefined;
+  const detailRows: Array<[string, string]> = project ? [
     [t.medium, project.technologies.slice(0, 4).join(', ')],
-    [t.context, project.context ? localize(project.context, locale) : null],
-    [t.place, project.location ? localize(project.location, locale) : null],
-    [t.stage, project.releaseStage ?? null],
-  ].filter((row): row is [string, string] => Boolean(row[1])) : [];
+    [t.context, project.context ? localize(project.context, locale) : ''],
+    [t.place, project.location ? localize(project.location, locale) : ''],
+    [t.stage, project.releaseStage ?? ''],
+  ].filter((row): row is [string, string] => Boolean(row[1])) : focusedEntry?.rows ?? [];
+  const pillEntry = hovered === null ? null : entries[hovered];
 
   return (
     <MotionConfig reducedMotion="never">
-      <main id="main-content" tabIndex={-1} className={`corridor${fallback ? ' corridor--fallback' : ''}`} data-focused={focused !== null ? 'true' : undefined} data-start={atStart ? 'true' : undefined}>
+      <main
+        id="main-content"
+        tabIndex={-1}
+        className={`corridor${fallback ? ' corridor--fallback' : ''}`}
+        data-focused={focused !== null ? 'true' : undefined}
+        data-start={showIntro ? 'true' : undefined}
+        data-branch={branch ? 'true' : undefined}
+      >
         <h1 className="sr-only">{t.heading}</h1>
         <div className="corridor__stage" ref={stageRef} aria-hidden="true" />
         <div className="corridor__pill" ref={pillRef} aria-hidden="true">
-          {hovered !== null ? `${t.open} ${entries[hovered]?.title ?? ''}` : null}
+          {pillEntry ? (
+            <>
+              <i style={{ background: pillEntry.palette[0] }} />
+              <strong>{t.open}</strong>
+              <span>{pillEntry.title}</span>
+            </>
+          ) : null}
         </div>
         <div className="corridor__track" style={{ height: `${entries.length * 70 + 120}vh` }} aria-hidden="true" />
 
         <header className="corridor-hud corridor-hud--top">
-          <Link href="/" className="corridor-brand">
+          <Link
+            href="/"
+            className="corridor-brand"
+            onClick={(event) => {
+              if (!branch) return;
+              event.preventDefault();
+              exitProject();
+            }}
+          >
             <strong>{localize(settings.ownerName, locale)}</strong>
-            <span>{t.tagline}</span>
+            <span>{branchProject ? branchProject.title : t.tagline}</span>
           </Link>
           <nav className="corridor-hud__actions" aria-label={locale === 'tr' ? 'Ana navigasyon' : 'Primary navigation'}>
+            {branch ? (
+              <button type="button" className="corridor-chip" onClick={exitProject}><ArrowLeft aria-hidden="true" />{t.back}</button>
+            ) : null}
             <button type="button" className="corridor-chip corridor-chip--round" onClick={() => setTheme(resolvedTheme === 'dark' ? 'light' : 'dark')} aria-label={t.theme}>
               {resolvedTheme === 'dark' ? <Moon aria-hidden="true" /> : <Sun aria-hidden="true" />}
             </button>
-            <button type="button" className="corridor-chip corridor-chip--round" onClick={() => setLocale(locale === 'tr' ? 'en' : 'tr')} aria-label={t.locale}>
-              {locale === 'tr' ? 'EN' : 'TR'}
-            </button>
+            {!branch ? (
+              <button type="button" className="corridor-chip corridor-chip--round" onClick={() => setLocale(locale === 'tr' ? 'en' : 'tr')} aria-label={t.locale}>
+                {locale === 'tr' ? 'EN' : 'TR'}
+              </button>
+            ) : null}
             <button type="button" className="corridor-chip" onClick={() => setIndexOpen((open) => !open)} aria-expanded={indexOpen || fallback} aria-controls="corridor-index">
               {t.index}<sup>{entries.length}</sup>
             </button>
@@ -383,8 +503,8 @@ export default function HomePage() {
           </nav>
         </header>
 
-        {!fallback ? (
-          <section className="corridor-hud corridor-intro" aria-hidden={!atStart}>
+        {!fallback && !branch ? (
+          <section className="corridor-hud corridor-intro" aria-hidden={!showIntro}>
             <p className="corridor-intro__status"><i aria-hidden="true" />{availabilityLabel(settings.availability, locale)}</p>
             <p className="corridor-meta">{t.kicker}</p>
             <p className="corridor-intro__headline">
@@ -392,8 +512,8 @@ export default function HomePage() {
             </p>
             <p className="corridor-intro__body">{t.intro}</p>
             <div className="corridor-intro__actions">
-              <button type="button" className="corridor-cta" onClick={() => travelTo(0)} tabIndex={atStart ? 0 : -1}>{t.exploreWork}<ArrowDown aria-hidden="true" /></button>
-              <Link href={acceptingInquiries ? '/contact' : '/about'} className="corridor-next" tabIndex={atStart ? 0 : -1}>
+              <button type="button" className="corridor-cta" onClick={() => travelTo(0)} tabIndex={showIntro ? 0 : -1}>{t.exploreWork}<ArrowDown aria-hidden="true" /></button>
+              <Link href={acceptingInquiries ? '/contact' : '/about'} className="corridor-next" tabIndex={showIntro ? 0 : -1}>
                 {acceptingInquiries ? t.getInTouch : t.readProfile}<ArrowUpRight aria-hidden="true" />
               </Link>
             </div>
@@ -406,28 +526,13 @@ export default function HomePage() {
         ) : null}
 
         {current && !fallback ? (
-          <section className="corridor-hud corridor-hud--info" aria-live="polite" aria-hidden={atStart}>
+          <section className="corridor-hud corridor-hud--info" aria-live="polite" aria-hidden={showIntro}>
             <p className="corridor-count">{pad(active + 1)} / {pad(entries.length)}</p>
-            <button type="button" className="corridor-title" onClick={() => select(active)} tabIndex={atStart ? -1 : 0}>
-              <AnimatePresence mode="popLayout" initial={false}>
-                <motion.span key={current.id} className="corridor-title__word" aria-label={current.title}>
-                  {[...current.title].map((letter, index) => (
-                    <span className="corridor-title__mask" key={`${letter}-${index}`} aria-hidden="true">
-                      <motion.span
-                        initial={{ y: '105%' }}
-                        animate={{ y: '0%' }}
-                        exit={{ y: '-105%' }}
-                        transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1], delay: Math.min(index, 24) * 0.016 }}
-                      >
-                        {letter === ' ' ? ' ' : letter}
-                      </motion.span>
-                    </span>
-                  ))}
-                </motion.span>
-              </AnimatePresence>
+            <button type="button" className="corridor-title" onClick={() => select(active)} tabIndex={showIntro ? -1 : 0}>
+              <KineticTitle id={`${branch ? 'b' : 'm'}-${current.id}`} title={current.title} />
             </button>
             <p className="corridor-meta"><i style={{ background: current.palette[0] }} aria-hidden="true" />{current.meta}</p>
-            <p className="corridor-hint">{t.hint}</p>
+            <p className="corridor-hint">{branch ? t.branchHint : t.hint}</p>
           </section>
         ) : null}
 
@@ -450,7 +555,7 @@ export default function HomePage() {
             {entries.map((entry, index) => (
               <li key={entry.id}>
                 <Link
-                  href={entry.href ?? entry.cta?.href ?? '/work'}
+                  href={entry.href ?? entry.cta?.href ?? branchProject?.href ?? '/work'}
                   onClick={(event) => {
                     if (fallback) return;
                     event.preventDefault();
@@ -469,8 +574,8 @@ export default function HomePage() {
         <AnimatePresence>
           {focusedEntry ? (
             <motion.aside
-              key={focusedEntry.id}
-              className="corridor-detail"
+              key={`${branch ? 'b' : 'm'}-${focusedEntry.id}`}
+              className={`corridor-detail${focusedEntry.kind === 'note' ? ' corridor-detail--text' : ''}`}
               role="dialog"
               aria-modal="false"
               aria-labelledby="corridor-detail-title"
@@ -482,17 +587,35 @@ export default function HomePage() {
               <p className="corridor-meta"><i style={{ background: focusedEntry.palette[0] }} aria-hidden="true" />{focusedEntry.meta}</p>
               <h2 id="corridor-detail-title">{focusedEntry.title}</h2>
               {project ? <p className="corridor-detail__sub">{localize(project.dek, locale)}</p> : null}
-              {focusedEntry.body ? <p className="corridor-detail__dek">{focusedEntry.body}</p> : null}
+              {focusedEntry.body ? (
+                <div className="corridor-detail__body">
+                  {textParagraphs(focusedEntry.body.replace(/\n(?!\n)/gu, '\n\n')).map((paragraph) => <p key={paragraph}>{paragraph}</p>)}
+                </div>
+              ) : null}
               {detailRows.length > 0 ? (
                 <dl>
                   {detailRows.map(([label, value]) => <div key={label}><dt>{label}</dt><dd>{value}</dd></div>)}
                 </dl>
               ) : null}
+              {focusedEntry.links?.length ? (
+                <div className="corridor-detail__links">
+                  {focusedEntry.links.map((link) => (
+                    link.href.startsWith('/') ? (
+                      <Link key={link.href} href={link.href} className="corridor-next">{localize(link.label, locale)}<ArrowUpRight aria-hidden="true" /></Link>
+                    ) : (
+                      <a key={link.href} href={link.href} className="corridor-next" target="_blank" rel="noreferrer">{localize(link.label, locale)}<ExternalLink aria-hidden="true" /></a>
+                    )
+                  ))}
+                </div>
+              ) : null}
               <div className="corridor-detail__actions">
-                {focusedEntry.href || focusedEntry.cta ? (
-                  <Link href={focusedEntry.href ?? focusedEntry.cta?.href ?? '/'} className="corridor-cta">
-                    {focusedEntry.cta?.label ?? t.viewProject}<ArrowRight aria-hidden="true" />
-                  </Link>
+                {focusedEntry.kind === 'project' ? (
+                  <div className="corridor-detail__primary">
+                    <button type="button" className="corridor-cta" onClick={() => enterProject(focused!)}>{t.enterProject}<ArrowRight aria-hidden="true" /></button>
+                    <Link href={focusedEntry.href ?? '/work'} className="corridor-text-link">{t.openPage}</Link>
+                  </div>
+                ) : focusedEntry.cta ? (
+                  <Link href={focusedEntry.cta.href} className="corridor-cta">{focusedEntry.cta.label}<ArrowRight aria-hidden="true" /></Link>
                 ) : <span />}
                 {nextEntry && nextIndex !== focused ? (
                   <button type="button" className="corridor-detail__next" onClick={goNext}>
