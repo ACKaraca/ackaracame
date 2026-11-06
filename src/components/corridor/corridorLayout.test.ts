@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { activeIndexFor, corridorLayout } from './corridorLayout';
+import { activeIndexFor, corridorLayout, easeInOutCubic, flightSeconds } from './corridorLayout';
 
 describe('corridorLayout', () => {
   it('spreads stops monotonically across the scroll and ends on the facing panel', () => {
@@ -16,5 +16,18 @@ describe('corridorLayout', () => {
     stops.forEach((stop, index) => expect(activeIndexFor(stop, stops)).toBe(index));
     expect(activeIndexFor(0, stops)).toBe(0);
     expect(activeIndexFor(1, stops)).toBe(8);
+  });
+
+  it('keeps text panels on the side walls', () => {
+    const { surfaces } = corridorLayout(12, (index) => index >= 6);
+    surfaces.slice(6, -1).forEach((surface) => expect(['left', 'right']).toContain(surface));
+  });
+
+  it('eases flights from rest to rest and scales their length with distance', () => {
+    expect(easeInOutCubic(0)).toBe(0);
+    expect(easeInOutCubic(0.5)).toBeCloseTo(0.5);
+    expect(easeInOutCubic(1)).toBe(1);
+    expect(flightSeconds(0, 0.05)).toBeLessThan(flightSeconds(0, 0.6));
+    expect(flightSeconds(0, 1)).toBeLessThanOrEqual(2.6);
   });
 });

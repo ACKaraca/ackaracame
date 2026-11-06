@@ -3,14 +3,17 @@ import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer
 import { OutputPass } from 'three/examples/jsm/postprocessing/OutputPass.js';
 import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js';
 import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass.js';
-import { CAMERA_START, corridorLayout, type Surface } from './corridorLayout';
+import { CAMERA_START, corridorLayout, easeInOutCubic, flightSeconds, type Surface } from './corridorLayout';
 
 export interface CorridorSceneItem {
   label: string;
-  kind: 'project' | 'page';
+  kind: 'project' | 'page' | 'note';
   image?: string;
   aspect: number;
   palette: string[];
+  /** Text drawn on note panels. */
+  eyebrow?: string;
+  body?: string;
 }
 
 export interface CorridorSceneOptions {
@@ -24,19 +27,24 @@ export interface CorridorSceneOptions {
 }
 
 export interface CorridorScene {
+  /** Follow the scroll position (smoothed). */
   setProgress: (progress: number) => void;
+  /** Fly along the corridor to a progress value with an eased, timed flight. */
+  flyTo: (progress: number) => void;
   focus: (index: number | null) => void;
   dive: (index: number) => Promise<void>;
   setTheme: (dark: boolean) => void;
   dispose: () => void;
 }
 
-const HALF_WIDTH = 4;
+const HALF_WIDTH = 4.5;
 const HALF_HEIGHT = 3;
-const FOV = 55;
+const CELL = 1.5;
+const FOV = 62;
 const WORLD_UP = new THREE.Vector3(0, 1, 0);
 
 interface Frame { point: THREE.Vector3; tangent: THREE.Vector3; right: THREE.Vector3; up: THREE.Vector3 }
+interface Pose { position: THREE.Vector3; quaternion: THREE.Quaternion }
 
 interface Panel {
   mesh: THREE.Mesh<THREE.PlaneGeometry, THREE.MeshBasicMaterial>;
@@ -50,9 +58,10 @@ interface Panel {
 }
 
 const themeColors = (dark: boolean) => ({
-  background: new THREE.Color(dark ? '#070707' : '#f3f2ee'),
-  line: new THREE.Color(dark ? '#ffffff' : '#0b0b0b'),
-  lineOpacity: dark ? 0.2 : 0.26,
+  background: new THREE.Color(dark ? '#030303' : '#f3f2ee'),
+  wall: new THREE.Color(dark ? '#0d0c0c' : '#ebe9e3'),
+  line: new THREE.Color(dark ? '#ffffff' : '#111111'),
+  lineOpacity: dark ? 0.82 : 0.5,
 });
 
 const buildCurve = (length: number) => {
@@ -73,78 +82,134 @@ const frameAt = (curve: THREE.CatmullRomCurve3, distance: number): Frame => {
   return { point, tangent, right, up };
 };
 
-// Rectangular wireframe corridor: longitudinal rails on every face plus a ring every unit.
+const CORNERS: Array<[number, number]> = [[-HALF_WIDTH, -HALF_HEIGHT], [HALF_WIDTH, -HALF_HEIGHT], [HALF_WIDTH, HALF_HEIGHT], [-HALF_WIDTH, HALF_HEIGHT]];
+const at = (frame: Frame, [x, y]: [number, number]) => frame.point.clone().addScaledVector(frame.right, x).addScaledVector(frame.up, y);
+
+// Rectangular corridor: opaque faces for the shell, and a wire grid (rails + rings) drawn on top.
 const buildTunnel = (curve: THREE.CatmullRomCurve3, length: number) => {
   const offsets: Array<[number, number]> = [];
-  for (let x = -HALF_WIDTH; x <= HALF_WIDTH; x += 1) offsets.push([x, -HALF_HEIGHT], [x, HALF_HEIGHT]);
-  for (let y = -HALF_HEIGHT + 1; y < HALF_HEIGHT; y += 1) offsets.push([-HALF_WIDTH, y], [HALF_WIDTH, y]);
-  const corners: Array<[number, number]> = [[-HALF_WIDTH, -HALF_HEIGHT], [HALF_WIDTH, -HALF_HEIGHT], [HALF_WIDTH, HALF_HEIGHT], [-HALF_WIDTH, HALF_HEIGHT]];
+  for (let x = -HALF_WIDTH; x <= HALF_WIDTH + 0.001; x += CELL) offsets.push([x, -HALF_HEIGHT], [x, HALF_HEIGHT]);
+  for (let y = -HALF_HEIGHT + CELL; y < HALF_HEIGHT - 0.001; y += CELL) offsets.push([-HALF_WIDTH, y], [HALF_WIDTH, y]);
   const frames: Frame[] = [];
-  for (let distance = 0; distance <= length; distance += 1) frames.push(frameAt(curve, distance));
-  const at = (frame: Frame, [x, y]: [number, number]) => frame.point.clone().addScaledVector(frame.right, x).addScaledVector(frame.up, y);
-  const positions: number[] = [];
-  const push = (a: THREE.Vector3, b: THREE.Vector3) => positions.push(a.x, a.y, a.z, b.x, b.y, b.z);
+  for (let distance = 0; distance <= length; distance += CELL) frames.push(frameAt(curve, distance));
+
+  const lines: number[] = [];
+  const faces: number[] = [];
+  const pushLine = (a: THREE.Vector3, b: THREE.Vector3) => lines.push(a.x, a.y, a.z, b.x, b.y, b.z);
+  const pushQuad = (a: THREE.Vector3, b: THREE.Vector3, c: THREE.Vector3, d: THREE.Vector3) =>
+    faces.push(a.x, a.y, a.z, b.x, b.y, b.z, c.x, c.y, c.z, a.x, a.y, a.z, c.x, c.y, c.z, d.x, d.y, d.z);
   frames.forEach((frame, index) => {
-    corners.forEach((corner, cornerIndex) => push(at(frame, corner), at(frame, corners[(cornerIndex + 1) % 4]!)));
+    CORNERS.forEach((corner, cornerIndex) => pushLine(at(frame, corner), at(frame, CORNERS[(cornerIndex + 1) % 4]!)));
     const next = frames[index + 1];
-    if (next) offsets.forEach((offset) => push(at(frame, offset), at(next, offset)));
+    if (!next) return;
+    offsets.forEach((offset) => pushLine(at(frame, offset), at(next, offset)));
+    CORNERS.forEach((corner, cornerIndex) => {
+      const following = CORNERS[(cornerIndex + 1) % 4]!;
+      pushQuad(at(frame, corner), at(frame, following), at(next, following), at(next, corner));
+    });
   });
-  const geometry = new THREE.BufferGeometry();
-  geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
-  return geometry;
+  const lineGeometry = new THREE.BufferGeometry();
+  lineGeometry.setAttribute('position', new THREE.Float32BufferAttribute(lines, 3));
+  const faceGeometry = new THREE.BufferGeometry();
+  faceGeometry.setAttribute('position', new THREE.Float32BufferAttribute(faces, 3));
+  return { lineGeometry, faceGeometry };
 };
 
-const TILT = THREE.MathUtils.degToRad(24);
-
-// Hang a panel on its surface, then angle it toward the approaching camera so it reads before you pass it.
-const placement = (frame: Frame, surface: Surface, width: number, height: number) => {
-  const flat = surfacePlacement(frame, surface, height);
-  if (surface === 'end') return flat;
-  const back = frame.tangent.clone().negate();
-  const tilt = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3().crossVectors(flat.normal, back).normalize(), TILT);
-  const reach = (surface === 'left' || surface === 'right' ? width : height) / 2;
-  return {
-    center: flat.center.addScaledVector(flat.normal, reach * Math.sin(TILT)),
-    normal: flat.normal.clone().applyQuaternion(tilt),
-    up: flat.up.clone().applyQuaternion(tilt),
-  };
-};
-
-const surfacePlacement = (frame: Frame, surface: Surface, height: number) => {
+// Panels lie flush on their surface, a hair inside so the grid never cuts through them.
+const placement = (frame: Frame, surface: Surface, height: number) => {
   const { point, tangent, right, up } = frame;
+  const inset = 0.03;
   switch (surface) {
-    case 'left': return { center: point.clone().addScaledVector(right, -HALF_WIDTH + 0.04), normal: right.clone(), up: up.clone() };
-    case 'right': return { center: point.clone().addScaledVector(right, HALF_WIDTH - 0.04), normal: right.clone().negate(), up: up.clone() };
-    case 'ceiling': return { center: point.clone().addScaledVector(up, HALF_HEIGHT - 0.04), normal: up.clone().negate(), up: tangent.clone().negate() };
-    case 'floor': return { center: point.clone().addScaledVector(up, -HALF_HEIGHT + 0.04), normal: up.clone(), up: tangent.clone() };
-    default: return { center: point.clone().addScaledVector(up, Math.min(0.4, HALF_HEIGHT - height / 2 - 0.2)), normal: tangent.clone().negate(), up: up.clone() };
+    case 'left': return { center: point.clone().addScaledVector(right, -HALF_WIDTH + inset), normal: right.clone(), up: up.clone() };
+    case 'right': return { center: point.clone().addScaledVector(right, HALF_WIDTH - inset), normal: right.clone().negate(), up: up.clone() };
+    case 'ceiling': return { center: point.clone().addScaledVector(up, HALF_HEIGHT - inset), normal: up.clone().negate(), up: tangent.clone().negate() };
+    case 'floor': return { center: point.clone().addScaledVector(up, -HALF_HEIGHT + inset), normal: up.clone(), up: tangent.clone() };
+    default: return { center: point.clone().addScaledVector(up, Math.min(0.3, HALF_HEIGHT - height / 2 - 0.3)), normal: tangent.clone().negate(), up: up.clone() };
   }
 };
 
-const paletteTexture = (item: CorridorSceneItem) => {
+const FONT_SANS = '"Manrope Variable", system-ui, sans-serif';
+const FONT_MONO = 'ui-monospace, "SF Mono", "Cascadia Code", Menlo, monospace';
+
+const wrapLines = (context: CanvasRenderingContext2D, text: string, maxWidth: number) => {
+  const lines: string[] = [];
+  let line = '';
+  for (const word of text.split(/\s+/u)) {
+    const candidate = line ? `${line} ${word}` : word;
+    if (context.measureText(candidate).width > maxWidth && line) {
+      lines.push(line);
+      line = word;
+    } else {
+      line = candidate;
+    }
+  }
+  if (line) lines.push(line);
+  return lines;
+};
+
+const drawPanel = (canvas: HTMLCanvasElement, item: CorridorSceneItem) => {
+  const context = canvas.getContext('2d');
+  if (!context) return;
+  const { width, height } = canvas;
+  const gradient = context.createLinearGradient(0, 0, width, height);
+  item.palette.forEach((color, index) => gradient.addColorStop(index / Math.max(1, item.palette.length - 1), color));
+  if (item.kind === 'project') {
+    context.fillStyle = gradient;
+    context.fillRect(0, 0, width, height);
+    return;
+  }
+  context.fillStyle = '#070707';
+  context.fillRect(0, 0, width, height);
+  context.strokeStyle = gradient;
+  context.lineWidth = item.kind === 'page' ? 18 : 6;
+  context.strokeRect(24, 24, width - 48, height - 48);
+  context.fillStyle = '#ffffff';
+  if (item.kind === 'page') {
+    // Portal: a glowing frame with the destination name.
+    context.font = `760 ${Math.round(height * 0.2)}px ${FONT_SANS}`;
+    context.textAlign = 'center';
+    context.textBaseline = 'middle';
+    context.fillText(item.label.toLocaleUpperCase(), width / 2, height / 2, width - 160);
+    return;
+  }
+  // Note: editorial text card (eyebrow, title, body).
+  const pad = 80;
+  context.textAlign = 'left';
+  context.textBaseline = 'top';
+  context.fillStyle = item.palette[0] ?? '#ffffff';
+  context.font = `600 26px ${FONT_MONO}`;
+  context.fillText((item.eyebrow ?? '').toLocaleUpperCase(), pad, pad);
+  context.fillStyle = '#ffffff';
+  context.font = `780 72px ${FONT_SANS}`;
+  let y = pad + 60;
+  for (const line of wrapLines(context, item.label, width - pad * 2).slice(0, 2)) {
+    context.fillText(line, pad, y);
+    y += 80;
+  }
+  context.fillStyle = 'rgba(255,255,255,0.72)';
+  context.font = `450 34px ${FONT_SANS}`;
+  y += 24;
+  for (const line of wrapLines(context, item.body ?? '', width - pad * 2).slice(0, 5)) {
+    context.fillText(line, pad, y);
+    y += 50;
+  }
+};
+
+const panelTexture = (item: CorridorSceneItem) => {
   const canvas = document.createElement('canvas');
   canvas.width = 1024;
   canvas.height = Math.round(1024 / item.aspect);
-  const context = canvas.getContext('2d');
-  if (context) {
-    const gradient = context.createLinearGradient(0, 0, canvas.width, canvas.height);
-    item.palette.forEach((color, index) => gradient.addColorStop(index / Math.max(1, item.palette.length - 1), color));
-    context.fillStyle = item.kind === 'page' ? '#050505' : gradient;
-    context.fillRect(0, 0, canvas.width, canvas.height);
-    if (item.kind === 'page') {
-      // Portal: a glowing square frame with the destination name.
-      context.strokeStyle = gradient;
-      context.lineWidth = 18;
-      context.strokeRect(40, 40, canvas.width - 80, canvas.height - 80);
-      context.fillStyle = '#ffffff';
-      context.font = `760 ${Math.round(canvas.height * 0.2)}px "Manrope Variable", system-ui, sans-serif`;
-      context.textAlign = 'center';
-      context.textBaseline = 'middle';
-      context.fillText(item.label.toLocaleUpperCase(), canvas.width / 2, canvas.height / 2, canvas.width - 160);
-    }
-  }
+  drawPanel(canvas, item);
   const texture = new THREE.CanvasTexture(canvas);
   texture.colorSpace = THREE.SRGBColorSpace;
+  texture.anisotropy = 4;
+  // Web fonts may still be loading on first paint; redraw once they are ready.
+  if (item.kind !== 'project') {
+    void document.fonts?.ready.then(() => {
+      drawPanel(canvas, item);
+      texture.needsUpdate = true;
+    });
+  }
   return texture;
 };
 
@@ -158,32 +223,39 @@ export const createCorridorScene = (options: CorridorSceneOptions): CorridorScen
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   container.appendChild(renderer.domElement);
 
-  const layout = corridorLayout(items.length);
+  const layout = corridorLayout(items.length, (index) => items[index]?.kind === 'note');
   const curve = buildCurve(layout.tunnelLength + 16);
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(FOV, 1, 0.05, 140);
   let colors = themeColors(options.dark);
   scene.background = colors.background;
-  scene.fog = new THREE.Fog(colors.background, 12, 72);
+  scene.fog = new THREE.Fog(colors.background, 14, 78);
 
-  const tunnelMaterial = new THREE.LineBasicMaterial({ color: colors.line, transparent: true, opacity: colors.lineOpacity });
-  const tunnel = new THREE.LineSegments(buildTunnel(curve, layout.tunnelLength), tunnelMaterial);
-  scene.add(tunnel);
+  const { lineGeometry, faceGeometry } = buildTunnel(curve, layout.tunnelLength);
+  const lineMaterial = new THREE.LineBasicMaterial({ color: colors.line, transparent: true, opacity: colors.lineOpacity });
+  // Opaque shell facing inward: it hides the outside from within, and turns see-through when a
+  // focused shot sits outside the corridor. The offset keeps it behind the grid lines.
+  const wallMaterial = new THREE.MeshBasicMaterial({ color: colors.wall, side: THREE.FrontSide, polygonOffset: true, polygonOffsetFactor: 1, polygonOffsetUnits: 1 });
+  const walls = new THREE.Mesh(faceGeometry, wallMaterial);
+  const grid = new THREE.LineSegments(lineGeometry, lineMaterial);
+  scene.add(walls, grid);
 
   const loader = new THREE.TextureLoader();
   const panels: Panel[] = items.map((item, index) => {
     const surface = layout.surfaces[index]!;
-    const maxWidth = surface === 'end' ? 6.4 : 5.2;
-    const maxHeight = surface === 'end' ? 3.8 : 3.4;
+    const onWall = surface === 'left' || surface === 'right';
+    const maxWidth = surface === 'end' ? 6.6 : onWall ? 7.2 : 6;
+    const maxHeight = surface === 'end' ? 4 : onWall ? 4.4 : 3.6;
     const width = Math.min(maxWidth, maxHeight * item.aspect);
     const height = width / item.aspect;
     const frame = frameAt(curve, layout.itemDistance[index]!);
-    const place = placement(frame, surface, width, height);
+    const place = placement(frame, surface, height);
     const geometry = new THREE.PlaneGeometry(width, height, 32, 1);
-    const material = new THREE.MeshBasicMaterial({ map: paletteTexture(item), side: THREE.DoubleSide, fog: true });
+    const material = new THREE.MeshBasicMaterial({ map: panelTexture(item), side: THREE.DoubleSide });
     if (item.image) {
       loader.load(item.image, (texture) => {
         texture.colorSpace = THREE.SRGBColorSpace;
+        texture.anisotropy = 4;
         material.map?.dispose();
         material.map = texture;
         material.needsUpdate = true;
@@ -195,21 +267,12 @@ export const createCorridorScene = (options: CorridorSceneOptions): CorridorScen
     mesh.quaternion.setFromRotationMatrix(new THREE.Matrix4().makeBasis(panelRight, place.up, place.normal));
     mesh.userData.index = index;
     scene.add(mesh);
-    return {
-      mesh,
-      base: Float32Array.from(geometry.getAttribute('position').array),
-      width,
-      height,
-      normal: place.normal,
-      up: place.up,
-      right: panelRight,
-      bend: 0,
-    };
+    return { mesh, base: Float32Array.from(geometry.getAttribute('position').array), width, height, normal: place.normal, up: place.up, right: panelRight, bend: 0 };
   });
 
   const composer = new EffectComposer(renderer);
   composer.addPass(new RenderPass(scene, camera));
-  const bloom = new UnrealBloomPass(new THREE.Vector2(1, 1), 0.42, 0.55, 0.86);
+  const bloom = new UnrealBloomPass(new THREE.Vector2(1, 1), 0.5, 0.6, 0.82);
   // A light background sits above any bloom threshold and would wash the whole frame out.
   bloom.enabled = options.dark;
   composer.addPass(bloom);
@@ -219,7 +282,10 @@ export const createCorridorScene = (options: CorridorSceneOptions): CorridorScen
   let progress = 0;
   let mode: 'walk' | 'focus' | 'dive' = 'walk';
   let focused: number | null = null;
+  let diveTarget: number | null = null;
   let hovered: number | null = null;
+  let progressFlight: { from: number; to: number; start: number; duration: number } | null = null;
+  let cameraFlight: { from: Pose; start: number; duration: number } | null = null;
   const pointer = new THREE.Vector2(0, 0);
   const client = { x: 0, y: 0 };
   const rest = new THREE.Vector2(0, 0);
@@ -241,27 +307,31 @@ export const createCorridorScene = (options: CorridorSceneOptions): CorridorScen
   const resizeObserver = new ResizeObserver(resize);
   resizeObserver.observe(container);
 
-  const walkPose = () => {
+  const walkPose = (): Pose => {
     const distance = CAMERA_START + progress * (layout.cameraEnd - CAMERA_START);
     const frame = frameAt(curve, distance);
     const ahead = frameAt(curve, distance + 6).point;
     const quaternion = lookQuaternion(frame.point, ahead, frame.up);
-    if (!reducedMotion) quaternion.multiply(new THREE.Quaternion().setFromEuler(new THREE.Euler(parallax.y * 0.09, -parallax.x * 0.14, 0)));
+    if (!reducedMotion) quaternion.multiply(new THREE.Quaternion().setFromEuler(new THREE.Euler(-parallax.y * 0.08, -parallax.x * 0.14, 0)));
     return { position: frame.point, quaternion };
   };
 
-  const focusPose = (index: number, depth?: number) => {
+  const focusPose = (index: number, diving = false): Pose => {
     const panel = panels[index]!;
     const tanHalf = Math.tan(THREE.MathUtils.degToRad(FOV / 2));
     const narrow = camera.aspect < 1;
     // Wide screens park the panel on the left half; narrow screens put it above the bottom sheet.
-    const share = narrow ? 0.9 : 0.42;
-    const distance = depth ?? panel.width / (share * 2 * tanHalf * camera.aspect);
-    const shift = depth !== undefined ? new THREE.Vector3()
-      : narrow ? panel.up.clone().multiplyScalar(-panel.height * 0.75) : panel.right.clone().multiplyScalar(panel.width * 0.5);
+    const share = narrow ? 0.9 : 0.5;
+    const distance = diving ? 0.12 : panel.width / (share * 2 * tanHalf * camera.aspect);
+    const shift = diving ? new THREE.Vector3()
+      : narrow ? panel.up.clone().multiplyScalar(-panel.height * 0.75) : panel.right.clone().multiplyScalar(panel.width * 0.42);
     const target = panel.mesh.position.clone().add(shift);
     const position = target.clone().addScaledVector(panel.normal, distance);
     return { position, quaternion: lookQuaternion(position, target, panel.up) };
+  };
+
+  const startCameraFlight = (duration: number) => {
+    cameraFlight = { from: { position: camera.position.clone(), quaternion: camera.quaternion.clone() }, start: performance.now(), duration: duration * 1000 };
   };
 
   const setBend = (panel: Panel, bend: number) => {
@@ -271,20 +341,19 @@ export const createCorridorScene = (options: CorridorSceneOptions): CorridorScen
     for (let vertex = 0; vertex < attribute.count; vertex += 1) {
       const x = panel.base[vertex * 3]! / (panel.width / 2);
       // Concave screen: edges lean toward the viewer.
-      attribute.setZ(vertex, panel.base[vertex * 3 + 2]! + bend * panel.width * 0.09 * x * x);
+      attribute.setZ(vertex, panel.base[vertex * 3 + 2]! + bend * panel.width * 0.08 * x * x);
     }
     attribute.needsUpdate = true;
   };
 
   const project = new THREE.Vector3();
   const updatePill = () => {
-    if (hovered === null || mode !== 'walk') {
+    if (hovered === null || mode !== 'walk' || progressFlight) {
       pill.style.opacity = '0';
       return;
     }
     project.copy(panels[hovered]!.mesh.position).project(camera);
-    const visible = project.z < 1;
-    pill.style.opacity = visible ? '1' : '0';
+    pill.style.opacity = project.z < 1 ? '1' : '0';
     pill.style.transform = `translate(${((project.x + 1) / 2) * container.clientWidth}px, ${((1 - project.y) / 2) * container.clientHeight}px) translate(-50%, -50%)`;
   };
 
@@ -324,25 +393,38 @@ export const createCorridorScene = (options: CorridorSceneOptions): CorridorScen
   let previous = performance.now();
   let frameId = 0;
   let lastPick = 0;
-  const desired = { position: new THREE.Vector3(), quaternion: new THREE.Quaternion() };
-  let diveTarget: number | null = null;
   const tick = (now: number) => {
     const delta = Math.min(0.05, (now - previous) / 1000);
     previous = now;
-    const ease = (rate: number) => (reducedMotion ? 1 : 1 - Math.exp(-delta * rate));
-    progress += (targetProgress - progress) * ease(6);
-    parallax.lerp(pointerInside ? pointer : rest, ease(3));
+    const follow = (rate: number) => 1 - Math.exp(-delta * rate);
 
-    const pose = mode === 'walk' ? walkPose() : mode === 'dive' && diveTarget !== null ? focusPose(diveTarget, 0.15) : focused !== null ? focusPose(focused) : walkPose();
-    desired.position.copy(pose.position);
-    desired.quaternion.copy(pose.quaternion);
-    const cameraRate = mode === 'walk' ? 10 : mode === 'dive' ? 3.2 : 4;
-    camera.position.lerp(desired.position, ease(cameraRate));
-    camera.quaternion.slerp(desired.quaternion, ease(cameraRate));
+    if (progressFlight) {
+      const t = Math.min(1, (now - progressFlight.start) / progressFlight.duration);
+      progress = THREE.MathUtils.lerp(progressFlight.from, progressFlight.to, easeInOutCubic(t));
+      if (t >= 1) progressFlight = null;
+    } else {
+      progress += (targetProgress - progress) * follow(6);
+    }
+    parallax.lerp(pointerInside ? pointer : rest, follow(3));
 
-    panels.forEach((panel, index) => setBend(panel, panel.bend + ((mode === 'focus' && index === focused ? 1 : 0) - panel.bend) * ease(5)));
+    const pose = mode === 'dive' && diveTarget !== null ? focusPose(diveTarget, true) : mode === 'focus' && focused !== null ? focusPose(focused) : walkPose();
+    if (cameraFlight) {
+      const t = Math.min(1, (now - cameraFlight.start) / cameraFlight.duration);
+      const eased = easeInOutCubic(t);
+      camera.position.lerpVectors(cameraFlight.from.position, pose.position, eased);
+      camera.quaternion.slerpQuaternions(cameraFlight.from.quaternion, pose.quaternion, eased);
+      if (t >= 1) cameraFlight = null;
+    } else if (mode === 'walk') {
+      camera.position.lerp(pose.position, follow(12));
+      camera.quaternion.slerp(pose.quaternion, follow(12));
+    } else {
+      camera.position.copy(pose.position);
+      camera.quaternion.copy(pose.quaternion);
+    }
 
-    if (mode === 'walk' && pointerInside && now - lastPick > 50) {
+    panels.forEach((panel, index) => setBend(panel, panel.bend + ((mode === 'focus' && index === focused ? 1 : 0) - panel.bend) * follow(4)));
+
+    if (mode === 'walk' && pointerInside && !progressFlight && now - lastPick > 50) {
       lastPick = now;
       setHovered(pick(client.x, client.y));
     }
@@ -353,24 +435,38 @@ export const createCorridorScene = (options: CorridorSceneOptions): CorridorScen
   frameId = requestAnimationFrame(tick);
 
   return {
-    setProgress: (next) => { targetProgress = THREE.MathUtils.clamp(next, 0, 1); },
+    setProgress: (next) => {
+      targetProgress = THREE.MathUtils.clamp(next, 0, 1);
+      if (!progressFlight) return;
+      // A scroll that does not match the running flight is the user taking over.
+      if (Math.abs(targetProgress - progressFlight.to) > 0.002) progressFlight = null;
+    },
+    flyTo: (next) => {
+      const to = THREE.MathUtils.clamp(next, 0, 1);
+      targetProgress = to;
+      progressFlight = { from: progress, to, start: performance.now(), duration: flightSeconds(progress, to) * 1000 };
+    },
     focus: (index) => {
+      if (index === focused && mode === (index === null ? 'walk' : 'focus')) return;
+      startCameraFlight(index === null ? 1.1 : 1.4);
       focused = index;
       mode = index === null ? 'walk' : 'focus';
       if (index !== null) setHovered(null);
     },
     dive: (index) => {
+      startCameraFlight(1.1);
       mode = 'dive';
       diveTarget = index;
       setHovered(null);
-      return new Promise((resolve) => { window.setTimeout(resolve, reducedMotion ? 0 : 900); });
+      return new Promise((resolve) => { window.setTimeout(resolve, 1050); });
     },
     setTheme: (dark) => {
       colors = themeColors(dark);
       scene.background = colors.background;
       (scene.fog as THREE.Fog).color = colors.background;
-      tunnelMaterial.color = colors.line;
-      tunnelMaterial.opacity = colors.lineOpacity;
+      wallMaterial.color = colors.wall;
+      lineMaterial.color = colors.line;
+      lineMaterial.opacity = colors.lineOpacity;
       bloom.enabled = dark;
     },
     dispose: () => {
@@ -379,8 +475,10 @@ export const createCorridorScene = (options: CorridorSceneOptions): CorridorScen
       container.removeEventListener('pointermove', onPointerMove);
       container.removeEventListener('pointerleave', onPointerLeave);
       container.removeEventListener('click', onClick);
-      tunnel.geometry.dispose();
-      tunnelMaterial.dispose();
+      lineGeometry.dispose();
+      faceGeometry.dispose();
+      lineMaterial.dispose();
+      wallMaterial.dispose();
       panels.forEach(({ mesh }) => {
         mesh.geometry.dispose();
         mesh.material.map?.dispose();

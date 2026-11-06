@@ -7,7 +7,7 @@ export const FIRST_ITEM_AT = 20;
 export const CAMERA_START = 2;
 const LEAD = 8;
 const END_VIEW_DISTANCE = 8;
-const SURFACE_CYCLE: Surface[] = ['left', 'right', 'ceiling', 'right', 'left', 'floor'];
+const SURFACE_CYCLE: Surface[] = ['right', 'left', 'ceiling', 'left', 'right', 'floor'];
 
 export interface CorridorLayout {
   /** Distance along the curve where each item hangs. */
@@ -19,12 +19,17 @@ export interface CorridorLayout {
   tunnelLength: number;
 }
 
-export const corridorLayout = (count: number): CorridorLayout => {
+/** `wallOnly` items (text panels) stay on the side walls so they read head-on. */
+export const corridorLayout = (count: number, wallOnly: (index: number) => boolean = () => false): CorridorLayout => {
   const itemDistance = Array.from({ length: count }, (_, index) => FIRST_ITEM_AT + index * SPACING);
   const last = itemDistance[count - 1] ?? FIRST_ITEM_AT;
   const cameraEnd = Math.max(CAMERA_START + 1, last - END_VIEW_DISTANCE);
   const span = cameraEnd - CAMERA_START;
-  const surfaces = itemDistance.map((_, index) => (index === count - 1 ? 'end' : SURFACE_CYCLE[index % SURFACE_CYCLE.length]!));
+  const surfaces = itemDistance.map((_, index): Surface => {
+    if (index === count - 1) return 'end';
+    if (wallOnly(index)) return index % 2 === 0 ? 'right' : 'left';
+    return SURFACE_CYCLE[index % SURFACE_CYCLE.length]!;
+  });
   const stops = itemDistance.map((distance, index) => {
     const lead = index === count - 1 ? END_VIEW_DISTANCE : LEAD;
     return Math.min(1, Math.max(0, (distance - lead - CAMERA_START) / span));
@@ -39,3 +44,10 @@ export const activeIndexFor = (progress: number, stops: number[]): number => {
   }
   return best;
 };
+
+/** Smooth start and stop for camera flights. */
+export const easeInOutCubic = (t: number) => (t < 0.5 ? 4 * t * t * t : 1 - (-2 * t + 2) ** 3 / 2);
+
+/** Longer jumps along the corridor get more flight time, within a readable range. */
+export const flightSeconds = (fromProgress: number, toProgress: number) =>
+  Math.min(2.6, 0.9 + Math.abs(toProgress - fromProgress) * 3.2);
