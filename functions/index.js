@@ -79,6 +79,9 @@ const siteRebuildProvider = defineString('SITE_REBUILD_PROVIDER', { default: 'ge
 const configuredAdminEmail = defineString('ACKARACA_ADMIN_EMAIL', { default: '' });
 
 const FUNCTION_REGION = 'europe-west1';
+// Dedicated least-privilege runtime identity (see README). GCLOUD_PROJECT is set by the CLI at
+// deploy discovery and by the platform at runtime, so a missing value fails the deploy loudly.
+const FUNCTIONS_SERVICE_ACCOUNT = `ackaracame-functions@${process.env.GCLOUD_PROJECT}.iam.gserviceaccount.com`;
 const RATE_LIMIT_WINDOW_MS = 60 * 60 * 1000;
 const RATE_LIMIT_RETENTION_MS = 48 * 60 * 60 * 1000;
 const MAX_INQUIRIES_PER_IP = 5;
@@ -668,6 +671,7 @@ const dispatchSiteRebuildQueue = async ({
 
 const authBlockingOptions = {
   region: FUNCTION_REGION,
+  serviceAccount: FUNCTIONS_SERVICE_ACCOUNT,
   // Identity Platform blocking functions have a hard seven-second ceiling.
   timeoutSeconds: 7,
   memory: '256MiB',
@@ -827,6 +831,7 @@ const createFirestoreAuditHandler = (entity, { automaticRebuild = false } = {}) 
 const firestoreAuditOptions = (collectionName, { automaticRebuild = false } = {}) => ({
   document: `${collectionName}/{documentId}`,
   region: FUNCTION_REGION,
+  serviceAccount: FUNCTIONS_SERVICE_ACCOUNT,
   retry: true,
   timeoutSeconds: 60,
   memory: '256MiB',
@@ -856,6 +861,7 @@ export const auditInquiryWrites = onDocumentWrittenWithAuthContext(
 export const dispatchAutomaticRebuilds = onDocumentWrittenWithAuthContext({
   document: REBUILD_DISPATCH_SIGNAL_PATH,
   region: FUNCTION_REGION,
+  serviceAccount: FUNCTIONS_SERVICE_ACCOUNT,
   retry: true,
   timeoutSeconds: 300,
   memory: '256MiB',
@@ -898,6 +904,7 @@ export const dispatchAutomaticRebuilds = onDocumentWrittenWithAuthContext({
 export const auditAdminMediaUploads = onObjectFinalized({
   bucket: storageBucket,
   region: FUNCTION_REGION,
+  serviceAccount: FUNCTIONS_SERVICE_ACCOUNT,
   retry: true,
   memory: '256MiB',
   maxInstances: 10
@@ -998,6 +1005,7 @@ export const submitInquiry = onCall({
   consumeAppCheckToken: true,
   secrets: [rateLimitSalt],
   region: FUNCTION_REGION,
+  serviceAccount: FUNCTIONS_SERVICE_ACCOUNT,
   timeoutSeconds: 15,
   memory: '256MiB',
   maxInstances: 20
@@ -1086,6 +1094,7 @@ export const getPublishedPafta = onCall({
   consumeAppCheckToken: true,
   secrets: [rateLimitSalt],
   region: FUNCTION_REGION,
+  serviceAccount: FUNCTIONS_SERVICE_ACCOUNT,
   timeoutSeconds: 15,
   memory: '256MiB',
   maxInstances: 20
@@ -1130,6 +1139,7 @@ export const promoteMedia = onCall({
   enforceAppCheck: true,
   consumeAppCheckToken: true,
   region: FUNCTION_REGION,
+  serviceAccount: FUNCTIONS_SERVICE_ACCOUNT,
   timeoutSeconds: 60,
   memory: '256MiB',
   maxInstances: 5
@@ -1351,6 +1361,7 @@ export const deletePromotedMedia = onCall({
   enforceAppCheck: true,
   consumeAppCheckToken: true,
   region: FUNCTION_REGION,
+  serviceAccount: FUNCTIONS_SERVICE_ACCOUNT,
   timeoutSeconds: 30,
   memory: '256MiB',
   maxInstances: 5
@@ -1507,6 +1518,7 @@ export const collectOrphanedMedia = onSchedule({
   schedule: '17 3 * * *',
   timeZone: 'Europe/Berlin',
   region: FUNCTION_REGION,
+  serviceAccount: FUNCTIONS_SERVICE_ACCOUNT,
   timeoutSeconds: 540,
   memory: '512MiB',
   maxInstances: 1,
@@ -1809,6 +1821,7 @@ export const requestSiteRebuild = onCall({
   consumeAppCheckToken: true,
   secrets: [siteRebuildWebhookUrl, siteRebuildWebhookToken],
   region: FUNCTION_REGION,
+  serviceAccount: FUNCTIONS_SERVICE_ACCOUNT,
   timeoutSeconds: 120,
   memory: '256MiB',
   maxInstances: 3
@@ -1885,6 +1898,7 @@ export const getSiteRebuildStatus = onCall({
   enforceAppCheck: true,
   consumeAppCheckToken: true,
   region: FUNCTION_REGION,
+  serviceAccount: FUNCTIONS_SERVICE_ACCOUNT,
   timeoutSeconds: 15,
   memory: '256MiB',
   maxInstances: 5
@@ -1916,6 +1930,7 @@ export const getLatestSiteRebuildStatus = onCall({
   enforceAppCheck: true,
   consumeAppCheckToken: true,
   region: FUNCTION_REGION,
+  serviceAccount: FUNCTIONS_SERVICE_ACCOUNT,
   timeoutSeconds: 15,
   memory: '256MiB',
   maxInstances: 5
@@ -1942,6 +1957,7 @@ export const seedContent = onCall({
   enforceAppCheck: true,
   consumeAppCheckToken: true,
   region: FUNCTION_REGION,
+  serviceAccount: FUNCTIONS_SERVICE_ACCOUNT,
   timeoutSeconds: 120,
   memory: '512MiB',
   maxInstances: 2

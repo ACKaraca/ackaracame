@@ -35,6 +35,13 @@ test('every admin callable awaits the owner-policy-backed admin check', () => {
   assert.match(source.slice(start, source.indexOf('\n};', start)), /db\.doc\(OWNER_POLICY_PATH\)\.get\(\)/u);
 });
 
+test('every function runs as the dedicated least-privilege service account', () => {
+  const source = fs.readFileSync(new URL('./index.js', import.meta.url), 'utf8');
+  const regions = (source.match(/region: FUNCTION_REGION,/gu) || []).length;
+  assert(regions >= 13);
+  assert.equal((source.match(/serviceAccount: FUNCTIONS_SERVICE_ACCOUNT,/gu) || []).length, regions);
+});
+
 test('the manual rebuild callable delegates to the shared dispatcher', () => {
   const source = fs.readFileSync(new URL('./index.js', import.meta.url), 'utf8');
   const start = source.indexOf('export const requestSiteRebuild');
