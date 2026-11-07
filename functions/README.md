@@ -18,8 +18,11 @@ claim on another account therefore remains denied.
 - Enable App Check for the web app and Cloud Functions. Configure a debug token
   only for local development; never ship it in the production bundle.
 - Replay-protected callables use limited-use App Check tokens. Grant the
-  **Firebase App Check Token Verifier** IAM role to the 2nd-gen Functions default
-  compute service account, and keep `{ limitedUseAppCheckTokens: true }` on every
+  **Firebase App Check Token Verifier** IAM role to the dedicated runtime service
+  account `ackaracame-functions@<project>.iam.gserviceaccount.com` (every function
+  sets it as `serviceAccount`; it holds only datastore.user, bucket objectAdmin,
+  secretAccessor on the three secrets, eventarc.eventReceiver, run.invoker and
+  logging/monitoring writer), and keep `{ limitedUseAppCheckTokens: true }` on every
   matching web callable. Follow Firebase's
   [Cloud Functions App Check guide](https://firebase.google.com/docs/app-check/cloud-functions)
   when changing the runtime identity.

@@ -25,6 +25,23 @@ test('the production Functions module loads with valid endpoint options', async 
   ]);
 });
 
+test('every admin callable awaits the owner-policy-backed admin check', () => {
+  const source = fs.readFileSync(new URL('./index.js', import.meta.url), 'utf8');
+  const calls = source.match(/assertVerifiedAdmin\(request\)/gu) || [];
+  assert.equal(calls.length, 6);
+  assert.equal((source.match(/await assertVerifiedAdmin\(request\)/gu) || []).length, calls.length);
+  const start = source.indexOf('const assertVerifiedAdmin = async');
+  assert(start >= 0);
+  assert.match(source.slice(start, source.indexOf('\n};', start)), /db\.doc\(OWNER_POLICY_PATH\)\.get\(\)/u);
+});
+
+test('every function runs as the dedicated least-privilege service account', () => {
+  const source = fs.readFileSync(new URL('./index.js', import.meta.url), 'utf8');
+  const regions = (source.match(/region: FUNCTION_REGION,/gu) || []).length;
+  assert(regions >= 13);
+  assert.equal((source.match(/serviceAccount: FUNCTIONS_SERVICE_ACCOUNT,/gu) || []).length, regions);
+});
+
 test('the manual rebuild callable delegates to the shared dispatcher', () => {
   const source = fs.readFileSync(new URL('./index.js', import.meta.url), 'utf8');
   const start = source.indexOf('export const requestSiteRebuild');

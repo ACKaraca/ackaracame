@@ -79,6 +79,9 @@ const siteRebuildProvider = defineString('SITE_REBUILD_PROVIDER', { default: 'ge
 const configuredAdminEmail = defineString('ACKARACA_ADMIN_EMAIL', { default: '' });
 
 const FUNCTION_REGION = 'europe-west1';
+// Dedicated least-privilege runtime identity (see README). GCLOUD_PROJECT is set by the CLI at
+// deploy discovery and by the platform at runtime, so a missing value fails the deploy loudly.
+const FUNCTIONS_SERVICE_ACCOUNT = `ackaracame-functions@${process.env.GCLOUD_PROJECT}.iam.gserviceaccount.com`;
 const RATE_LIMIT_WINDOW_MS = 60 * 60 * 1000;
 const RATE_LIMIT_RETENTION_MS = 48 * 60 * 60 * 1000;
 const MAX_INQUIRIES_PER_IP = 5;
@@ -105,6 +108,8 @@ const MEDIA_GC_LEASE_MS = 11 * 60 * 1000;
 const MEDIA_DELETE_LEASE_MS = 60 * 1000;
 const MEDIA_DELETE_CAPABILITY_LIFETIME_MS = 2 * 60 * 60 * 1000;
 
+const OWNER_POLICY_PATH = 'systemPolicies/owner-access';
+
 const callableCors = [
   /^https:\/\/([a-z0-9-]+\.)?ackaraca\.me$/u,
   /^https:\/\/[a-z0-9-]+\.(web\.app|firebaseapp\.com)$/u,
@@ -127,9 +132,13 @@ const toHttpsValidationError = (error) => {
   return error;
 };
 
-const assertVerifiedAdmin = (request) => {
+const assertVerifiedAdmin = async (request) => {
   const token = request.auth?.token;
   const candidateEmail = typeof token?.email === 'string' ? token.email : '';
+  const denied = () => new HttpsError(
+    'permission-denied',
+    'A verified administrator session authenticated with TOTP is required.'
+  );
   if (
     !request.auth?.uid
     || token?.admin !== true
@@ -137,10 +146,12 @@ const assertVerifiedAdmin = (request) => {
     || token?.firebase?.sign_in_second_factor !== 'totp'
     || !isAllowedAdminAccountEmail(configuredAdminEmail.value(), candidateEmail)
   ) {
-    throw new HttpsError(
-      'permission-denied',
-      'A verified administrator session authenticated with TOTP is required.'
-    );
+    throw denied();
+  }
+  // Mirror the rules' isConfiguredOwner(): a revoked owner binding fails closed before the token expires.
+  const owner = (await db.doc(OWNER_POLICY_PATH).get()).data();
+  if (owner?.schemaVersion !== 1 || owner.uid !== request.auth.uid || owner.email !== candidateEmail) {
+    throw denied();
   }
 
   return {
@@ -660,6 +671,7 @@ const dispatchSiteRebuildQueue = async ({
 
 const authBlockingOptions = {
   region: FUNCTION_REGION,
+  serviceAccount: FUNCTIONS_SERVICE_ACCOUNT,
   // Identity Platform blocking functions have a hard seven-second ceiling.
   timeoutSeconds: 7,
   memory: '256MiB',
@@ -819,6 +831,7 @@ const createFirestoreAuditHandler = (entity, { automaticRebuild = false } = {}) 
 const firestoreAuditOptions = (collectionName, { automaticRebuild = false } = {}) => ({
   document: `${collectionName}/{documentId}`,
   region: FUNCTION_REGION,
+  serviceAccount: FUNCTIONS_SERVICE_ACCOUNT,
   retry: true,
   timeoutSeconds: 60,
   memory: '256MiB',
@@ -848,6 +861,7 @@ export const auditInquiryWrites = onDocumentWrittenWithAuthContext(
 export const dispatchAutomaticRebuilds = onDocumentWrittenWithAuthContext({
   document: REBUILD_DISPATCH_SIGNAL_PATH,
   region: FUNCTION_REGION,
+  serviceAccount: FUNCTIONS_SERVICE_ACCOUNT,
   retry: true,
   timeoutSeconds: 300,
   memory: '256MiB',
@@ -890,6 +904,7 @@ export const dispatchAutomaticRebuilds = onDocumentWrittenWithAuthContext({
 export const auditAdminMediaUploads = onObjectFinalized({
   bucket: storageBucket,
   region: FUNCTION_REGION,
+  serviceAccount: FUNCTIONS_SERVICE_ACCOUNT,
   retry: true,
   memory: '256MiB',
   maxInstances: 10
@@ -990,6 +1005,7 @@ export const submitInquiry = onCall({
   consumeAppCheckToken: true,
   secrets: [rateLimitSalt],
   region: FUNCTION_REGION,
+  serviceAccount: FUNCTIONS_SERVICE_ACCOUNT,
   timeoutSeconds: 15,
   memory: '256MiB',
   maxInstances: 20
@@ -1078,6 +1094,7 @@ export const getPublishedPafta = onCall({
   consumeAppCheckToken: true,
   secrets: [rateLimitSalt],
   region: FUNCTION_REGION,
+  serviceAccount: FUNCTIONS_SERVICE_ACCOUNT,
   timeoutSeconds: 15,
   memory: '256MiB',
   maxInstances: 20
@@ -1122,6 +1139,7 @@ export const promoteMedia = onCall({
   enforceAppCheck: true,
   consumeAppCheckToken: true,
   region: FUNCTION_REGION,
+  serviceAccount: FUNCTIONS_SERVICE_ACCOUNT,
   timeoutSeconds: 60,
   memory: '256MiB',
   maxInstances: 5
@@ -1129,7 +1147,7 @@ export const promoteMedia = onCall({
   if (request.app?.alreadyConsumed === true) {
     throw new HttpsError('permission-denied', 'A fresh App Check token is required.');
   }
-  const actor = assertVerifiedAdmin(request);
+  const actor = await assertVerifiedAdmin(request);
   let promotion;
   try {
     promotion = validatePromoteMedia(request.data || {});
@@ -1343,6 +1361,7 @@ export const deletePromotedMedia = onCall({
   enforceAppCheck: true,
   consumeAppCheckToken: true,
   region: FUNCTION_REGION,
+  serviceAccount: FUNCTIONS_SERVICE_ACCOUNT,
   timeoutSeconds: 30,
   memory: '256MiB',
   maxInstances: 5
@@ -1350,7 +1369,7 @@ export const deletePromotedMedia = onCall({
   if (request.app?.alreadyConsumed === true) {
     throw new HttpsError('permission-denied', 'A fresh App Check token is required.');
   }
-  const actor = assertVerifiedAdmin(request);
+  const actor = await assertVerifiedAdmin(request);
   let deletion;
   try {
     deletion = validateDeletePromotedMedia(request.data || {});
@@ -1499,6 +1518,7 @@ export const collectOrphanedMedia = onSchedule({
   schedule: '17 3 * * *',
   timeZone: 'Europe/Berlin',
   region: FUNCTION_REGION,
+  serviceAccount: FUNCTIONS_SERVICE_ACCOUNT,
   timeoutSeconds: 540,
   memory: '512MiB',
   maxInstances: 1,
@@ -1801,6 +1821,7 @@ export const requestSiteRebuild = onCall({
   consumeAppCheckToken: true,
   secrets: [siteRebuildWebhookUrl, siteRebuildWebhookToken],
   region: FUNCTION_REGION,
+  serviceAccount: FUNCTIONS_SERVICE_ACCOUNT,
   timeoutSeconds: 120,
   memory: '256MiB',
   maxInstances: 3
@@ -1808,7 +1829,7 @@ export const requestSiteRebuild = onCall({
   if (request.app?.alreadyConsumed === true) {
     throw new HttpsError('permission-denied', 'A fresh App Check token is required.');
   }
-  const actor = assertVerifiedAdmin(request);
+  const actor = await assertVerifiedAdmin(request);
   let rebuildRequest;
   try {
     rebuildRequest = validateRebuildRequest(request.data || {});
@@ -1877,6 +1898,7 @@ export const getSiteRebuildStatus = onCall({
   enforceAppCheck: true,
   consumeAppCheckToken: true,
   region: FUNCTION_REGION,
+  serviceAccount: FUNCTIONS_SERVICE_ACCOUNT,
   timeoutSeconds: 15,
   memory: '256MiB',
   maxInstances: 5
@@ -1884,7 +1906,7 @@ export const getSiteRebuildStatus = onCall({
   if (request.app?.alreadyConsumed === true) {
     throw new HttpsError('permission-denied', 'A fresh App Check token is required.');
   }
-  assertVerifiedAdmin(request);
+  await assertVerifiedAdmin(request);
   const input = request.data;
   if (
     input === null
@@ -1908,6 +1930,7 @@ export const getLatestSiteRebuildStatus = onCall({
   enforceAppCheck: true,
   consumeAppCheckToken: true,
   region: FUNCTION_REGION,
+  serviceAccount: FUNCTIONS_SERVICE_ACCOUNT,
   timeoutSeconds: 15,
   memory: '256MiB',
   maxInstances: 5
@@ -1915,7 +1938,7 @@ export const getLatestSiteRebuildStatus = onCall({
   if (request.app?.alreadyConsumed === true) {
     throw new HttpsError('permission-denied', 'A fresh App Check token is required.');
   }
-  assertVerifiedAdmin(request);
+  await assertVerifiedAdmin(request);
   const input = request.data;
   if (
     input !== undefined
@@ -1934,6 +1957,7 @@ export const seedContent = onCall({
   enforceAppCheck: true,
   consumeAppCheckToken: true,
   region: FUNCTION_REGION,
+  serviceAccount: FUNCTIONS_SERVICE_ACCOUNT,
   timeoutSeconds: 120,
   memory: '512MiB',
   maxInstances: 2
@@ -1941,7 +1965,7 @@ export const seedContent = onCall({
   if (request.app?.alreadyConsumed === true) {
     throw new HttpsError('permission-denied', 'A fresh App Check token is required.');
   }
-  const actor = assertVerifiedAdmin(request);
+  const actor = await assertVerifiedAdmin(request);
   let command;
   let entries;
 

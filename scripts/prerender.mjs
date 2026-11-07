@@ -14,16 +14,18 @@ const escapeAttribute = (value) => value
   .replaceAll('>', '&gt;');
 
 const escapeJson = (value) => JSON.stringify(value).replaceAll('<', '\\u003c');
+// String.prototype.replace treats "$&", "$`" and "$'" in a string replacement as patterns; a function does not.
+const literal = (value) => () => value;
 
 const replaceMeta = (html, attribute, value, replacement) => {
   const pattern = new RegExp(`<meta\\s+${attribute}=["']${value}["'][^>]*>`, 'i');
-  return pattern.test(html) ? html.replace(pattern, replacement) : html.replace('</head>', `    ${replacement}\n  </head>`);
+  return pattern.test(html) ? html.replace(pattern, literal(replacement)) : html.replace('</head>', literal(`    ${replacement}\n  </head>`));
 };
 
 const applyHead = (html, meta) => {
   let output = html.replace(/<html([^>]*)\slang=["'][^"']*["']/i, `<html$1 lang="${meta.locale ?? 'tr'}"`);
-  output = output.replace(/<title>[^<]*<\/title>/i, `<title>${escapeAttribute(meta.title)}</title>`);
-  output = output.replace(/<link\s+rel=["']canonical["'][^>]*>/i, `<link rel="canonical" href="${escapeAttribute(meta.canonical)}" />`);
+  output = output.replace(/<title>[^<]*<\/title>/i, literal(`<title>${escapeAttribute(meta.title)}</title>`));
+  output = output.replace(/<link\s+rel=["']canonical["'][^>]*>/i, literal(`<link rel="canonical" href="${escapeAttribute(meta.canonical)}" />`));
   output = output.replace(/\s*<link\s+rel=["']alternate["'][^>]*hreflang=["'](?:tr|en|x-default)["'][^>]*>/gi, '');
   if (meta.alternates) {
     const localeLinks = [
@@ -31,7 +33,7 @@ const applyHead = (html, meta) => {
       ['en', meta.alternates.en],
       ['x-default', meta.alternates.xDefault],
     ].map(([hrefLang, href]) => `<link rel="alternate" hreflang="${hrefLang}" href="${escapeAttribute(href)}" />`).join('\n    ');
-    output = output.replace('</head>', `    ${localeLinks}\n  </head>`);
+    output = output.replace('</head>', literal(`    ${localeLinks}\n  </head>`));
   }
   output = replaceMeta(output, 'name', 'description', `<meta name="description" content="${escapeAttribute(meta.description)}" />`);
   output = output.replace(/<meta\s+name=["']robots["'][^>]*>/i, `<meta name="robots" content="${meta.noIndex ? 'noindex, nofollow' : 'index, follow, max-image-preview:large'}" />`);
@@ -44,21 +46,21 @@ const applyHead = (html, meta) => {
   for (const [property, content] of openGraph) {
     const pattern = new RegExp(`<meta\\s+property=["']${property}["'][^>]*>`, 'i');
     const tag = `<meta property="${property}" content="${escapeAttribute(content)}" />`;
-    output = pattern.test(output) ? output.replace(pattern, tag) : output.replace('</head>', `    ${tag}\n  </head>`);
+    output = pattern.test(output) ? output.replace(pattern, literal(tag)) : output.replace('</head>', literal(`    ${tag}\n  </head>`));
   }
   for (const [name, content] of [['twitter:title', meta.title], ['twitter:description', meta.description]]) {
     const pattern = new RegExp(`<meta\\s+name=["']${name}["'][^>]*>`, 'i');
     const tag = `<meta name="${name}" content="${escapeAttribute(content)}" />`;
-    output = pattern.test(output) ? output.replace(pattern, tag) : output.replace('</head>', `    ${tag}\n  </head>`);
+    output = pattern.test(output) ? output.replace(pattern, literal(tag)) : output.replace('</head>', literal(`    ${tag}\n  </head>`));
   }
-  if (meta.structuredData) output = output.replace('</head>', `    <script type="application/ld+json" data-ack-structured-data="true">${escapeJson(meta.structuredData)}</script>\n  </head>`);
+  if (meta.structuredData) output = output.replace('</head>', literal(`    <script type="application/ld+json" data-ack-structured-data="true">${escapeJson(meta.structuredData)}</script>\n  </head>`));
   return output;
 };
 
 for (const path of staticPaths) {
   const markup = render(path);
   const meta = resolveMeta(path);
-  const page = applyHead(template, meta).replace('<div id="root"></div>', `<div id="root">${markup}</div>`);
+  const page = applyHead(template, meta).replace('<div id="root"></div>', literal(`<div id="root">${markup}</div>`));
   const destination = path === '/' ? join(dist, 'index.html') : join(dist, path.slice(1), 'index.html');
   await mkdir(dirname(destination), { recursive: true });
   await writeFile(destination, page);

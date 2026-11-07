@@ -24,6 +24,9 @@ const run = (command, args, { capture = false } = {}) => {
 
 const main = () => {
   const projectId = requireInput('FIREBASE_PROJECT_ID');
+  if (!/^[a-z][a-z0-9-]{4,28}[a-z0-9]$/u.test(projectId)) {
+    throw new Error('FIREBASE_PROJECT_ID is not a valid Firebase project ID.');
+  }
   const expectedConfirmation = `retire:adminLoginGuard,seedContent:${projectId}`;
   if (requireInput('CONFIRM_LEGACY_FUNCTION_MIGRATION') !== expectedConfirmation) {
     throw new Error(`CONFIRM_LEGACY_FUNCTION_MIGRATION must equal ${expectedConfirmation}.`);
