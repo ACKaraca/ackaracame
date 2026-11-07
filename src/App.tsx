@@ -6,6 +6,7 @@ import { SiteHeader } from './components/layout/SiteHeader';
 import { AppPreferencesProvider, useAppPreferences } from './context/AppPreferences';
 import { ContentProvider, useContent } from './context/Content';
 import { siteSettings } from './data/portfolio';
+import { CORRIDOR_PAGES, useViewMode, type CorridorPage } from './lib/viewMode';
 import { ENGLISH_PREFIX, isLocaleNeutralPublicPath, localeFromPath, localePath, stripLocalePrefix } from './lib/localeRouting';
 
 const HomePage = lazy(() => import('./pages/HomePage'));
@@ -23,6 +24,12 @@ const LegacyPaftaPage = lazy(() => import('./pages/LegacyPaftaPage'));
 const StudioRoute = lazy(() => import('./pages/StudioRoute'));
 const StudioMfaSetupPage = lazy(() => import('./pages/StudioMfaSetupPage'));
 const NotFoundPage = lazy(() => import('./pages/NotFoundPage'));
+
+const isCorridorPage = (path: string): path is `/${CorridorPage}` => (CORRIDOR_PAGES as readonly string[]).includes(path.slice(1));
+
+/** Sub-pages show their corridor version unless the visitor chose the classic site. */
+const ViewRoute = ({ page, children }: PropsWithChildren<{ page: CorridorPage }>) =>
+  useViewMode() === 'corridor' ? <HomePage page={page} /> : children;
 
 const LoadingSurface = () => <main id="main-content" className="route-loading" tabIndex={-1} aria-busy="true" aria-live="polite"><span aria-hidden="true" /><span className="sr-only">Loading</span></main>;
 
@@ -105,18 +112,18 @@ const PublicRoutes = () => {
 
   return (
     <Switch>
-      <Route path="/" component={HomePage} />
+      <Route path="/">{() => <HomePage />}</Route>
       <Route path="/classic" component={ClassicHomePage} />
-      <Route path="/work" component={WorkPage} />
+      <Route path="/work">{() => <ViewRoute page="work"><WorkPage /></ViewRoute>}</Route>
       <Route path="/work/:slug" component={ProjectPage} />
-      <Route path="/about" component={AboutPage} />
-      <Route path="/lab" component={LabPage} />
+      <Route path="/about">{() => <ViewRoute page="about"><AboutPage /></ViewRoute>}</Route>
+      <Route path="/lab">{() => <ViewRoute page="lab"><LabPage /></ViewRoute>}</Route>
       <Route path="/lab/:slug">{() => <JournalEntryPage base="lab" />}</Route>
-      <Route path="/journal" component={JournalPage} />
+      <Route path="/journal">{() => <ViewRoute page="journal"><JournalPage /></ViewRoute>}</Route>
       <Route path="/journal/:slug">{() => <JournalEntryPage base="journal" />}</Route>
-      <Route path="/contact" component={ContactPage} />
-      <Route path="/privacy">{() => <LegalPage kind="privacy" />}</Route>
-      <Route path="/terms">{() => <LegalPage kind="terms" />}</Route>
+      <Route path="/contact">{() => <ViewRoute page="contact"><ContactPage /></ViewRoute>}</Route>
+      <Route path="/privacy">{() => <ViewRoute page="privacy"><LegalPage kind="privacy" /></ViewRoute>}</Route>
+      <Route path="/terms">{() => <ViewRoute page="terms"><LegalPage kind="terms" /></ViewRoute>}</Route>
       {permanentRoutes ? <Route path="/account-delete">{() => <LegalPage kind="account-deletion" />}</Route> : null}
       {permanentRoutes ? <Route path="/dua/news">{() => <LegalPage kind="dua-news" />}</Route> : null}
       {permanentRoutes ? <Route path="/wheretogo/news">{() => <LegalPage kind="wheretogo-news" />}</Route> : null}
@@ -154,7 +161,9 @@ const PublicRoutes = () => {
 const PublicFrame = () => {
   const { settings, projects, journal } = useContent();
   // The home corridor draws its own HUD in place of the site chrome.
-  const corridor = useLocation()[0] === '/';
+  const [location] = useLocation();
+  const viewMode = useViewMode();
+  const corridor = location === '/' || (viewMode === 'corridor' && isCorridorPage(location));
   return (
     <>
       <a className="skip-link" href="#main-content">İçeriğe geç / Skip to content</a>

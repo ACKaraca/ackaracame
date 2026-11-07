@@ -7,7 +7,7 @@ import { isAcceptingInquiries } from '../lib/availability';
 import { COMPANY_REGISTER_URL } from '../lib/company';
 
 
-const content = {
+export const aboutCopy = {
   tr: {
     eyebrow: 'Profil / yaklaşım',
     titleA: 'Mimarlık bana', titleB: 'nasıl bakacağımı;', titleC: 'yazılım nasıl sınayacağımı öğretti.',
@@ -48,10 +48,26 @@ const content = {
   },
 } as const;
 
+export const aboutPractice = (locale: 'tr' | 'en') => [
+    { icon: Compass, title: locale === 'tr' ? 'Araştırma & strateji' : 'Research & strategy', body: locale === 'tr' ? 'Problem çerçevesi, kullanıcı yolculuğu, bilgi mimarisi.' : 'Problem framing, user journeys, information architecture.' },
+    { icon: Building2, title: locale === 'tr' ? 'Mimari düşünce' : 'Architectural thinking', body: locale === 'tr' ? 'Mekân, bağlam, hiyerarşi ve sunum sistemleri.' : 'Space, context, hierarchy, and presentation systems.' },
+    { icon: Box, title: locale === 'tr' ? 'Ürün tasarımı' : 'Product design', body: locale === 'tr' ? 'Etkileşim, prototip, içerik ve tasarım sistemi.' : 'Interaction, prototyping, content, and design systems.' },
+    { icon: Braces, title: locale === 'tr' ? 'Ürün mühendisliği' : 'Product engineering', body: locale === 'tr' ? 'React, TypeScript, Firebase, Appwrite ve Python.' : 'React, TypeScript, Firebase, Appwrite, and Python.' },
+];
+
+export const aboutPrinciples = (locale: 'tr' | 'en') => {
+  const t = aboutCopy[locale];
+  return [
+    { icon: Layers3, title: t.principle1, body: t.principle1Body },
+    { icon: Compass, title: t.principle2, body: t.principle2Body },
+    { icon: ShieldCheck, title: t.principle3, body: t.principle3Body },
+  ];
+};
+
 export default function AboutPage() {
   const { locale } = useAppPreferences();
   const { settings, projects } = useContent();
-  const t = content[locale];
+  const t = aboutCopy[locale];
   const representative = projects.find((project) => project.slug === 'archbuilder') ?? projects[0];
   const representativeCover = representative?.media.find((media) => media.role === 'cover' && media.assetState === 'ready' && media.src);
   const acceptingInquiries = isAcceptingInquiries(settings.availability);
@@ -64,18 +80,8 @@ export default function AboutPage() {
     type: 'profile',
   });
 
-  const practiceAreas = [
-    { icon: Compass, title: locale === 'tr' ? 'Araştırma & strateji' : 'Research & strategy', body: locale === 'tr' ? 'Problem çerçevesi, kullanıcı yolculuğu, bilgi mimarisi.' : 'Problem framing, user journeys, information architecture.' },
-    { icon: Building2, title: locale === 'tr' ? 'Mimari düşünce' : 'Architectural thinking', body: locale === 'tr' ? 'Mekân, bağlam, hiyerarşi ve sunum sistemleri.' : 'Space, context, hierarchy, and presentation systems.' },
-    { icon: Box, title: locale === 'tr' ? 'Ürün tasarımı' : 'Product design', body: locale === 'tr' ? 'Etkileşim, prototip, içerik ve tasarım sistemi.' : 'Interaction, prototyping, content, and design systems.' },
-    { icon: Braces, title: locale === 'tr' ? 'Ürün mühendisliği' : 'Product engineering', body: locale === 'tr' ? 'React, TypeScript, Firebase, Appwrite ve Python.' : 'React, TypeScript, Firebase, Appwrite, and Python.' },
-  ];
-
-  const principles = [
-    { icon: Layers3, title: t.principle1, body: t.principle1Body },
-    { icon: Compass, title: t.principle2, body: t.principle2Body },
-    { icon: ShieldCheck, title: t.principle3, body: t.principle3Body },
-  ];
+  const practiceAreas = aboutPractice(locale);
+  const principles = aboutPrinciples(locale);
 
   return (
     <main id="main-content" tabIndex={-1} className="page about-page">

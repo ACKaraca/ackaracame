@@ -11,6 +11,7 @@ import { ProjectCard } from '../components/projects/ProjectCard';
 import { useDocumentMeta } from '../hooks/useDocumentMeta';
 import { usePointerGlow } from '../hooks/usePointerGlow';
 import { availabilityLabel, isAcceptingInquiries } from '../lib/availability';
+import { setViewMode } from '../lib/viewMode';
 
 const copy = {
   tr: {
@@ -112,6 +113,7 @@ const HOME_PROJECT_SLUGS = ['draw-or-die', 'archbuilder', 'peakactivity', 'attal
 const HERO_SEARCH_ENABLED = false;
 
 export default function ClassicHomePage() {
+  useEffect(() => { setViewMode('classic'); }, []);
   const { settings, projects } = useContent();
   const { locale, motionEnabled } = useAppPreferences();
   const t = copy[locale];

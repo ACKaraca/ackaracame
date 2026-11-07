@@ -14,7 +14,7 @@ const PAD = 120;
 /** Total turn of the curled strip, in radians. */
 const MAX_CURL = 2.2;
 /** >1 keeps the near end straight and concentrates the bend toward the far end. */
-const CURL_EASE = 1.7;
+const CURL_EASE = 1.35;
 const GAP = 90;
 const FONT = '"Manrope Variable", system-ui, sans-serif';
 

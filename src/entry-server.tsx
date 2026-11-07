@@ -46,7 +46,7 @@ const StaticRoutes = () => {
   const permanentRoutes = base !== ENGLISH_PREFIX;
   return (
     <Switch>
-      <Route path="/" component={HomePage} />
+      <Route path="/">{() => <HomePage />}</Route>
       <Route path="/classic" component={ClassicHomePage} />
       <Route path="/work" component={WorkPage} />
       <Route path="/work/:slug" component={ProjectPage} />

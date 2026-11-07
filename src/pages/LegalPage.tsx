@@ -15,7 +15,7 @@ export type LegalPolicy = { eyebrow: LocalizedText; title: LocalizedText; intro:
 
 const localized = (tr: string, en: string): LocalizedText => ({ tr, en });
 
-const policies: Record<LegalPageKind, LegalPolicy> = {
+export const policies: Record<LegalPageKind, LegalPolicy> = {
   ...productPolicies,
   privacy: {
     eyebrow: localized('Yasal / web sitesi', 'Legal / website'),

@@ -4,12 +4,15 @@ export type Surface = 'left' | 'right' | 'ceiling' | 'floor' | 'end';
 export type Placement = 'wall' | 'overhead';
 
 export const SPACING = 14;
+/** Tighter rhythm for text-heavy corridors (sub-pages and project corridors). */
+export const DENSE_SPACING = 9;
 export const FIRST_ITEM_AT = 20;
 export const CAMERA_START = 2;
 const LEAD = 8;
 const END_VIEW_DISTANCE = 8;
 
 export interface CorridorLayout {
+  spacing: number;
   /** Distance along the curve where each item hangs. */
   itemDistance: number[];
   surfaces: Surface[];
@@ -23,8 +26,12 @@ export interface CorridorLayout {
  * Wall items alternate left/right among themselves, overhead items alternate ceiling/floor,
  * and the last item faces the camera at the end of the corridor.
  */
-export const corridorLayout = (count: number, placement: (index: number) => Placement = () => 'wall'): CorridorLayout => {
-  const itemDistance = Array.from({ length: count }, (_, index) => FIRST_ITEM_AT + index * SPACING);
+export const corridorLayout = (
+  count: number,
+  placement: (index: number) => Placement = () => 'wall',
+  spacing = SPACING,
+): CorridorLayout => {
+  const itemDistance = Array.from({ length: count }, (_, index) => FIRST_ITEM_AT + index * spacing);
   const last = itemDistance[count - 1] ?? FIRST_ITEM_AT;
   const cameraEnd = Math.max(CAMERA_START + 1, last - END_VIEW_DISTANCE);
   const span = cameraEnd - CAMERA_START;
@@ -39,7 +46,7 @@ export const corridorLayout = (count: number, placement: (index: number) => Plac
     const lead = index === count - 1 ? END_VIEW_DISTANCE : LEAD;
     return Math.min(1, Math.max(0, (distance - lead - CAMERA_START) / span));
   });
-  return { itemDistance, surfaces, stops, cameraEnd, tunnelLength: last + 12 };
+  return { spacing, itemDistance, surfaces, stops, cameraEnd, tunnelLength: last + 12 };
 };
 
 export const activeIndexFor = (progress: number, stops: number[]): number => {

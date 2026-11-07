@@ -22,6 +22,8 @@ export interface CorridorEntry {
   links?: PortfolioProject['links'];
   cta?: { label: string; href: string };
   extra?: { image: string; aspect: number };
+  /** Portal that leaves the corridor for the classic page. */
+  classic?: boolean;
 }
 
 const copy = {

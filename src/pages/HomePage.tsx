@@ -4,15 +4,17 @@ import { ArrowDown, ArrowLeft, ArrowRight, ArrowUpRight, ExternalLink, Moon, Sun
 import { Link, useLocation } from 'wouter';
 import { localize, useAppPreferences } from '../context/AppPreferences';
 import { useContent } from '../context/Content';
-import { activeIndexFor, corridorLayout, flightSeconds, titleScale } from '../components/corridor/corridorLayout';
+import { DENSE_SPACING, SPACING, activeIndexFor, corridorLayout, flightSeconds, titleScale } from '../components/corridor/corridorLayout';
 import type { CorridorScene, CorridorSceneItem } from '../components/corridor/CorridorScene';
 import type { MenuItem } from '../components/corridor/corridorMenu';
+import { projectCorridorEntries, type CorridorEntry } from '../components/corridor/projectCorridor';
 import {
-  coverImage, galleryImage, projectCategory, projectCorridorEntries, type CorridorEntry,
-} from '../components/corridor/projectCorridor';
+  NOTE_PALETTES, PAGE_PALETTES, companyEntry, corridorPageTitle, pageCorridorEntries, projectEntry,
+} from '../components/corridor/pageCorridors';
 import { useDocumentMeta } from '../hooks/useDocumentMeta';
 import { availabilityLabel, isAcceptingInquiries } from '../lib/availability';
 import { COMPANY_REGISTER_URL, company } from '../lib/company';
+import { setViewMode, type CorridorPage } from '../lib/viewMode';
 import { textParagraphs } from '../lib/projectLabels';
 import '../components/corridor/corridor.css';
 
@@ -42,6 +44,7 @@ const copy = {
     heading: 'Ahmet Cem Karaca — portfolyo',
     theme: 'Renk temasını değiştir',
     locale: 'Switch to English',
+    home: 'Ana koridor',
     privacy: 'Gizlilik',
     terms: 'Koşullar',
     cornerMenus: 'Site menüsü',
@@ -93,6 +96,7 @@ const copy = {
     heading: 'Ahmet Cem Karaca — portfolio',
     theme: 'Toggle colour theme',
     locale: 'Türkçeye geç',
+    home: 'Home',
     privacy: 'Privacy',
     terms: 'Terms',
     cornerMenus: 'Site menu',
@@ -121,32 +125,7 @@ const copy = {
   },
 } as const;
 
-const PAGE_PALETTES: string[][] = [['#5c74ff', '#45d0bf'], ['#e8a33d', '#ff5c8a'], ['#45d0bf', '#a6ff5c'], ['#93a7ff', '#ff5ce1'], ['#ff8a3d', '#5c74ff']];
-const NOTE_PALETTES: string[][] = [['#ff5c8a', '#e8a33d'], ['#45d0bf', '#5c74ff'], ['#a6ff5c', '#45d0bf'], ['#93a7ff', '#ff5ce1'], ['#e8a33d', '#ff8a3d']];
-
 const pad = (value: number) => String(value).padStart(2, '0');
-
-const companyEntry = (locale: 'tr' | 'en'): CorridorEntry => {
-  const c = company[locale];
-  return {
-    id: 'company',
-    kind: 'note',
-    title: company.name,
-    meta: c.heading,
-    body: c.summary,
-    aspect: 16 / 10,
-    palette: ['#45d0bf', '#5c74ff'],
-    rows: [
-      [c.numberLabel, company.number],
-      [c.statusLabel, c.status],
-      [c.typeLabel, c.type],
-      [c.incorporatedLabel, c.incorporated],
-      [c.addressLabel, company.address],
-      [c.activityLabel, c.activity],
-    ],
-    links: [{ kind: 'article', label: { tr: company.tr.register, en: company.en.register }, href: COMPANY_REGISTER_URL, newTab: true }],
-  };
-};
 
 const webglAvailable = () => {
   try {
@@ -206,7 +185,8 @@ const KineticTitle = ({ id, title }: { id: string; title: string }) => {
   );
 };
 
-export default function HomePage() {
+/** The corridor home, or (with `page`) the corridor presentation of a sub-page. */
+export default function HomePage({ page }: { page?: CorridorPage }) {
   const { settings, projects, journal, lab } = useContent();
   const { locale, setLocale, resolvedTheme, setTheme } = useAppPreferences();
   const [, navigate] = useLocation();
@@ -214,46 +194,32 @@ export default function HomePage() {
   const acceptingInquiries = isAcceptingInquiries(settings.availability);
 
   const mainEntries = useMemo<CorridorEntry[]>(() => {
-    const projectEntries = projects.map((project): CorridorEntry => {
-      const cover = coverImage(project);
-      const gallery = galleryImage(project);
-      return {
-        id: project.slug,
-        kind: 'project',
-        title: localize(project.title, locale),
-        meta: [projectCategory(project, locale), project.context ? localize(project.context, locale) : null, project.year].filter(Boolean).join(' · '),
-        href: `/work/${project.slug}`,
-        image: cover?.src,
-        aspect: cover?.width && cover.height ? cover.width / cover.height : 16 / 10,
-        palette: project.cover.palette,
-        project,
-        extra: gallery?.src ? { image: gallery.src, aspect: gallery.width && gallery.height ? gallery.width / gallery.height : 16 / 10 } : undefined,
-      };
-    });
+    if (page) return pageCorridorEntries(page, { locale, settings, projects, journal, lab });
     const focusNotes = t.focus.map(([title, body], index): CorridorEntry => ({
       id: `focus-${index}`, kind: 'note', title, body, meta: t.focusEyebrow, aspect: 16 / 10, palette: NOTE_PALETTES[index % NOTE_PALETTES.length]!,
     }));
-    const page = (id: string, title: string, href: string, index: number): CorridorEntry => ({
+    const portal = (id: string, title: string, href: string, index: number): CorridorEntry => ({
       id, kind: 'page', title, href, meta: t.page, aspect: 16 / 10, palette: PAGE_PALETTES[index % PAGE_PALETTES.length]!,
     });
     return [
-      ...projectEntries,
+      ...projects.map((project) => projectEntry(project, locale)),
       ...focusNotes,
-      page('work', t.work, '/work', 0),
+      portal('work', t.work, '/work', 0),
       {
         id: 'profile', kind: 'note', title: t.profileTitle, body: t.profileBody, meta: t.profileEyebrow, aspect: 16 / 10,
         palette: NOTE_PALETTES[4]!, cta: { label: t.readProfile, href: '/about' },
       },
-      page('about', t.about, '/about', 1),
-      ...(lab.length > 0 ? [page('lab', t.lab, '/lab', 2)] : []),
-      ...(journal.length > 0 ? [page('journal', t.journal, '/journal', 3)] : []),
+      portal('about', t.about, '/about', 1),
+      ...(lab.length > 0 ? [portal('lab', t.lab, '/lab', 2)] : []),
+      ...(journal.length > 0 ? [portal('journal', t.journal, '/journal', 3)] : []),
       companyEntry(locale),
-      page('contact', t.contact, '/contact', 4),
+      portal('contact', t.contact, '/contact', 4),
     ];
-  }, [projects, journal.length, lab.length, locale, t]);
+  }, [page, projects, journal, lab, settings, locale, t]);
 
   const menus = useMemo(() => {
     const header: MenuItem[] = [
+      ...(page ? [{ label: t.home, href: '/' }] : []),
       { label: t.work, href: '/work' },
       { label: t.about, href: '/about' },
       ...(lab.length > 0 ? [{ label: t.lab, href: '/lab' }] : []),
@@ -268,11 +234,14 @@ export default function HomePage() {
       { label: `© ${new Date().getFullYear()} ${company.name}`, href: COMPANY_REGISTER_URL },
     ];
     return { header, footer };
-  }, [t, lab.length, journal.length, settings.socialLinks, settings.contactEmail]);
+  }, [page, t, lab.length, journal.length, settings.socialLinks, settings.contactEmail]);
 
   const [branch, setBranch] = useState<{ parent: number; entries: CorridorEntry[] } | null>(null);
   const entries = branch?.entries ?? mainEntries;
-  const stops = useMemo(() => corridorLayout(entries.length).stops, [entries.length]);
+  const spacing = branch || page ? DENSE_SPACING : SPACING;
+  const stops = useMemo(() => corridorLayout(entries.length, undefined, spacing).stops, [entries.length, spacing]);
+
+  useEffect(() => { setViewMode('corridor'); }, []);
   const stageRef = useRef<HTMLDivElement>(null);
   const pillRef = useRef<HTMLDivElement>(null);
   const sceneRef = useRef<CorridorScene | null>(null);
@@ -291,12 +260,13 @@ export default function HomePage() {
 
   const disciplineCount = new Set(projects.map((project) => project.discipline)).size;
   const technologyCount = new Set(projects.flatMap((project) => project.technologies)).size;
-  const showIntro = !branch && atStart;
+  const showIntro = !branch && !page && atStart;
   const branchProject = branch ? mainEntries[branch.parent] : null;
 
   useDocumentMeta({
-    title: localize(settings.defaultSeo.title, locale),
+    title: page ? `${corridorPageTitle(page, locale)} — Ahmet Cem Karaca` : localize(settings.defaultSeo.title, locale),
     description: localize(settings.defaultSeo.description, locale),
+    ...(page ? { path: `/${page}` } : {}),
     locale,
     type: 'profile',
     structuredData: {
@@ -336,11 +306,15 @@ export default function HomePage() {
       scene?.focus(index);
       return;
     }
-    if (!scene) {
+    const go = () => {
+      if (entry.classic) setViewMode('classic');
       navigate(entry.href ?? '/');
+    };
+    if (!scene) {
+      go();
       return;
     }
-    void scene.dive(index).then(() => navigate(entry.href ?? '/'));
+    void scene.dive(index).then(go);
   }, [entries, navigate]);
 
   /** Slide the project panel away and walk into the project's own corridor. */
@@ -535,7 +509,7 @@ export default function HomePage() {
             </>
           ) : null}
         </div>
-        <div className="corridor__track" style={{ height: `${entries.length * 70 + 120}vh` }} aria-hidden="true" />
+        <div className="corridor__track" style={{ height: `${entries.length * (spacing === SPACING ? 70 : 45) + 120}vh` }} aria-hidden="true" />
 
         <header className="corridor-hud corridor-hud--top">
           <Link
@@ -548,7 +522,7 @@ export default function HomePage() {
             }}
           >
             <strong>{localize(settings.ownerName, locale)}</strong>
-            <span>{branchProject ? branchProject.title : t.tagline}</span>
+            <span>{branchProject ? branchProject.title : page ? corridorPageTitle(page, locale) : t.tagline}</span>
           </Link>
           <nav className="corridor-hud__actions" aria-label={locale === 'tr' ? 'Ana navigasyon' : 'Primary navigation'}>
             {branch ? (

@@ -3,7 +3,7 @@ import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer
 import { OutputPass } from 'three/examples/jsm/postprocessing/OutputPass.js';
 import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js';
 import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass.js';
-import { CAMERA_START, SPACING, corridorLayout, easeInOutCubic, flightSeconds, type CorridorLayout, type Placement, type Surface } from './corridorLayout';
+import { CAMERA_START, DENSE_SPACING, SPACING, corridorLayout, easeInOutCubic, flightSeconds, type CorridorLayout, type Placement, type Surface } from './corridorLayout';
 import {
   CELL, HALF_HEIGHT, HALF_WIDTH, branchCurve, buildShell, frameAt, mainCurve, panelTexture, placement, sharedHaloTexture,
   type Hole, type PanelArt,
@@ -35,6 +35,8 @@ export interface CorridorSceneOptions {
   headerMenu: MenuItem[];
   footerMenu: MenuItem[];
   onMenu: (href: string) => void;
+  /** Distance between items in the main corridor. */
+  spacing?: number;
 }
 
 export interface CorridorScene {
@@ -164,7 +166,7 @@ export const createCorridorScene = (options: CorridorSceneOptions): CorridorScen
     const extras: Panel[] = [];
     let overhead = 0;
     items.forEach((item, index) => {
-      const distance = layout.itemDistance[index]! + SPACING / 2;
+      const distance = layout.itemDistance[index]! + layout.spacing / 2;
       if (!item.extra || index >= items.length - 1) return;
       const surface: Surface = overhead++ % 2 === 0 ? 'ceiling' : 'floor';
       extras.push(makePanel({ ...item, kind: 'image', aspect: item.extra.aspect }, item.extra.image, surface, distance, curve, index));
@@ -203,7 +205,7 @@ export const createCorridorScene = (options: CorridorSceneOptions): CorridorScen
   };
 
   const placementOf = (items: CorridorSceneItem[]) => (index: number) => items[index]?.placement ?? 'wall';
-  const mainLayout = corridorLayout(options.items.length, placementOf(options.items));
+  const mainLayout = corridorLayout(options.items.length, placementOf(options.items), options.spacing ?? SPACING);
   const main = buildCorridor(mainCurve(mainLayout.tunnelLength + 16), mainLayout, options.items);
   let branch: { corridor: Corridor; parent: number } | null = null;
   let active = main;
@@ -220,7 +222,7 @@ export const createCorridorScene = (options: CorridorSceneOptions): CorridorScen
   strips.forEach((strip) => scene.add(strip.mesh));
   let hoveredMenu: { strip: (typeof strips)[number]; index: number; reach: number } | null = null;
   // Curl state per strip; the grace period keeps a curled strip from snapping back as it moves under the pointer.
-  const curl = strips.map(() => ({ value: 0, target: 0, until: 0 }));
+  const curl = strips.map(() => ({ value: 0, velocity: 0, target: 0, until: 0 }));
 
   let mode: 'walk' | 'focus' | 'dive' | 'transit' = 'walk';
   let focused: number | null = null;
@@ -437,7 +439,11 @@ export const createCorridorScene = (options: CorridorSceneOptions): CorridorScen
         state.target = Math.max(state.target * 0.98, 0.25 + 0.75 * hoveredMenu.reach);
       }
       if (!showMenus || now >= state.until) state.target = 0;
-      state.value += (state.target - state.value) * follow(4);
+      // Under-damped spring: the strip flexes past its target and settles, like a ribbon.
+      state.velocity += ((state.target - state.value) * 38 - state.velocity * 5.5) * delta;
+      state.value += state.velocity * delta;
+      // Never flex back through the wall.
+      if (state.value < 0) state.value = state.velocity = 0;
       strip.setBend(state.value);
     });
 
@@ -504,7 +510,7 @@ export const createCorridorScene = (options: CorridorSceneOptions): CorridorScen
       const panel = main.panels[index];
       if (!door || !panel || active !== main) return;
       if (branch) disposeCorridor(branch.corridor);
-      const layout = corridorLayout(items.length, placementOf(items));
+      const layout = corridorLayout(items.length, placementOf(items), DENSE_SPACING);
       const corridor = buildCorridor(branchCurve(door.start, door.direction, layout.tunnelLength + 16), layout, items);
       branch = { corridor, parent: index };
       mode = 'transit';
