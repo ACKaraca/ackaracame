@@ -351,6 +351,25 @@
 .corridor-cta svg,
 .corridor-next svg { width: 1.1rem; height: 1.1rem; flex: none; }
 
+.corridor-a11y-nav {
+  position: fixed;
+  top: 5.5rem;
+  left: clamp(1rem, 2.6vw, 2.5rem);
+  z-index: 8;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  max-width: 40rem;
+  padding: 0.75rem;
+  border-radius: 1rem;
+  background: var(--corridor-glass);
+  backdrop-filter: blur(12px);
+  transform: translateY(-200vh);
+}
+
+.corridor-a11y-nav:focus-within { transform: none; }
+.corridor-a11y-nav a { padding: 0.4rem 0.7rem; color: inherit; font-weight: 650; }
+
 .corridor :focus-visible { outline: 2px solid var(--corridor-ink); outline-offset: 3px; }
 
 @media (max-width: 900px) {

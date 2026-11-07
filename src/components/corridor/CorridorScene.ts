@@ -8,6 +8,7 @@ import {
   CELL, HALF_HEIGHT, HALF_WIDTH, branchCurve, buildShell, frameAt, mainCurve, panelTexture, placement, sharedHaloTexture,
   type Hole, type PanelArt,
 } from './corridorGeometry';
+import { createMenuStrip, type MenuItem } from './corridorMenu';
 
 export interface CorridorSceneItem extends PanelArt {
   image?: string;
@@ -30,6 +31,10 @@ export interface CorridorSceneOptions {
   onActivate: (index: number) => void;
   /** Click on empty space around a focused panel. */
   onDismiss: () => void;
+  /** Links on the bevelled strips that ride along the top-left and bottom-right corners. */
+  headerMenu: MenuItem[];
+  footerMenu: MenuItem[];
+  onMenu: (href: string) => void;
 }
 
 export interface CorridorScene {
@@ -211,6 +216,10 @@ export const createCorridorScene = (options: CorridorSceneOptions): CorridorScen
   composer.addPass(bloom);
   composer.addPass(new OutputPass());
 
+  const strips = [createMenuStrip(options.headerMenu, 'top-left', options.dark), createMenuStrip(options.footerMenu, 'bottom-right', options.dark)];
+  strips.forEach((strip) => scene.add(strip.mesh));
+  let hoveredMenu: { strip: (typeof strips)[number]; index: number } | null = null;
+
   let mode: 'walk' | 'focus' | 'dive' | 'transit' = 'walk';
   let focused: number | null = null;
   let diveTarget: number | null = null;
@@ -243,8 +252,10 @@ export const createCorridorScene = (options: CorridorSceneOptions): CorridorScen
   const resizeObserver = new ResizeObserver(resize);
   resizeObserver.observe(container);
 
+  const walkDistance = (corridor: Corridor) => CAMERA_START + corridor.progress * (corridor.layout.cameraEnd - CAMERA_START);
+
   const walkPose = (corridor: Corridor): Pose => {
-    const distance = CAMERA_START + corridor.progress * (corridor.layout.cameraEnd - CAMERA_START);
+    const distance = walkDistance(corridor);
     const frame = frameAt(corridor.curve, distance);
     const ahead = frameAt(corridor.curve, distance + 6).point;
     const quaternion = lookQuaternion(frame.point, ahead, frame.up);
@@ -301,6 +312,24 @@ export const createCorridorScene = (options: CorridorSceneOptions): CorridorScen
     return active.panels.find((panel) => panel.mesh === hit.object) ?? null;
   };
 
+  const pickMenu = (clientX: number, clientY: number) => {
+    const rect = container.getBoundingClientRect();
+    raycaster.setFromCamera(new THREE.Vector2(((clientX - rect.left) / rect.width) * 2 - 1, -((clientY - rect.top) / rect.height) * 2 + 1), camera);
+    for (const strip of strips) {
+      if (!strip.mesh.visible) continue;
+      const index = strip.pick(raycaster.intersectObject(strip.mesh, false)[0]?.uv);
+      if (index >= 0) return { strip, index };
+    }
+    return null;
+  };
+
+  const setHoveredMenu = (next: { strip: (typeof strips)[number]; index: number } | null) => {
+    if (next?.strip === hoveredMenu?.strip && next?.index === hoveredMenu?.index) return;
+    hoveredMenu?.strip.setHover(-1);
+    next?.strip.setHover(next.index);
+    hoveredMenu = next;
+  };
+
   const setHovered = (panel: Panel | null) => {
     if (panel === hovered) return;
     const changedIndex = panel?.index !== hovered?.index;
@@ -318,8 +347,17 @@ export const createCorridorScene = (options: CorridorSceneOptions): CorridorScen
   const onPointerLeave = () => {
     pointerInside = false;
     setHovered(null);
+    setHoveredMenu(null);
   };
   const onClick = (event: MouseEvent) => {
+    if (mode === 'walk') {
+      const menu = pickMenu(event.clientX, event.clientY);
+      const item = menu ? (menu.strip === strips[0] ? options.headerMenu : options.footerMenu)[menu.index] : undefined;
+      if (item) {
+        options.onMenu(item.href);
+        return;
+      }
+    }
     const panel = pick(event.clientX, event.clientY);
     if (mode === 'walk') {
       if (panel) options.onSelect(panel.index);
@@ -383,11 +421,22 @@ export const createCorridorScene = (options: CorridorSceneOptions): CorridorScen
     main.panels.forEach(updatePanel);
     branch?.corridor.panels.forEach(updatePanel);
 
+    // The corner menus ride with the walk; they step aside for focus, dives and doorways.
+    const showMenus = mode === 'walk' && camera.aspect > 0.9;
+    strips.forEach((strip) => {
+      strip.mesh.visible = showMenus;
+      if (showMenus) strip.place(frameAt(active.curve, walkDistance(active) + strip.centerOffset));
+    });
+
     if (mode === 'walk' && pointerInside && !active.flight && now - lastPick > 50) {
       lastPick = now;
-      setHovered(pick(client.x, client.y));
-    } else if (mode !== 'walk' && hovered) {
-      setHovered(null);
+      const menu = pickMenu(client.x, client.y);
+      setHoveredMenu(menu);
+      setHovered(menu ? null : pick(client.x, client.y));
+      if (menu) container.style.cursor = 'pointer';
+    } else if (mode !== 'walk') {
+      if (hovered) setHovered(null);
+      setHoveredMenu(null);
     }
     updatePill();
     composer.render(delta);
@@ -490,8 +539,10 @@ export const createCorridorScene = (options: CorridorSceneOptions): CorridorScen
       lineMaterial.color = colors.line;
       lineMaterial.opacity = colors.lineOpacity;
       bloom.enabled = dark;
+      strips.forEach((strip) => strip.setTheme(dark));
     },
     dispose: () => {
+      strips.forEach((strip) => strip.dispose());
       cancelAnimationFrame(frameId);
       timers.forEach((id) => window.clearTimeout(id));
       resizeObserver.disconnect();

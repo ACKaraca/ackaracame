@@ -6,6 +6,7 @@ import { localize, useAppPreferences } from '../context/AppPreferences';
 import { useContent } from '../context/Content';
 import { activeIndexFor, corridorLayout, flightSeconds, titleScale } from '../components/corridor/corridorLayout';
 import type { CorridorScene, CorridorSceneItem } from '../components/corridor/CorridorScene';
+import type { MenuItem } from '../components/corridor/corridorMenu';
 import {
   coverImage, galleryImage, projectCategory, projectCorridorEntries, type CorridorEntry,
 } from '../components/corridor/projectCorridor';
@@ -41,6 +42,9 @@ const copy = {
     heading: 'Ahmet Cem Karaca — portfolyo',
     theme: 'Renk temasını değiştir',
     locale: 'Switch to English',
+    privacy: 'Gizlilik',
+    terms: 'Koşullar',
+    cornerMenus: 'Site menüsü',
     kicker: 'Portfolyo',
     headlineA: 'Tasarlar,',
     headlineB: 'kodlar,',
@@ -88,6 +92,9 @@ const copy = {
     heading: 'Ahmet Cem Karaca — portfolio',
     theme: 'Toggle colour theme',
     locale: 'Türkçeye geç',
+    privacy: 'Privacy',
+    terms: 'Terms',
+    cornerMenus: 'Site menu',
     kicker: 'Portfolio',
     headlineA: 'Designs,',
     headlineB: 'codes,',
@@ -243,6 +250,24 @@ export default function HomePage() {
     ];
   }, [projects, journal.length, lab.length, locale, t]);
 
+  const menus = useMemo(() => {
+    const header: MenuItem[] = [
+      { label: t.work, href: '/work' },
+      { label: t.about, href: '/about' },
+      ...(lab.length > 0 ? [{ label: t.lab, href: '/lab' }] : []),
+      ...(journal.length > 0 ? [{ label: t.journal, href: '/journal' }] : []),
+      { label: t.contact, href: '/contact' },
+    ];
+    const footer: MenuItem[] = [
+      { label: t.privacy, href: '/privacy' },
+      { label: t.terms, href: '/terms' },
+      ...settings.socialLinks.map((link) => ({ label: new URL(link.href).hostname.replace(/^www\./u, '').split('.')[0] ?? link.href, href: link.href })),
+      { label: settings.contactEmail, href: `mailto:${settings.contactEmail}` },
+      { label: `© ${new Date().getFullYear()} ${company.name}`, href: COMPANY_REGISTER_URL },
+    ];
+    return { header, footer };
+  }, [t, lab.length, journal.length, settings.socialLinks, settings.contactEmail]);
+
   const [branch, setBranch] = useState<{ parent: number; entries: CorridorEntry[] } | null>(null);
   const entries = branch?.entries ?? mainEntries;
   const stops = useMemo(() => corridorLayout(entries.length).stops, [entries.length]);
@@ -397,6 +422,13 @@ export default function HomePage() {
           onSelect: (index) => handlersRef.current.select(index),
           onActivate: (index) => handlersRef.current.activate(index),
           onDismiss: () => handlersRef.current.dismiss(),
+          headerMenu: menus.header,
+          footerMenu: menus.footer,
+          onMenu: (href) => {
+            if (href.startsWith('/')) navigate(href);
+            else if (href.startsWith('mailto:')) window.location.href = href;
+            else window.open(href, '_blank', 'noopener,noreferrer');
+          },
         });
         sceneRef.current.setProgress(scrollProgress());
       } catch {
@@ -408,7 +440,7 @@ export default function HomePage() {
       sceneRef.current?.dispose();
       sceneRef.current = null;
     };
-  }, [mainEntries]);
+  }, [mainEntries, menus, navigate]);
 
   useEffect(() => { sceneRef.current?.setTheme(resolvedTheme === 'dark'); }, [resolvedTheme]);
 
@@ -483,6 +515,14 @@ export default function HomePage() {
         data-branch={branch ? 'true' : undefined}
       >
         <h1 className="sr-only">{t.heading}</h1>
+        {/* Keyboard and screen-reader copy of the 3D corner menus; shown when focused. */}
+        <nav className="corridor-a11y-nav" aria-label={t.cornerMenus}>
+          {[...menus.header, ...menus.footer].map((item) => (
+            item.href.startsWith('/')
+              ? <Link key={item.href} href={item.href}>{item.label}</Link>
+              : <a key={item.href} href={item.href} {...(item.href.startsWith('mailto:') ? {} : { target: '_blank', rel: 'noreferrer' })}>{item.label}</a>
+          ))}
+        </nav>
         <div className="corridor__stage" ref={stageRef} aria-hidden="true" />
         <div className="corridor__pill" ref={pillRef} aria-hidden="true">
           {pillEntry ? (
