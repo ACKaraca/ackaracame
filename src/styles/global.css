@@ -664,6 +664,17 @@ html[data-theme='dark'] .button--primary {
   background: var(--accent-soft);
 }
 
+.site-header__corridor {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  border-color: var(--accent);
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.site-header__corridor svg { width: 0.95rem; height: 0.95rem; }
+
 .site-header__menu-button {
   display: none;
 }
