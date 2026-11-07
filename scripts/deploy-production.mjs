@@ -49,6 +49,7 @@ const run = (command, args, env = process.env) => {
 
 const main = async () => {
   const productionEnvironment = validateProductionEnvironment(process.env);
+  run(process.execPath, ['scripts/check-audit-policy.mjs']);
   const projectId = requireInput('FIREBASE_PROJECT_ID');
   requireInput('ACKARACA_STORAGE_BUCKET');
   const contentRevision = requireInput('ACKARACA_CONTENT_REVISION');

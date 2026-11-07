@@ -1,7 +1,6 @@
 import {
   connectAuthEmulator,
-  getAuth,
-  setPersistence,
+  initializeAuth,
   browserSessionPersistence,
   type Auth,
 } from 'firebase/auth';
@@ -31,13 +30,10 @@ const createServices = (): FirebaseServices | null => {
   if (!publicServices) return null;
 
   const { app } = publicServices;
-  const auth = getAuth(app);
+  // Session-only from the first call: no window where the default IndexedDB persistence applies.
+  const auth = initializeAuth(app, { persistence: browserSessionPersistence });
   const db = getFirestore(app);
   const storage = getStorage(app);
-
-  void setPersistence(auth, browserSessionPersistence).catch(() => {
-    // Auth still works when hardened browser settings disallow session storage.
-  });
 
   if (env.DEV && env.VITE_FIREBASE_USE_EMULATORS === 'true' && !emulatorConnected) {
     connectAuthEmulator(auth, 'http://127.0.0.1:9099', { disableWarnings: true });

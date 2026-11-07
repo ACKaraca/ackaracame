@@ -105,6 +105,8 @@ const MEDIA_GC_LEASE_MS = 11 * 60 * 1000;
 const MEDIA_DELETE_LEASE_MS = 60 * 1000;
 const MEDIA_DELETE_CAPABILITY_LIFETIME_MS = 2 * 60 * 60 * 1000;
 
+const OWNER_POLICY_PATH = 'systemPolicies/owner-access';
+
 const callableCors = [
   /^https:\/\/([a-z0-9-]+\.)?ackaraca\.me$/u,
   /^https:\/\/[a-z0-9-]+\.(web\.app|firebaseapp\.com)$/u,
@@ -127,9 +129,13 @@ const toHttpsValidationError = (error) => {
   return error;
 };
 
-const assertVerifiedAdmin = (request) => {
+const assertVerifiedAdmin = async (request) => {
   const token = request.auth?.token;
   const candidateEmail = typeof token?.email === 'string' ? token.email : '';
+  const denied = () => new HttpsError(
+    'permission-denied',
+    'A verified administrator session authenticated with TOTP is required.'
+  );
   if (
     !request.auth?.uid
     || token?.admin !== true
@@ -137,10 +143,12 @@ const assertVerifiedAdmin = (request) => {
     || token?.firebase?.sign_in_second_factor !== 'totp'
     || !isAllowedAdminAccountEmail(configuredAdminEmail.value(), candidateEmail)
   ) {
-    throw new HttpsError(
-      'permission-denied',
-      'A verified administrator session authenticated with TOTP is required.'
-    );
+    throw denied();
+  }
+  // Mirror the rules' isConfiguredOwner(): a revoked owner binding fails closed before the token expires.
+  const owner = (await db.doc(OWNER_POLICY_PATH).get()).data();
+  if (owner?.schemaVersion !== 1 || owner.uid !== request.auth.uid || owner.email !== candidateEmail) {
+    throw denied();
   }
 
   return {
@@ -1129,7 +1137,7 @@ export const promoteMedia = onCall({
   if (request.app?.alreadyConsumed === true) {
     throw new HttpsError('permission-denied', 'A fresh App Check token is required.');
   }
-  const actor = assertVerifiedAdmin(request);
+  const actor = await assertVerifiedAdmin(request);
   let promotion;
   try {
     promotion = validatePromoteMedia(request.data || {});
@@ -1350,7 +1358,7 @@ export const deletePromotedMedia = onCall({
   if (request.app?.alreadyConsumed === true) {
     throw new HttpsError('permission-denied', 'A fresh App Check token is required.');
   }
-  const actor = assertVerifiedAdmin(request);
+  const actor = await assertVerifiedAdmin(request);
   let deletion;
   try {
     deletion = validateDeletePromotedMedia(request.data || {});
@@ -1808,7 +1816,7 @@ export const requestSiteRebuild = onCall({
   if (request.app?.alreadyConsumed === true) {
     throw new HttpsError('permission-denied', 'A fresh App Check token is required.');
   }
-  const actor = assertVerifiedAdmin(request);
+  const actor = await assertVerifiedAdmin(request);
   let rebuildRequest;
   try {
     rebuildRequest = validateRebuildRequest(request.data || {});
@@ -1884,7 +1892,7 @@ export const getSiteRebuildStatus = onCall({
   if (request.app?.alreadyConsumed === true) {
     throw new HttpsError('permission-denied', 'A fresh App Check token is required.');
   }
-  assertVerifiedAdmin(request);
+  await assertVerifiedAdmin(request);
   const input = request.data;
   if (
     input === null
@@ -1915,7 +1923,7 @@ export const getLatestSiteRebuildStatus = onCall({
   if (request.app?.alreadyConsumed === true) {
     throw new HttpsError('permission-denied', 'A fresh App Check token is required.');
   }
-  assertVerifiedAdmin(request);
+  await assertVerifiedAdmin(request);
   const input = request.data;
   if (
     input !== undefined
@@ -1941,7 +1949,7 @@ export const seedContent = onCall({
   if (request.app?.alreadyConsumed === true) {
     throw new HttpsError('permission-denied', 'A fresh App Check token is required.');
   }
-  const actor = assertVerifiedAdmin(request);
+  const actor = await assertVerifiedAdmin(request);
   let command;
   let entries;
 
