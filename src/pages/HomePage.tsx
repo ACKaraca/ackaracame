@@ -49,6 +49,8 @@ const copy = {
     terms: 'Koşullar',
     cornerMenus: 'Site menüsü',
     classic: 'Klasik siteye geç',
+    lookLeft: 'Sol duvara bak',
+    lookRight: 'Sağ duvara bak',
     kicker: 'Portfolyo',
     headlineA: 'Tasarlar,',
     headlineB: 'kodlar,',
@@ -101,6 +103,8 @@ const copy = {
     terms: 'Terms',
     cornerMenus: 'Site menu',
     classic: 'Classic site',
+    lookLeft: 'Look at the left wall',
+    lookRight: 'Look at the right wall',
     kicker: 'Portfolio',
     headlineA: 'Designs,',
     headlineB: 'codes,',
@@ -255,6 +259,8 @@ export default function HomePage({ page }: { page?: CorridorPage }) {
   const [focused, setFocused] = useState<number | null>(null);
   const [indexOpen, setIndexOpen] = useState(false);
   const [fallback, setFallback] = useState(false);
+  const [look, setLook] = useState<-1 | 0 | 1>(0);
+  const lookRef = useRef(look);
   const handlersRef = useRef<{ select: (index: number) => void; activate: (index: number) => void; dismiss: () => void }>({
     select: () => undefined, activate: () => undefined, dismiss: () => undefined,
   });
@@ -330,6 +336,7 @@ export default function HomePage({ page }: { page?: CorridorPage }) {
     const list = projectCorridorEntries(entry.project, locale);
     mainScrollRef.current = window.scrollY;
     transitioningRef.current = true;
+    setLook(0);
     setFocused(null);
     setIndexOpen(false);
     void scene.enterBranch(index, list.map((item) => sceneItem(item, false))).finally(() => { transitioningRef.current = false; });
@@ -351,6 +358,7 @@ export default function HomePage({ page }: { page?: CorridorPage }) {
       return;
     }
     transitioningRef.current = true;
+    setLook(0);
     void scene.exitBranch().then(leave).finally(() => { transitioningRef.current = false; });
   }, [branch]);
 
@@ -408,6 +416,7 @@ export default function HomePage({ page }: { page?: CorridorPage }) {
           },
         });
         sceneRef.current.setProgress(scrollProgress());
+        sceneRef.current.look(lookRef.current);
       } catch {
         setFallback(true);
       }
@@ -420,6 +429,10 @@ export default function HomePage({ page }: { page?: CorridorPage }) {
   }, [mainEntries, menus, navigate]);
 
   useEffect(() => { sceneRef.current?.setTheme(resolvedTheme === 'dark'); }, [resolvedTheme]);
+  useEffect(() => {
+    lookRef.current = look;
+    sceneRef.current?.look(look);
+  }, [look]);
 
   useEffect(() => {
     const onScroll = () => {
@@ -569,6 +582,15 @@ export default function HomePage({ page }: { page?: CorridorPage }) {
 
         {current && !fallback ? (
           <section className="corridor-hud corridor-hud--info" aria-live="polite" aria-hidden={showIntro}>
+            {/* Phones: each button sits on the opposite side of the wall it turns to, so the thumb never hides it. */}
+            <div className="corridor-look">
+              <button type="button" onClick={() => setLook((side) => (side === 1 ? 0 : 1))} aria-pressed={look === 1} aria-label={t.lookRight} tabIndex={showIntro ? -1 : 0}>
+                <ArrowRight aria-hidden="true" />
+              </button>
+              <button type="button" onClick={() => setLook((side) => (side === -1 ? 0 : -1))} aria-pressed={look === -1} aria-label={t.lookLeft} tabIndex={showIntro ? -1 : 0}>
+                <ArrowLeft aria-hidden="true" />
+              </button>
+            </div>
             <p className="corridor-count">{pad(active + 1)} / {pad(entries.length)}</p>
             <button type="button" className="corridor-title" onClick={() => select(active)} tabIndex={showIntro ? -1 : 0}>
               <KineticTitle id={`${branch ? 'b' : 'm'}-${current.id}`} title={current.title} />

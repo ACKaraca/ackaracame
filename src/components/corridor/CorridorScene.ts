@@ -52,6 +52,8 @@ export interface CorridorScene {
   enterBranch: (index: number, items: CorridorSceneItem[]) => Promise<void>;
   /** Walk back out of the side corridor; resolves once the main corridor is active again. */
   exitBranch: () => Promise<void>;
+  /** Turn the walking gaze toward a wall (-1 left, 1 right) or back down the corridor (0). */
+  look: (side: -1 | 0 | 1) => void;
   setTheme: (dark: boolean) => void;
   dispose: () => void;
 }
@@ -62,6 +64,9 @@ const PORTRAIT_MAX_FOV = 92;
 // Portrait glance: strongest when a wall panel is this far ahead, fading out over the range.
 const GLANCE_LEAD = 7;
 const GLANCE_RANGE = 6;
+// How far the wall buttons turn the gaze: frames the wall panel at the current stop.
+const LOOK_ANGLE = THREE.MathUtils.degToRad(40);
+const UP_AXIS = new THREE.Vector3(0, 1, 0);
 
 interface Pose { position: THREE.Vector3; quaternion: THREE.Quaternion }
 
@@ -239,6 +244,7 @@ export const createCorridorScene = (options: CorridorSceneOptions): CorridorScen
   let cameraFlight: { from: Pose; start: number; duration: number } | null = null;
   // Holds the camera still while a door opens, before the flight through it starts.
   let holdCamera = false;
+  const lookAt = { value: 0, target: 0 };
   const pointer = new THREE.Vector2(0, 0);
   const client = { x: 0, y: 0 };
   const rest = new THREE.Vector2(0, 0);
@@ -293,8 +299,10 @@ export const createCorridorScene = (options: CorridorSceneOptions): CorridorScen
     const distance = walkDistance(corridor);
     const frame = frameAt(corridor.curve, distance);
     const ahead = frameAt(corridor.curve, distance + 6).point;
-    if (camera.aspect < 1) ahead.add(wallGlance(corridor, distance, ahead));
+    // A deliberate look at a wall replaces the automatic glance.
+    if (camera.aspect < 1) ahead.addScaledVector(wallGlance(corridor, distance, ahead), 1 - Math.abs(lookAt.value));
     const quaternion = lookQuaternion(frame.point, ahead, frame.up);
+    if (lookAt.value !== 0) quaternion.multiply(new THREE.Quaternion().setFromAxisAngle(UP_AXIS, -lookAt.value * LOOK_ANGLE));
     if (!reducedMotion) quaternion.multiply(new THREE.Quaternion().setFromEuler(new THREE.Euler(-parallax.y * 0.08, -parallax.x * 0.14, 0)));
     return { position: frame.point, quaternion };
   };
@@ -426,6 +434,8 @@ export const createCorridorScene = (options: CorridorSceneOptions): CorridorScen
       active.progress += (active.target - active.progress) * follow(6);
     }
     parallax.lerp(pointerInside ? pointer : rest, follow(3));
+    lookAt.value += (lookAt.target - lookAt.value) * follow(reducedMotion ? 30 : 4);
+    if (Math.abs(lookAt.value - lookAt.target) < 0.001) lookAt.value = lookAt.target;
 
     const pose = mode === 'dive' && diveTarget !== null ? focusPose(active, diveTarget, true)
       : mode === 'focus' && focused !== null ? focusPose(active, focused) : walkPose(active);
@@ -582,6 +592,7 @@ export const createCorridorScene = (options: CorridorSceneOptions): CorridorScen
         branch = null;
       });
     },
+    look: (side) => { lookAt.target = side; },
     setTheme: (dark) => {
       colors = themeColors(dark);
       scene.background = colors.background;
