@@ -168,9 +168,11 @@
   transition: opacity 0.45s ease, transform 0.6s cubic-bezier(.22, 1, .36, 1);
 }
 
-.corridor-title { justify-self: start; padding: 0; border: 0; background: none; color: inherit; cursor: pointer; text-align: left; }
+.corridor-title { display: grid; justify-items: start; justify-self: start; padding: 0; border: 0; background: none; color: inherit; cursor: pointer; text-align: left; }
 
+/* The outgoing and incoming titles share one cell while they cross. */
 .corridor-title__word {
+  grid-area: 1 / 1;
   display: inline-flex;
   flex-wrap: wrap;
   column-gap: 0.24em;
@@ -406,4 +408,18 @@
   .corridor-detail--text { width: auto; }
   .corridor-index a { grid-template-columns: 2.25rem 1fr; }
   .corridor-index__meta { display: none; }
+}
+
+/* Wall look buttons: phones only, crossed so the thumb sits away from the wall being shown. */
+.corridor-look { display: none; }
+@media (max-aspect-ratio: 1/1) {
+  .corridor-look { display: flex; justify-content: space-between; margin-bottom: 1.25rem; }
+  .corridor-look button {
+    display: grid; place-items: center; width: 3.25rem; height: 3.25rem; border-radius: 999px; cursor: pointer;
+    border: 1px solid var(--corridor-line); background: var(--corridor-glass); color: var(--corridor-ink);
+    backdrop-filter: blur(8px); transition: background 0.25s ease, color 0.25s ease, transform 0.25s ease;
+  }
+  .corridor-look button[aria-pressed='true'] { background: var(--corridor-ink); color: var(--corridor-bg); }
+  .corridor-look button[aria-pressed='true'] svg { transform: scaleX(-1); }
+  .corridor-look svg { width: 1.3rem; height: 1.3rem; transition: transform 0.3s ease; }
 }

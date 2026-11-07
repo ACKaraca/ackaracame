@@ -41,6 +41,8 @@ export const createMenuStrip = (items: MenuItem[], corner: MenuCorner, dark: boo
 
   const draw = () => {
     if (!context) return;
+    // Keep the white type under the bloom threshold, or the strip near the camera flares.
+    material.color.setScalar(isDark ? 0.78 : 1);
     const ink = isDark ? '#f6f5f2' : '#0b0b0b';
     const paper = isDark ? 'rgba(10, 10, 10, 0.88)' : 'rgba(243, 242, 238, 0.92)';
     context.clearRect(0, 0, CANVAS_W, CANVAS_H);

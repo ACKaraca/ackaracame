@@ -9,7 +9,7 @@ import type { CorridorScene, CorridorSceneItem } from '../components/corridor/Co
 import type { MenuItem } from '../components/corridor/corridorMenu';
 import { projectCorridorEntries, type CorridorEntry } from '../components/corridor/projectCorridor';
 import {
-  NOTE_PALETTES, PAGE_PALETTES, companyEntry, corridorPageTitle, pageCorridorEntries, projectEntry,
+  NOTE_PALETTES, PAGE_PALETTES, companyEntry, corridorPageTitle, pageCorridorEntries,
 } from '../components/corridor/pageCorridors';
 import { useDocumentMeta } from '../hooks/useDocumentMeta';
 import { availabilityLabel, isAcceptingInquiries } from '../lib/availability';
@@ -49,6 +49,8 @@ const copy = {
     terms: 'Koşullar',
     cornerMenus: 'Site menüsü',
     classic: 'Klasik siteye geç',
+    lookLeft: 'Sol duvara bak',
+    lookRight: 'Sağ duvara bak',
     kicker: 'Portfolyo',
     headlineA: 'Tasarlar,',
     headlineB: 'kodlar,',
@@ -101,6 +103,8 @@ const copy = {
     terms: 'Terms',
     cornerMenus: 'Site menu',
     classic: 'Classic site',
+    lookLeft: 'Look at the left wall',
+    lookRight: 'Look at the right wall',
     kicker: 'Portfolio',
     headlineA: 'Designs,',
     headlineB: 'codes,',
@@ -153,13 +157,15 @@ const sceneItem = (entry: CorridorEntry, inMain: boolean): CorridorSceneItem => 
   placement: entry.kind === 'page' ? 'overhead' : 'wall',
   door: inMain && entry.kind === 'project',
   extra: inMain ? entry.extra : undefined,
+  tight: entry.tight,
 });
 
 /** Kinetic title: letters rise in, grouped per word so lines only break between words. */
 const KineticTitle = ({ id, title }: { id: string; title: string }) => {
   let letter = 0;
   return (
-    <AnimatePresence mode="popLayout" initial={false}>
+    // Not popLayout: it injects a <style> tag that the CSP blocks; the CSS stacks old and new titles instead.
+    <AnimatePresence initial={false}>
       <motion.span key={id} className="corridor-title__word" aria-label={title} style={{ '--title-scale': titleScale(title) } as React.CSSProperties}>
         {title.split(' ').map((word, wordIndex) => (
           <span className="corridor-title__group" key={`${word}-${wordIndex}`} aria-hidden="true">
@@ -196,19 +202,19 @@ export default function HomePage({ page }: { page?: CorridorPage }) {
   const mainEntries = useMemo<CorridorEntry[]>(() => {
     if (page) return pageCorridorEntries(page, { locale, settings, projects, journal, lab });
     const focusNotes = t.focus.map(([title, body], index): CorridorEntry => ({
-      id: `focus-${index}`, kind: 'note', title, body, meta: t.focusEyebrow, aspect: 16 / 10, palette: NOTE_PALETTES[index % NOTE_PALETTES.length]!,
+      id: `focus-${index}`, kind: 'note', title, body, meta: t.focusEyebrow, aspect: 16 / 10, palette: NOTE_PALETTES[index % NOTE_PALETTES.length]!, tight: true,
     }));
     const portal = (id: string, title: string, href: string, index: number): CorridorEntry => ({
       id, kind: 'page', title, href, meta: t.page, aspect: 16 / 10, palette: PAGE_PALETTES[index % PAGE_PALETTES.length]!,
     });
+    // Projects live in the Work corridor; the home walk starts with the profile.
     return [
-      ...projects.map((project) => projectEntry(project, locale)),
-      ...focusNotes,
-      portal('work', t.work, '/work', 0),
       {
         id: 'profile', kind: 'note', title: t.profileTitle, body: t.profileBody, meta: t.profileEyebrow, aspect: 16 / 10,
         palette: NOTE_PALETTES[4]!, cta: { label: t.readProfile, href: '/about' },
       },
+      portal('work', t.work, '/work', 0),
+      ...focusNotes,
       portal('about', t.about, '/about', 1),
       ...(lab.length > 0 ? [portal('lab', t.lab, '/lab', 2)] : []),
       ...(journal.length > 0 ? [portal('journal', t.journal, '/journal', 3)] : []),
@@ -239,7 +245,7 @@ export default function HomePage({ page }: { page?: CorridorPage }) {
   const [branch, setBranch] = useState<{ parent: number; entries: CorridorEntry[] } | null>(null);
   const entries = branch?.entries ?? mainEntries;
   const spacing = branch || page ? DENSE_SPACING : SPACING;
-  const stops = useMemo(() => corridorLayout(entries.length, undefined, spacing).stops, [entries.length, spacing]);
+  const stops = useMemo(() => corridorLayout(entries.length, undefined, spacing, (index) => entries[index]?.tight ?? false).stops, [entries, spacing]);
 
   useEffect(() => { setViewMode('corridor'); }, []);
   const stageRef = useRef<HTMLDivElement>(null);
@@ -254,6 +260,8 @@ export default function HomePage({ page }: { page?: CorridorPage }) {
   const [focused, setFocused] = useState<number | null>(null);
   const [indexOpen, setIndexOpen] = useState(false);
   const [fallback, setFallback] = useState(false);
+  const [look, setLook] = useState<-1 | 0 | 1>(0);
+  const lookRef = useRef(look);
   const handlersRef = useRef<{ select: (index: number) => void; activate: (index: number) => void; dismiss: () => void }>({
     select: () => undefined, activate: () => undefined, dismiss: () => undefined,
   });
@@ -329,6 +337,7 @@ export default function HomePage({ page }: { page?: CorridorPage }) {
     const list = projectCorridorEntries(entry.project, locale);
     mainScrollRef.current = window.scrollY;
     transitioningRef.current = true;
+    setLook(0);
     setFocused(null);
     setIndexOpen(false);
     void scene.enterBranch(index, list.map((item) => sceneItem(item, false))).finally(() => { transitioningRef.current = false; });
@@ -350,6 +359,7 @@ export default function HomePage({ page }: { page?: CorridorPage }) {
       return;
     }
     transitioningRef.current = true;
+    setLook(0);
     void scene.exitBranch().then(leave).finally(() => { transitioningRef.current = false; });
   }, [branch]);
 
@@ -407,6 +417,7 @@ export default function HomePage({ page }: { page?: CorridorPage }) {
           },
         });
         sceneRef.current.setProgress(scrollProgress());
+        sceneRef.current.look(lookRef.current);
       } catch {
         setFallback(true);
       }
@@ -419,6 +430,10 @@ export default function HomePage({ page }: { page?: CorridorPage }) {
   }, [mainEntries, menus, navigate]);
 
   useEffect(() => { sceneRef.current?.setTheme(resolvedTheme === 'dark'); }, [resolvedTheme]);
+  useEffect(() => {
+    lookRef.current = look;
+    sceneRef.current?.look(look);
+  }, [look]);
 
   useEffect(() => {
     const onScroll = () => {
@@ -553,7 +568,7 @@ export default function HomePage({ page }: { page?: CorridorPage }) {
             </p>
             <p className="corridor-intro__body">{t.intro}</p>
             <div className="corridor-intro__actions">
-              <button type="button" className="corridor-cta" onClick={() => travelTo(0)} tabIndex={showIntro ? 0 : -1}>{t.exploreWork}<ArrowDown aria-hidden="true" /></button>
+              <button type="button" className="corridor-cta" onClick={() => travelAndSelect(Math.max(0, entries.findIndex((entry) => entry.id === 'work')))} tabIndex={showIntro ? 0 : -1}>{t.exploreWork}<ArrowDown aria-hidden="true" /></button>
               <Link href={acceptingInquiries ? '/contact' : '/about'} className="corridor-next" tabIndex={showIntro ? 0 : -1}>
                 {acceptingInquiries ? t.getInTouch : t.readProfile}<ArrowUpRight aria-hidden="true" />
               </Link>
@@ -568,6 +583,15 @@ export default function HomePage({ page }: { page?: CorridorPage }) {
 
         {current && !fallback ? (
           <section className="corridor-hud corridor-hud--info" aria-live="polite" aria-hidden={showIntro}>
+            {/* Phones: each button sits on the opposite side of the wall it turns to, so the thumb never hides it. */}
+            <div className="corridor-look">
+              <button type="button" onClick={() => setLook((side) => (side === 1 ? 0 : 1))} aria-pressed={look === 1} aria-label={t.lookRight} tabIndex={showIntro ? -1 : 0}>
+                <ArrowRight aria-hidden="true" />
+              </button>
+              <button type="button" onClick={() => setLook((side) => (side === -1 ? 0 : -1))} aria-pressed={look === -1} aria-label={t.lookLeft} tabIndex={showIntro ? -1 : 0}>
+                <ArrowLeft aria-hidden="true" />
+              </button>
+            </div>
             <p className="corridor-count">{pad(active + 1)} / {pad(entries.length)}</p>
             <button type="button" className="corridor-title" onClick={() => select(active)} tabIndex={showIntro ? -1 : 0}>
               <KineticTitle id={`${branch ? 'b' : 'm'}-${current.id}`} title={current.title} />
