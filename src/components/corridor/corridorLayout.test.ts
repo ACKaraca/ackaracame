@@ -23,6 +23,11 @@ describe('corridorLayout', () => {
     expect(surfaces).toEqual(['right', 'left', 'right', 'left', 'ceiling', 'floor', 'end']);
   });
 
+  it('hangs neighbouring tight items closer together', () => {
+    const { itemDistance, spacing } = corridorLayout(6, undefined, 10, (index) => index >= 2 && index <= 4);
+    expect(itemDistance.map((distance, index) => distance - (itemDistance[index - 1] ?? distance))).toEqual([0, spacing, spacing, 4, 4, spacing]);
+  });
+
   it('shrinks long HUD titles', () => {
     expect(titleScale('HypCas')).toBe(1);
     expect(titleScale('Architecture student, product founder, and independent developer.')).toBeLessThan(0.5);

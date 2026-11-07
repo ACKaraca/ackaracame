@@ -9,7 +9,7 @@ import type { CorridorScene, CorridorSceneItem } from '../components/corridor/Co
 import type { MenuItem } from '../components/corridor/corridorMenu';
 import { projectCorridorEntries, type CorridorEntry } from '../components/corridor/projectCorridor';
 import {
-  NOTE_PALETTES, PAGE_PALETTES, companyEntry, corridorPageTitle, pageCorridorEntries, projectEntry,
+  NOTE_PALETTES, PAGE_PALETTES, companyEntry, corridorPageTitle, pageCorridorEntries,
 } from '../components/corridor/pageCorridors';
 import { useDocumentMeta } from '../hooks/useDocumentMeta';
 import { availabilityLabel, isAcceptingInquiries } from '../lib/availability';
@@ -153,6 +153,7 @@ const sceneItem = (entry: CorridorEntry, inMain: boolean): CorridorSceneItem => 
   placement: entry.kind === 'page' ? 'overhead' : 'wall',
   door: inMain && entry.kind === 'project',
   extra: inMain ? entry.extra : undefined,
+  tight: entry.tight,
 });
 
 /** Kinetic title: letters rise in, grouped per word so lines only break between words. */
@@ -196,19 +197,19 @@ export default function HomePage({ page }: { page?: CorridorPage }) {
   const mainEntries = useMemo<CorridorEntry[]>(() => {
     if (page) return pageCorridorEntries(page, { locale, settings, projects, journal, lab });
     const focusNotes = t.focus.map(([title, body], index): CorridorEntry => ({
-      id: `focus-${index}`, kind: 'note', title, body, meta: t.focusEyebrow, aspect: 16 / 10, palette: NOTE_PALETTES[index % NOTE_PALETTES.length]!,
+      id: `focus-${index}`, kind: 'note', title, body, meta: t.focusEyebrow, aspect: 16 / 10, palette: NOTE_PALETTES[index % NOTE_PALETTES.length]!, tight: true,
     }));
     const portal = (id: string, title: string, href: string, index: number): CorridorEntry => ({
       id, kind: 'page', title, href, meta: t.page, aspect: 16 / 10, palette: PAGE_PALETTES[index % PAGE_PALETTES.length]!,
     });
+    // Projects live in the Work corridor; the home walk starts with the profile.
     return [
-      ...projects.map((project) => projectEntry(project, locale)),
-      ...focusNotes,
-      portal('work', t.work, '/work', 0),
       {
         id: 'profile', kind: 'note', title: t.profileTitle, body: t.profileBody, meta: t.profileEyebrow, aspect: 16 / 10,
         palette: NOTE_PALETTES[4]!, cta: { label: t.readProfile, href: '/about' },
       },
+      portal('work', t.work, '/work', 0),
+      ...focusNotes,
       portal('about', t.about, '/about', 1),
       ...(lab.length > 0 ? [portal('lab', t.lab, '/lab', 2)] : []),
       ...(journal.length > 0 ? [portal('journal', t.journal, '/journal', 3)] : []),
@@ -239,7 +240,7 @@ export default function HomePage({ page }: { page?: CorridorPage }) {
   const [branch, setBranch] = useState<{ parent: number; entries: CorridorEntry[] } | null>(null);
   const entries = branch?.entries ?? mainEntries;
   const spacing = branch || page ? DENSE_SPACING : SPACING;
-  const stops = useMemo(() => corridorLayout(entries.length, undefined, spacing).stops, [entries.length, spacing]);
+  const stops = useMemo(() => corridorLayout(entries.length, undefined, spacing, (index) => entries[index]?.tight ?? false).stops, [entries, spacing]);
 
   useEffect(() => { setViewMode('corridor'); }, []);
   const stageRef = useRef<HTMLDivElement>(null);
@@ -553,7 +554,7 @@ export default function HomePage({ page }: { page?: CorridorPage }) {
             </p>
             <p className="corridor-intro__body">{t.intro}</p>
             <div className="corridor-intro__actions">
-              <button type="button" className="corridor-cta" onClick={() => travelTo(0)} tabIndex={showIntro ? 0 : -1}>{t.exploreWork}<ArrowDown aria-hidden="true" /></button>
+              <button type="button" className="corridor-cta" onClick={() => travelAndSelect(Math.max(0, entries.findIndex((entry) => entry.id === 'work')))} tabIndex={showIntro ? 0 : -1}>{t.exploreWork}<ArrowDown aria-hidden="true" /></button>
               <Link href={acceptingInquiries ? '/contact' : '/about'} className="corridor-next" tabIndex={showIntro ? 0 : -1}>
                 {acceptingInquiries ? t.getInTouch : t.readProfile}<ArrowUpRight aria-hidden="true" />
               </Link>

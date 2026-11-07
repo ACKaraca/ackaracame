@@ -17,6 +17,8 @@ export interface CorridorSceneItem extends PanelArt {
   door?: boolean;
   /** An extra gallery image hung overhead between items; it opens this item. */
   extra?: { image: string; aspect: number };
+  /** Hangs close to neighbouring tight items (a group of related notes). */
+  tight?: boolean;
 }
 
 export interface CorridorSceneOptions {
@@ -55,6 +57,11 @@ export interface CorridorScene {
 }
 
 const FOV = 62;
+const PORTRAIT_HFOV = 64;
+const PORTRAIT_MAX_FOV = 92;
+// Portrait glance: strongest when a wall panel is this far ahead, fading out over the range.
+const GLANCE_LEAD = 7;
+const GLANCE_RANGE = 6;
 
 interface Pose { position: THREE.Vector3; quaternion: THREE.Quaternion }
 
@@ -205,7 +212,8 @@ export const createCorridorScene = (options: CorridorSceneOptions): CorridorScen
   };
 
   const placementOf = (items: CorridorSceneItem[]) => (index: number) => items[index]?.placement ?? 'wall';
-  const mainLayout = corridorLayout(options.items.length, placementOf(options.items), options.spacing ?? SPACING);
+  const tightOf = (items: CorridorSceneItem[]) => (index: number) => items[index]?.tight ?? false;
+  const mainLayout = corridorLayout(options.items.length, placementOf(options.items), options.spacing ?? SPACING, tightOf(options.items));
   const main = buildCorridor(mainCurve(mainLayout.tunnelLength + 16), mainLayout, options.items);
   let branch: { corridor: Corridor; parent: number } | null = null;
   let active = main;
@@ -247,6 +255,10 @@ export const createCorridorScene = (options: CorridorSceneOptions): CorridorScen
     const width = container.clientWidth || window.innerWidth;
     const height = container.clientHeight || window.innerHeight;
     camera.aspect = width / height;
+    // Portrait screens keep a usable horizontal view of the walls: widen the vertical FOV, within reason.
+    const horizontal = THREE.MathUtils.degToRad(PORTRAIT_HFOV);
+    camera.fov = camera.aspect >= 1 ? FOV
+      : Math.min(PORTRAIT_MAX_FOV, Math.max(FOV, THREE.MathUtils.radToDeg(2 * Math.atan(Math.tan(horizontal / 2) / camera.aspect))));
     camera.updateProjectionMatrix();
     renderer.setSize(width, height, false);
     composer.setSize(width, height);
@@ -258,10 +270,30 @@ export const createCorridorScene = (options: CorridorSceneOptions): CorridorScen
 
   const walkDistance = (corridor: Corridor) => CAMERA_START + corridor.progress * (corridor.layout.cameraEnd - CAMERA_START);
 
+  /**
+   * Narrow screens cannot see both walls at once, so the gaze turns toward the wall panel coming
+   * up next and swings back to the middle between panels. Weights blend, so the turn is continuous.
+   */
+  const glance = new THREE.Vector3();
+  const wallGlance = (corridor: Corridor, distance: number, ahead: THREE.Vector3) => {
+    glance.set(0, 0, 0);
+    let total = 0;
+    corridor.layout.itemDistance.forEach((itemDistance, index) => {
+      const surface = corridor.layout.surfaces[index];
+      if (surface !== 'left' && surface !== 'right') return;
+      const weight = THREE.MathUtils.smoothstep(1 - Math.abs(itemDistance - distance - GLANCE_LEAD) / GLANCE_RANGE, 0, 1);
+      if (weight <= 0) return;
+      glance.addScaledVector(corridor.panels[index]!.home.clone().sub(ahead), weight * 0.85);
+      total += weight;
+    });
+    return total > 1 ? glance.divideScalar(total) : glance;
+  };
+
   const walkPose = (corridor: Corridor): Pose => {
     const distance = walkDistance(corridor);
     const frame = frameAt(corridor.curve, distance);
     const ahead = frameAt(corridor.curve, distance + 6).point;
+    if (camera.aspect < 1) ahead.add(wallGlance(corridor, distance, ahead));
     const quaternion = lookQuaternion(frame.point, ahead, frame.up);
     if (!reducedMotion) quaternion.multiply(new THREE.Quaternion().setFromEuler(new THREE.Euler(-parallax.y * 0.08, -parallax.x * 0.14, 0)));
     return { position: frame.point, quaternion };
@@ -269,7 +301,7 @@ export const createCorridorScene = (options: CorridorSceneOptions): CorridorScen
 
   const focusPose = (corridor: Corridor, index: number, diving = false): Pose => {
     const panel = corridor.panels[index]!;
-    const tanHalf = Math.tan(THREE.MathUtils.degToRad(FOV / 2));
+    const tanHalf = Math.tan(THREE.MathUtils.degToRad(camera.fov / 2));
     const narrow = camera.aspect < 1;
     // Wide screens park the panel on the left half; narrow screens put it above the bottom sheet.
     const share = narrow ? 0.9 : 0.5;
@@ -510,7 +542,7 @@ export const createCorridorScene = (options: CorridorSceneOptions): CorridorScen
       const panel = main.panels[index];
       if (!door || !panel || active !== main) return;
       if (branch) disposeCorridor(branch.corridor);
-      const layout = corridorLayout(items.length, placementOf(items), DENSE_SPACING);
+      const layout = corridorLayout(items.length, placementOf(items), DENSE_SPACING, tightOf(items));
       const corridor = buildCorridor(branchCurve(door.start, door.direction, layout.tunnelLength + 16), layout, items);
       branch = { corridor, parent: index };
       mode = 'transit';
