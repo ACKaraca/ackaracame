@@ -219,6 +219,8 @@ export const createCorridorScene = (options: CorridorSceneOptions): CorridorScen
   const strips = [createMenuStrip(options.headerMenu, 'top-left', options.dark), createMenuStrip(options.footerMenu, 'bottom-right', options.dark)];
   strips.forEach((strip) => scene.add(strip.mesh));
   let hoveredMenu: { strip: (typeof strips)[number]; index: number } | null = null;
+  // Curl state per strip; the grace period keeps a curled strip from snapping back as it moves under the pointer.
+  const curl = strips.map(() => ({ value: 0, until: 0 }));
 
   let mode: 'walk' | 'focus' | 'dive' | 'transit' = 'walk';
   let focused: number | null = null;
@@ -318,7 +320,7 @@ export const createCorridorScene = (options: CorridorSceneOptions): CorridorScen
     for (const strip of strips) {
       if (!strip.mesh.visible) continue;
       const index = strip.pick(raycaster.intersectObject(strip.mesh, false)[0]?.uv);
-      if (index >= 0) return { strip, index };
+      if (index > -2) return { strip, index };
     }
     return null;
   };
@@ -423,9 +425,13 @@ export const createCorridorScene = (options: CorridorSceneOptions): CorridorScen
 
     // The corner menus ride with the walk; they step aside for focus, dives and doorways.
     const showMenus = mode === 'walk' && camera.aspect > 0.9;
-    strips.forEach((strip) => {
+    strips.forEach((strip, stripIndex) => {
       strip.mesh.visible = showMenus;
       if (showMenus) strip.place(frameAt(active.curve, walkDistance(active) + strip.centerOffset));
+      const state = curl[stripIndex]!;
+      if (hoveredMenu?.strip === strip) state.until = now + 700;
+      state.value += ((showMenus && now < state.until ? 1 : 0) - state.value) * follow(5);
+      strip.setBend(state.value);
     });
 
     if (mode === 'walk' && pointerInside && !active.flight && now - lastPick > 50) {
@@ -433,7 +439,7 @@ export const createCorridorScene = (options: CorridorSceneOptions): CorridorScen
       const menu = pickMenu(client.x, client.y);
       setHoveredMenu(menu);
       setHovered(menu ? null : pick(client.x, client.y));
-      if (menu) container.style.cursor = 'pointer';
+      if (menu && menu.index >= 0) container.style.cursor = 'pointer';
     } else if (mode !== 'walk') {
       if (hovered) setHovered(null);
       setHoveredMenu(null);
