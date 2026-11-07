@@ -890,12 +890,21 @@ export const dispatchAutomaticRebuilds = onDocumentWrittenWithAuthContext({
       await waitForRebuildState(Math.min(1000, remainingDebounceMs));
       continue;
     }
-    await dispatchSiteRebuildQueue({
-      targetRevision,
-      dispatcherId: crypto.randomUUID(),
-      actor: { uid: 'firestore-system', email: null },
-      auditSource: 'firestore-rebuild-outbox'
-    });
+    try {
+      await dispatchSiteRebuildQueue({
+        targetRevision,
+        dispatcherId: crypto.randomUUID(),
+        actor: { uid: 'firestore-system', email: null },
+        auditSource: 'firestore-rebuild-outbox'
+      });
+    } catch (error) {
+      // No hook configured (placeholder secret): nothing to retry, the site is published by hand.
+      if (error instanceof HttpsError && error.code === 'failed-precondition') {
+        console.warn('Automatic rebuild skipped: the site rebuild hook is not configured.');
+        return;
+      }
+      throw error;
+    }
     return;
   }
   throw new Error('The automatic rebuild debounce window did not become quiet.');
