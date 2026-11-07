@@ -3,11 +3,13 @@
 export type Surface = 'left' | 'right' | 'ceiling' | 'floor' | 'end';
 export type Placement = 'wall' | 'overhead';
 
-export const SPACING = 14;
+export const SPACING = 11;
 /** Tighter rhythm for text-heavy corridors (sub-pages and project corridors). */
 export const DENSE_SPACING = 9;
 export const FIRST_ITEM_AT = 20;
 export const CAMERA_START = 2;
+/** Gap between neighbouring items of a tight group, as a share of the spacing. */
+export const TIGHT_GAP = 0.4;
 const LEAD = 8;
 const END_VIEW_DISTANCE = 8;
 
@@ -24,14 +26,21 @@ export interface CorridorLayout {
 
 /**
  * Wall items alternate left/right among themselves, overhead items alternate ceiling/floor,
- * and the last item faces the camera at the end of the corridor.
+ * and the last item faces the camera at the end of the corridor. Neighbouring `tight` items
+ * (a group of related notes) hang closer together.
  */
 export const corridorLayout = (
   count: number,
   placement: (index: number) => Placement = () => 'wall',
   spacing = SPACING,
+  tight: (index: number) => boolean = () => false,
 ): CorridorLayout => {
-  const itemDistance = Array.from({ length: count }, (_, index) => FIRST_ITEM_AT + index * spacing);
+  const itemDistance: number[] = [];
+  for (let index = 0; index < count; index += 1) {
+    const previous = itemDistance[index - 1];
+    itemDistance.push(previous === undefined ? FIRST_ITEM_AT
+      : previous + (tight(index) && tight(index - 1) ? spacing * TIGHT_GAP : spacing));
+  }
   const last = itemDistance[count - 1] ?? FIRST_ITEM_AT;
   const cameraEnd = Math.max(CAMERA_START + 1, last - END_VIEW_DISTANCE);
   const span = cameraEnd - CAMERA_START;

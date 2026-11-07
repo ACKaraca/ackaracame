@@ -24,6 +24,8 @@ export interface CorridorEntry {
   extra?: { image: string; aspect: number };
   /** Portal that leaves the corridor for the classic page. */
   classic?: boolean;
+  /** Hangs close to neighbouring tight entries. */
+  tight?: boolean;
 }
 
 const copy = {
