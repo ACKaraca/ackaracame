@@ -4,14 +4,14 @@ import { HALF_HEIGHT, HALF_WIDTH, type Frame } from './corridorGeometry';
 export interface MenuItem { label: string; href: string }
 export type MenuCorner = 'top-left' | 'bottom-right';
 
-const LENGTH = 12;
-const WIDTH = 0.85;
+const LENGTH = 8;
+const WIDTH = 0.42;
 /** The strip starts this far ahead of the camera, roughly where the corner enters the frame. */
-export const MENU_AHEAD = 7;
+export const MENU_AHEAD = 5.5;
 const CANVAS_W = 3072;
 const CANVAS_H = Math.round((CANVAS_W * WIDTH) / LENGTH);
-const PAD = 140;
-const GAP = 110;
+const PAD = 120;
+const GAP = 90;
 const FONT = '"Manrope Variable", system-ui, sans-serif';
 
 /**
@@ -40,10 +40,10 @@ export const createMenuStrip = (items: MenuItem[], corner: MenuCorner, dark: boo
     context.fillStyle = paper;
     context.fillRect(0, 0, CANVAS_W, CANVAS_H);
     context.fillStyle = isDark ? 'rgba(246, 245, 242, 0.55)' : 'rgba(11, 11, 11, 0.45)';
-    context.fillRect(0, 0, CANVAS_W, 5);
-    context.fillRect(0, CANVAS_H - 5, CANVAS_W, 5);
+    context.fillRect(0, 0, CANVAS_W, 3);
+    context.fillRect(0, CANVAS_H - 3, CANVAS_W, 3);
     // Shrink the type until every item fits on the strip.
-    let size = Math.round(CANVAS_H * 0.5);
+    let size = Math.round(CANVAS_H * 0.66);
     const labels = items.map((item) => item.label.toLocaleUpperCase());
     const measure = () => labels.reduce((sum, label) => sum + context.measureText(label).width, 0) + GAP * (labels.length - 1) + PAD * 2;
     context.font = `760 ${size}px ${FONT}`;
@@ -58,7 +58,7 @@ export const createMenuStrip = (items: MenuItem[], corner: MenuCorner, dark: boo
       const width = context.measureText(label).width;
       if (index === hover) {
         context.fillStyle = ink;
-        context.fillRect(x - 30, CANVAS_H * 0.2, width + 60, CANVAS_H * 0.6);
+        context.fillRect(x - 24, CANVAS_H * 0.1, width + 48, CANVAS_H * 0.8);
         context.fillStyle = isDark ? '#0b0b0b' : '#f6f5f2';
       } else {
         context.fillStyle = ink;

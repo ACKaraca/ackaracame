@@ -9,6 +9,7 @@ import { siteSettings } from './data/portfolio';
 import { ENGLISH_PREFIX, isLocaleNeutralPublicPath, localeFromPath, localePath, stripLocalePrefix } from './lib/localeRouting';
 
 const HomePage = lazy(() => import('./pages/HomePage'));
+const ClassicHomePage = lazy(() => import('./pages/ClassicHomePage'));
 const WorkPage = lazy(() => import('./pages/WorkPage'));
 const ProjectPage = lazy(() => import('./pages/ProjectPage'));
 const AboutPage = lazy(() => import('./pages/AboutPage'));
@@ -105,6 +106,7 @@ const PublicRoutes = () => {
   return (
     <Switch>
       <Route path="/" component={HomePage} />
+      <Route path="/classic" component={ClassicHomePage} />
       <Route path="/work" component={WorkPage} />
       <Route path="/work/:slug" component={ProjectPage} />
       <Route path="/about" component={AboutPage} />

@@ -19,6 +19,7 @@ import {
 } from './lib/localeRouting';
 import AboutPage from './pages/AboutPage';
 import ContactPage from './pages/ContactPage';
+import ClassicHomePage from './pages/ClassicHomePage';
 import HomePage from './pages/HomePage';
 import JournalEntryPage from './pages/JournalEntryPage';
 import JournalPage from './pages/JournalPage';
@@ -46,6 +47,7 @@ const StaticRoutes = () => {
   return (
     <Switch>
       <Route path="/" component={HomePage} />
+      <Route path="/classic" component={ClassicHomePage} />
       <Route path="/work" component={WorkPage} />
       <Route path="/work/:slug" component={ProjectPage} />
       <Route path="/about" component={AboutPage} />
@@ -113,6 +115,11 @@ type LocalizedStaticMetaCopy = Record<Locale, StaticMetaCopy>;
 const localizedMeta = (tr: StaticMetaCopy, en: StaticMetaCopy): LocalizedStaticMetaCopy => ({ tr, en });
 
 const basicMeta: Record<string, LocalizedStaticMetaCopy> = {
+  // The classic home duplicates "/"; keep it out of search results.
+  '/classic': localizedMeta(
+    { title: 'Klasik görünüm — Ahmet Cem Karaca', description: localize(siteSettings.defaultSeo.description, 'tr'), type: 'website', noIndex: true },
+    { title: 'Classic view — Ahmet Cem Karaca', description: localize(siteSettings.defaultSeo.description, 'en'), type: 'website', noIndex: true },
+  ),
   '/work': localizedMeta(
     { title: 'İşler — Ahmet Cem Karaca', description: 'Mimarlık, yazılım ve deneysel üretim arasında geliştirilen ürünler, sistemler ve vaka çalışmaları.', type: 'website' },
     { title: 'Work — Ahmet Cem Karaca', description: 'Products, systems, and case studies built across architecture, software, and experimental practice.', type: 'website' },
@@ -266,7 +273,7 @@ export const publishedEntryPaths = (entries: readonly JournalEntry[]) => entries
   .map(journalEntryPath);
 
 const localizablePaths = [
-  '/', '/work', '/about', '/lab', '/journal', '/contact', '/privacy', '/terms',
+  '/', '/classic', '/work', '/about', '/lab', '/journal', '/contact', '/privacy', '/terms',
   ...portfolioProjects.filter((project) => project.status === 'published').map((project) => `/work/${project.slug}`),
   ...publishedEntryPaths(allEntries),
 ];

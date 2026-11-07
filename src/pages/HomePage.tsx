@@ -45,6 +45,7 @@ const copy = {
     privacy: 'Gizlilik',
     terms: 'Koşullar',
     cornerMenus: 'Site menüsü',
+    classic: 'Klasik siteye geç',
     kicker: 'Portfolyo',
     headlineA: 'Tasarlar,',
     headlineB: 'kodlar,',
@@ -95,6 +96,7 @@ const copy = {
     privacy: 'Privacy',
     terms: 'Terms',
     cornerMenus: 'Site menu',
+    classic: 'Classic site',
     kicker: 'Portfolio',
     headlineA: 'Designs,',
     headlineB: 'codes,',
@@ -564,6 +566,7 @@ export default function HomePage() {
               {t.index}<sup>{entries.length}</sup>
             </button>
             <Link href="/contact" className="corridor-chip">{t.contact}</Link>
+            <Link href="/classic" className="corridor-chip corridor-chip--solid">{t.classic}<ArrowUpRight aria-hidden="true" /></Link>
           </nav>
         </header>
 
