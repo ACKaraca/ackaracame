@@ -42,6 +42,16 @@ test('every function runs as the dedicated least-privilege service account', () 
   assert.equal((source.match(/serviceAccount: FUNCTIONS_SERVICE_ACCOUNT,/gu) || []).length, regions);
 });
 
+test('the automatic dispatcher does not retry when the rebuild hook is unconfigured', () => {
+  const source = fs.readFileSync(new URL('./index.js', import.meta.url), 'utf8');
+  const start = source.indexOf('export const dispatchAutomaticRebuilds');
+  const end = source.indexOf('export const auditAdminMediaUploads', start);
+  assert(start >= 0 && end > start);
+  const handler = source.slice(start, end);
+  assert.match(handler, /error\.code === 'failed-precondition'/u);
+  assert.match(handler, /console\.warn\('Automatic rebuild skipped/u);
+});
+
 test('the manual rebuild callable delegates to the shared dispatcher', () => {
   const source = fs.readFileSync(new URL('./index.js', import.meta.url), 'utf8');
   const start = source.indexOf('export const requestSiteRebuild');
