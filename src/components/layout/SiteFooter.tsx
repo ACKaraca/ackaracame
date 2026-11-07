@@ -4,12 +4,14 @@ import { useAppPreferences, localize } from '../../context/AppPreferences';
 import type { SiteSettings } from '../../domain/content';
 import { useLocaleHref } from '../../hooks/useLocaleHref';
 import { isAcceptingInquiries } from '../../lib/availability';
+import { COMPANY_REGISTER_URL, company } from '../../lib/company';
 
 export const SiteFooter = ({ settings, showJournal = false }: { settings: SiteSettings; showJournal?: boolean }) => {
   const { locale } = useAppPreferences();
   const year = new Date().getFullYear();
   const localeHref = useLocaleHref();
   const acceptingInquiries = isAcceptingInquiries(settings.availability);
+  const c = company[locale];
 
   return (
     <footer className="site-footer">
@@ -38,6 +40,13 @@ export const SiteFooter = ({ settings, showJournal = false }: { settings: SiteSe
               </a>
             ))}
             <a href={`mailto:${settings.contactEmail}`}>{settings.contactEmail}</a>
+          </div>
+          <div className="site-footer__company">
+            <span>{c.heading}</span>
+            <strong>{company.name}</strong>
+            <p>{c.numberLabel} {company.number} · {c.status}</p>
+            <p>{company.address}</p>
+            <a href={COMPANY_REGISTER_URL} target="_blank" rel="noreferrer">{c.register}</a>
           </div>
         </div>
       </div>

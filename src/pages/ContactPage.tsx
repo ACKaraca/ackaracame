@@ -18,7 +18,7 @@ const ContactFormSchema = InquirySchema.omit({ id: true, status: true, createdAt
 type ContactFormInput = z.input<typeof ContactFormSchema>;
 type ContactFormOutput = z.output<typeof ContactFormSchema>;
 
-const copy = {
+export const contactCopy = {
   tr: {
     eyebrow: 'İletişim / yeni bir konuşma', title: 'İyi bir problemle başlayalım.',
     intro: 'Bir rol, ürün fikri, mimari araç veya işbirliği üzerine konuşmak istiyorsanız; bağlamı ve hedefi kısaca yazın. Mesajları doğrudan ben okuyorum.',
@@ -46,7 +46,7 @@ const copy = {
 export default function ContactPage() {
   const { locale } = useAppPreferences();
   const { settings } = useContent();
-  const t = copy[locale];
+  const t = contactCopy[locale];
   const acceptingInquiries = isAcceptingInquiries(settings.availability);
   const [state, setState] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
   const [copied, setCopied] = useState(false);

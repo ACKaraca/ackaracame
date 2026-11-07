@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { Menu, Moon, Sun, X } from 'lucide-react';
+import { Box, Menu, Moon, Sun, X } from 'lucide-react';
 import { Link, useLocation } from 'wouter';
 import { useAppPreferences, localize } from '../../context/AppPreferences';
 import type { JournalEntry, PortfolioProject, SiteSettings } from '../../domain/content';
@@ -108,6 +108,9 @@ export const SiteHeader = ({ settings }: SiteHeaderProps) => {
         </nav>
 
         <div className="site-header__actions">
+          <Link href={localeHref('/')} className="locale-button site-header__corridor">
+            <Box aria-hidden="true" />{locale === 'tr' ? '3D görünüm' : '3D view'}
+          </Link>
           <button
             type="button"
             className="icon-button site-header__theme"

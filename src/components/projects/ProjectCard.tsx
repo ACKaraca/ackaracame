@@ -11,7 +11,7 @@ interface ProjectCardProps {
   compact?: boolean;
 }
 
-const disciplineLabels = {
+export const disciplineLabels = {
   tr: {
     architecture: 'Mimarlık',
     software: 'Yazılım',
@@ -26,7 +26,7 @@ const disciplineLabels = {
   },
 } as const;
 
-const gameLabel = { tr: 'Oyun', en: 'Game' } as const;
+export const gameLabel = { tr: 'Oyun', en: 'Game' } as const;
 
 const MAX_TILT = 5;
 
