@@ -218,9 +218,9 @@ export const createCorridorScene = (options: CorridorSceneOptions): CorridorScen
 
   const strips = [createMenuStrip(options.headerMenu, 'top-left', options.dark), createMenuStrip(options.footerMenu, 'bottom-right', options.dark)];
   strips.forEach((strip) => scene.add(strip.mesh));
-  let hoveredMenu: { strip: (typeof strips)[number]; index: number } | null = null;
+  let hoveredMenu: { strip: (typeof strips)[number]; index: number; reach: number } | null = null;
   // Curl state per strip; the grace period keeps a curled strip from snapping back as it moves under the pointer.
-  const curl = strips.map(() => ({ value: 0, until: 0 }));
+  const curl = strips.map(() => ({ value: 0, target: 0, until: 0 }));
 
   let mode: 'walk' | 'focus' | 'dive' | 'transit' = 'walk';
   let focused: number | null = null;
@@ -319,16 +319,18 @@ export const createCorridorScene = (options: CorridorSceneOptions): CorridorScen
     raycaster.setFromCamera(new THREE.Vector2(((clientX - rect.left) / rect.width) * 2 - 1, -((clientY - rect.top) / rect.height) * 2 + 1), camera);
     for (const strip of strips) {
       if (!strip.mesh.visible) continue;
-      const index = strip.pick(raycaster.intersectObject(strip.mesh, false)[0]?.uv);
-      if (index > -2) return { strip, index };
+      const uv = raycaster.intersectObject(strip.mesh, false)[0]?.uv;
+      const index = strip.pick(uv);
+      if (uv && index > -2) return { strip, index, reach: strip.reach(uv) };
     }
     return null;
   };
 
-  const setHoveredMenu = (next: { strip: (typeof strips)[number]; index: number } | null) => {
-    if (next?.strip === hoveredMenu?.strip && next?.index === hoveredMenu?.index) return;
-    hoveredMenu?.strip.setHover(-1);
-    next?.strip.setHover(next.index);
+  const setHoveredMenu = (next: { strip: (typeof strips)[number]; index: number; reach: number } | null) => {
+    if (next?.strip !== hoveredMenu?.strip || next?.index !== hoveredMenu?.index) {
+      hoveredMenu?.strip.setHover(-1);
+      next?.strip.setHover(next.index);
+    }
     hoveredMenu = next;
   };
 
@@ -429,8 +431,13 @@ export const createCorridorScene = (options: CorridorSceneOptions): CorridorScen
       strip.mesh.visible = showMenus;
       if (showMenus) strip.place(frameAt(active.curve, walkDistance(active) + strip.centerOffset));
       const state = curl[stripIndex]!;
-      if (hoveredMenu?.strip === strip) state.until = now + 700;
-      state.value += ((showMenus && now < state.until ? 1 : 0) - state.value) * follow(5);
+      // The further along the strip the pointer travels, the harder it curls.
+      if (hoveredMenu?.strip === strip) {
+        state.until = now + 700;
+        state.target = Math.max(state.target * 0.98, 0.25 + 0.75 * hoveredMenu.reach);
+      }
+      if (!showMenus || now >= state.until) state.target = 0;
+      state.value += (state.target - state.value) * follow(4);
       strip.setBend(state.value);
     });
 

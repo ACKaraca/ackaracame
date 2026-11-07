@@ -12,7 +12,9 @@ const CANVAS_W = 3072;
 const CANVAS_H = Math.round((CANVAS_W * WIDTH) / LENGTH);
 const PAD = 120;
 /** Total turn of the curled strip, in radians. */
-const MAX_CURL = 1.3;
+const MAX_CURL = 2.2;
+/** >1 keeps the near end straight and concentrates the bend toward the far end. */
+const CURL_EASE = 1.7;
 const GAP = 90;
 const FONT = '"Manrope Variable", system-ui, sans-serif';
 
@@ -101,21 +103,30 @@ export const createMenuStrip = (items: MenuItem[], corner: MenuCorner, dark: boo
     centerOffset: MENU_AHEAD + LENGTH / 2,
     /** -2: strip missed; -1: strip hit between items; otherwise the item index. */
     pick: (uv: THREE.Vector2 | undefined) => (uv ? ranges.findIndex(([from, to]) => uv.x >= from && uv.x <= to) : -2),
+    /** 0 at the end nearest the camera, 1 at the far end. */
+    reach: (uv: THREE.Vector2) => (corner === 'top-left' ? uv.x : 1 - uv.x),
     /**
      * Curl the strip toward the viewer (0 = flat in its corner, 1 = fully curled). It bends about its
-     * width axis from the end nearest the camera, so the far, foreshortened items swing round to face you.
+     * width axis from the end nearest the camera, gently at first and harder toward the far end, like a
+     * ribbon, so the far, foreshortened items swing round to face you.
      */
     setBend: (next: number) => {
       if (Math.abs(next - bend) < 0.002) return;
       bend = next;
       const pivot = corner === 'top-left' ? -LENGTH / 2 : LENGTH / 2;
       const away = -Math.sign(pivot);
-      const curvature = (bend * MAX_CURL) / LENGTH;
       const position = geometry.getAttribute('position');
+      const steps = 32;
       for (let vertex = 0; vertex < position.count; vertex += 1) {
         const arc = Math.abs(base[vertex * 3]! - pivot);
-        const x = curvature < 1e-4 ? arc : Math.sin(curvature * arc) / curvature;
-        const z = curvature < 1e-4 ? 0 : (1 - Math.cos(curvature * arc)) / curvature;
+        let x = 0;
+        let z = 0;
+        const step = arc / steps;
+        for (let index = 0; index < steps; index += 1) {
+          const angle = bend * MAX_CURL * (((index + 0.5) * step) / LENGTH) ** CURL_EASE;
+          x += Math.cos(angle) * step;
+          z += Math.sin(angle) * step;
+        }
         position.setX(vertex, pivot + away * x);
         position.setZ(vertex, z);
       }
