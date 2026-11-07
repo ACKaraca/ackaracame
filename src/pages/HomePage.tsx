@@ -11,6 +11,7 @@ import {
 } from '../components/corridor/projectCorridor';
 import { useDocumentMeta } from '../hooks/useDocumentMeta';
 import { availabilityLabel, isAcceptingInquiries } from '../lib/availability';
+import { COMPANY_REGISTER_URL, company } from '../lib/company';
 import { textParagraphs } from '../lib/projectLabels';
 import '../components/corridor/corridor.css';
 
@@ -116,6 +117,28 @@ const NOTE_PALETTES: string[][] = [['#ff5c8a', '#e8a33d'], ['#45d0bf', '#5c74ff'
 
 const pad = (value: number) => String(value).padStart(2, '0');
 
+const companyEntry = (locale: 'tr' | 'en'): CorridorEntry => {
+  const c = company[locale];
+  return {
+    id: 'company',
+    kind: 'note',
+    title: company.name,
+    meta: c.heading,
+    body: c.summary,
+    aspect: 16 / 10,
+    palette: ['#45d0bf', '#5c74ff'],
+    rows: [
+      [c.numberLabel, company.number],
+      [c.statusLabel, c.status],
+      [c.typeLabel, c.type],
+      [c.incorporatedLabel, c.incorporated],
+      [c.addressLabel, company.address],
+      [c.activityLabel, c.activity],
+    ],
+    links: [{ kind: 'article', label: { tr: company.tr.register, en: company.en.register }, href: COMPANY_REGISTER_URL, newTab: true }],
+  };
+};
+
 const webglAvailable = () => {
   try {
     const canvas = document.createElement('canvas');
@@ -215,6 +238,7 @@ export default function HomePage() {
       page('about', t.about, '/about', 1),
       ...(lab.length > 0 ? [page('lab', t.lab, '/lab', 2)] : []),
       ...(journal.length > 0 ? [page('journal', t.journal, '/journal', 3)] : []),
+      companyEntry(locale),
       page('contact', t.contact, '/contact', 4),
     ];
   }, [projects, journal.length, lab.length, locale, t]);

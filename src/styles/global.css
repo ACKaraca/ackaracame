@@ -811,7 +811,7 @@ html[data-theme='dark'] .button--primary {
 
 .site-footer__links {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 2rem;
 }
 
@@ -829,6 +829,9 @@ html[data-theme='dark'] .button--primary {
   text-transform: uppercase;
   color: color-mix(in srgb, var(--inverse-ink) 50%, transparent);
 }
+
+.site-footer__company strong { font-size: 0.95rem; font-weight: 750; }
+.site-footer__company p { margin: 0; font-size: 0.85rem; line-height: 1.5; opacity: 0.72; }
 
 .site-footer__links a {
   width: fit-content;

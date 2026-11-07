@@ -4,8 +4,8 @@ import { useAppPreferences, localize } from '../context/AppPreferences';
 import { useContent } from '../context/Content';
 import { useDocumentMeta } from '../hooks/useDocumentMeta';
 import { isAcceptingInquiries } from '../lib/availability';
+import { COMPANY_REGISTER_URL } from '../lib/company';
 
-const COMPANY_REGISTER_URL = 'https://find-and-update.company-information.service.gov.uk/company/14560445';
 
 const content = {
   tr: {
