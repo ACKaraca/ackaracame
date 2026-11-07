@@ -164,7 +164,8 @@ const sceneItem = (entry: CorridorEntry, inMain: boolean): CorridorSceneItem => 
 const KineticTitle = ({ id, title }: { id: string; title: string }) => {
   let letter = 0;
   return (
-    <AnimatePresence mode="popLayout" initial={false}>
+    // Not popLayout: it injects a <style> tag that the CSP blocks; the CSS stacks old and new titles instead.
+    <AnimatePresence initial={false}>
       <motion.span key={id} className="corridor-title__word" aria-label={title} style={{ '--title-scale': titleScale(title) } as React.CSSProperties}>
         {title.split(' ').map((word, wordIndex) => (
           <span className="corridor-title__group" key={`${word}-${wordIndex}`} aria-hidden="true">

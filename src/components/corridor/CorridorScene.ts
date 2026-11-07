@@ -225,7 +225,7 @@ export const createCorridorScene = (options: CorridorSceneOptions): CorridorScen
 
   const composer = new EffectComposer(renderer);
   composer.addPass(new RenderPass(scene, camera));
-  const bloom = new UnrealBloomPass(new THREE.Vector2(1, 1), 0.45, 0.6, 0.88);
+  const bloom = new UnrealBloomPass(new THREE.Vector2(1, 1), 0.28, 0.5, 0.88);
   // A light background sits above any bloom threshold and would wash the whole frame out.
   bloom.enabled = options.dark;
   composer.addPass(bloom);

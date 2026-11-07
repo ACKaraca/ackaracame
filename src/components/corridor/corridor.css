@@ -168,9 +168,11 @@
   transition: opacity 0.45s ease, transform 0.6s cubic-bezier(.22, 1, .36, 1);
 }
 
-.corridor-title { justify-self: start; padding: 0; border: 0; background: none; color: inherit; cursor: pointer; text-align: left; }
+.corridor-title { display: grid; justify-items: start; justify-self: start; padding: 0; border: 0; background: none; color: inherit; cursor: pointer; text-align: left; }
 
+/* The outgoing and incoming titles share one cell while they cross. */
 .corridor-title__word {
+  grid-area: 1 / 1;
   display: inline-flex;
   flex-wrap: wrap;
   column-gap: 0.24em;
