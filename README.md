@@ -1,260 +1,178 @@
-# ACKaraca — kişisel portfolyo ve içerik stüdyosu
+# ACKaraca
 
-Ahmet Cem Karaca'nın mimarlık, ürün tasarımı ve yazılım çalışmalarını iki dilde
-sunan; statik olarak önceden render edilen, Firebase destekli kişisel sitesi.
-Kamuya açık deneyim ile içerik yönetimi birbirinden ayrıdır: ziyaretçiler hızlı
-ve indekslenebilir bir snapshot görürken, `/studio` yalnız TOTP ile giriş yapmış
-tek yöneticiye açıktır.
+Ahmet Cem Karaca'nın mimarlık, ürün tasarımı ve yazılım işlerini gösterdiği
+kişisel site. Türkçe ve İngilizce yayın yapar, sayfalar derleme sırasında statik
+HTML olarak üretilir. İçerik Firebase'de tutulur ve `/studio` üzerinden yönetilir.
 
-## Mimari
+## Nasıl çalışır
 
-- React 19, TypeScript, Vite 8 ve Framer Motion
-- İki dilli, erişilebilir ve responsive arayüz
-- SSR tabanlı prerender, dinamik sitemap ve sayfa bazlı SEO metadata
-- Firestore'da sürümlü `projects`, `journal` ve `siteSettings` sözleşmeleri
-- App Check korumalı Cloud Functions ve create-only içerik seed akışı
-- TOTP + doğrulanmış e-posta + `admin: true` claim + configured owner e-postası gerektiren özel Studio
-- Exact owner e-postası dışında hesap oluşturmayı ve girişi kapatan blocking functions
-- İmza, MIME, boyut ve sahiplik kontrolünden geçen staging medya hattı
-- Aktif deploy manifestine bağlı Storage erişimi ve sunucu üretimli audit logları
-- Kaybolmayan rebuild kuyruğu, canlı revizyon doğrulaması ve fail-closed medya GC
-- Eski fiziksel pafta QR bağlantıları için daraltılmış, rate-limitli callable
-
-Kamuya açık istemci; `projects`, `journal` veya `siteSettings` için Firestore'dan
-doğrudan belge ya da liste okuyamaz. Tüm genel içerik, ayrıcalıklı build sırasında
-daraltılıp doğrulanan snapshot üzerinden sunulur. Bu snapshot
+Ziyaretçiler Firestore'a hiç bağlanmaz. Yayındaki içerik (`projects`, `journal`,
+`siteSettings`) derleme sırasında Firestore'dan okunur, doğrulanır ve
 [`src/data/generated-content.json`](src/data/generated-content.json) dosyasına
-yazılır ve istemci, prerender ve sitemap aynı kaynağı kullanır.
-Kaynak koddaki yerel fallback da yalnız yayımlanmış örneklerden oluşur; taslak ve
-arşiv metinleri public JavaScript'e hiçbir koşulda gömülmez. Build bu sınırı
-ayrıca fail-closed doğrular.
+yazılır. İstemci, prerender ve sitemap aynı dosyayı kullanır. Taslak ve arşiv
+içeriği bu dosyaya girmez; derleme bunu ayrıca kontrol eder.
 
-## Dizinler
+İçeriği yalnızca site sahibi düzenleyebilir. `/studio` girişi şunların hepsini
+ister: doğrulanmış e-posta, TOTP ile ikinci adım, `admin: true` claim'i ve
+yapılandırılmış sahip e-postasıyla birebir eşleşme. Başka hesapların oluşturulması
+ve giriş yapması Cloud Functions tarafında engellenir.
+
+Studio'da bir kayıt kaydedildiğinde canlı site hemen değişmez. Functions bir
+yeniden derleme isteği kuyruğa alır, GitHub Actions siteyi yeniden derleyip
+yayınlar. Studio, yayın gerçekten bittiğinde bunu gösterir.
+
+Kullanılanlar: React 19, TypeScript, Vite 8, Framer Motion, Three.js, Zod,
+Firebase (Hosting, Firestore, Storage, Auth, Functions, App Check).
+
+## Dizin yapısı
 
 ```text
 src/
-  components/        arayüz, deneyim ve Studio bileşenleri
-  context/           dil, tema, içerik ve yönetici oturumu
-  data/              fallback ve üretilmiş yayın snapshot'ı
-  domain/            Zod veri sözleşmeleri ve güvenli URL doğrulaması
-  lib/firebase/      Firebase istemcisi ve yönetici repository katmanı
-  pages/             kamu sayfaları, pafta görünümü ve Studio
-functions/           callable/trigger fonksiyonları ve yönetim scriptleri
-scripts/             build, SSR prerender ve statik çıktı araçları
-tests/rules/         Firestore ve Storage emülatör güvenlik matrisi
+  components/   arayüz bileşenleri; corridor/ ana sayfadaki 3B koridor, studio/ yönetim paneli
+  context/      dil, tema, içerik ve oturum durumu
+  data/         yedek içerik ve üretilmiş snapshot
+  domain/       Zod şemaları ve URL doğrulaması
+  lib/firebase/ Firebase istemcisi ve yönetici veri katmanı
+  pages/        site sayfaları, pafta görünümü ve Studio
+functions/      Cloud Functions ve yönetim scriptleri
+scripts/        derleme, prerender ve deploy araçları
+tests/rules/    Firestore ve Storage kural testleri (emülatör)
 ```
+
+## Sayfalar
+
+| Yol | İçerik |
+| --- | --- |
+| `/` | 3B koridor ana sayfa |
+| `/classic` | Klasik ana sayfa |
+| `/work`, `/work/:slug` | Projeler ve proje sayfaları |
+| `/about`, `/contact` | Hakkımda ve iletişim formu |
+| `/journal`, `/lab` (ve `/:slug`) | Yazılar ve deneyler |
+| `/privacy`, `/terms` | Site gizlilik ve koşullar; uygulamalar için ayrı sayfalar da var |
+| `/pafta/:code` | Eski basılı paftalardaki QR bağlantıları |
+| `/studio`, `/studio/setup` | Yönetim paneli ve TOTP kaydı |
+
+İngilizce sürüm `/en` önekiyle açılır.
 
 ## Yerel geliştirme
 
-Gereksinimler: Node.js 22 önerilir (kök paket en az 20.19 ister), npm ve Rules
-testleri için Java 21+.
+Node.js 22 önerilir (en az 20.19). Rules testleri için Java 21 veya üstü gerekir.
 
 ```sh
 npm ci
 npm ci --prefix functions
-cp .env.example .env.local
+cp .env.example .env.local   # Firebase web değerlerini doldurun
 npm run dev
 ```
 
-`.env.local` içindeki Firebase web değerleri kimlik değil, istemci
-tanımlayıcılarıdır; yine de yalnız doğru projeyi hedeflemelidir. Servis hesabı,
-Functions secret'ları, App Check debug tokenı veya yönetici UID/e-postası commit
-edilmemelidir. Emülatörleri yalnız
-`VITE_FIREBASE_USE_EMULATORS=true` ile yerel ortamda etkinleştirin.
+`.env.local` içindeki Firebase web değerleri gizli değildir, ama doğru projeyi
+göstermelidir. Servis hesabı anahtarlarını, Functions secret'larını, App Check
+debug token'ını ve yönetici UID/e-postasını commit etmeyin. Emülatörler yalnızca
+`VITE_FIREBASE_USE_EMULATORS=true` ile açılır.
 
-## Kalite kapıları
+## Test ve kontroller
 
 ```sh
 npm run typecheck
 npm run lint
-npm test
-npm run test:rules
+npm test                 # web birim testleri
+npm test --prefix functions
+npm run test:rules       # Firestore ve Storage kuralları, emülatörle
+npm run audit:policy     # bağımlılık güvenlik denetimi
 npm run build
-npm run audit:policy
 ```
 
-Rules testi Firestore ve Storage emülatörlerini başlatır. Test matrisi anonim
-Firestore okumalarının snapshot-only sınırını, TOTP + exact owner UID/e-posta
-zorunluluğunu, timestamp bütünlüğünü, function-owned koleksiyonları, staging
-yüklemelerini, legacy karantinasını ve yayın durumuna değil aktif Hosting dağıtım
-manifestine bağlı medyayı kapsar. Audit komutu web/Functions runtime ağaçlarında
-sıfır bilinen açık ister; yalnız lockfile'a bağlı Firebase deploy CLI'ındaki iki
-upstream moderate advisory, sahip ve son inceleme tarihi bulunan exact-ID
-politikasıyla geçici olarak sınırlandırılmıştır. Yeni advisory, paket, severity
-veya süre aşımı CI'ı durdurur.
+CI (`quality.yml`) aynı adımları her pull request'te çalıştırır.
 
-## Firebase ve tek yönetici kurulumu
+`audit:policy`, çalışma zamanı bağımlılıklarında bilinen açık kabul etmez. Tek
+istisna, deploy aracı `firebase-tools` içindeki iki orta seviyeli uyarıdır;
+istisna [`scripts/dependency-audit-policy.json`](scripts/dependency-audit-policy.json)
+dosyasında sahibi ve son inceleme tarihiyle tutulur.
 
-Prod kurulumu için önce Firebase Authentication'ı Identity Platform'a yükseltin,
-e-posta/parola sağlayıcısını ve web App Check'i yapılandırın. Ardından tek owner
-hesabını oluşturma, TOTP sağlayıcısını açma, MFA enrollment ve claim verme
-sırasını eksiksiz uygulayın. Bu sıra, gerekli parametreler/secrets ve kurtarma
-komutları [`functions/README.md`](functions/README.md) içinde belgelenmiştir.
+## Firebase kurulumu
 
-Güvenlik kuralları README içinden kopyalanmamalıdır. Tek kanonik kaynaklar:
+İlk kurulum sırası (Identity Platform, tek yönetici hesabı, TOTP, claim) ve tüm
+yönetim komutları [`functions/README.md`](functions/README.md) dosyasında.
+
+Güvenlik kuralları ve index tanımları şu dosyalarda yaşar, README'ye kopyalanmaz:
 
 - [`firestore.rules`](firestore.rules)
 - [`storage.rules`](storage.rules)
 - [`firestore.indexes.json`](firestore.indexes.json)
 
-Functions parametreleri için
-[`functions/.env.example`](functions/.env.example), tarayıcı yapılandırması için
-[`.env.example`](.env.example) başlangıç şablonudur.
+Ortam değişkenleri için şablonlar: [`.env.example`](.env.example) (web) ve
+[`functions/.env.example`](functions/.env.example) (Functions).
 
-## İçerik yayınlama
+## Yayınlama
 
-Studio'da kaydetmek Firestore'un yönetim katmanını günceller; çalışan Hosting
-sürümünü veya onun aktif medya manifestini doğrudan değiştirmez. Rebuild kuyruğu
-her kayda monotonik bir revizyon verir ve overlap eden değişiklikleri kaybetmeden
-birleştirir. Build sağlayıcısı bu revizyonu taşıyarak snapshot'ı domain
-şemalarıyla doğrular. Normal editör kaydı, asenkron server outbox henüz revizyon
-üretmemiş olabileceği için yalnız “sunucu kuyruğu oluşturulacak” onayı verir ve
-canlı yayın iddiasında bulunmaz. Açık manuel/retry isteği ise kendi exact
-revizyonunu izler; Studio webhook kabulünü canlı yayın başarısı saymaz ve ancak
-`activeContentRevision` hedefe ulaştığında doğrulanmış dağıtım gösterir.
+Canlıya çıkarken `firebase deploy` doğrudan kullanılmaz; `npm run deploy:production`
+çalıştırılır. Bu komut içeriği Firestore'dan alıp siteyi derler, medya erişim
+listesini önce eski ve yeni dosyaların birleşimine açar, Firebase kaynaklarını
+yayınlar ve yalnızca hepsi başarılı olursa listeyi yeni sürüme daraltır. Bir
+adım başarısız olursa eski sitenin görselleri erişilebilir kalır.
 
-```sh
-npm ci
-npm ci --prefix functions
+Normalde bunu elle çalıştırmazsınız. Studio'daki her kayıt
+[`production-deploy.yml`](.github/workflows/production-deploy.yml) workflow'unu
+`site-rebuild` olayıyla tetikler. İşler tek bir sırada çalışır ve workflow,
+uzun ömürlü anahtar yerine GitHub OIDC ile Workload Identity Federation kullanır.
 
-FIREBASE_PROJECT_ID='firebase-project-id' \
-ACKARACA_EXPORT_FIRESTORE=true \
-CONFIRM_CONTENT_EXPORT=ACKARACA_PUBLIC_CONTENT \
-npm run build
-```
+Workflow için gerekenler:
 
-Kimlik doğrulama `FIREBASE_SERVICE_ACCOUNT_JSON`,
-`FIREBASE_SERVICE_ACCOUNT_PATH` veya Application Default Credentials ile
-sağlanır. Export; proje ID/credential uyuşmazlığında, eksik ayarlarda, geçersiz
-kayıtta, duplicate slug'da veya yayınlanmış proje bulunmadığında fail-closed
-durur. Eski snapshot'la sessizce devam etmez.
+- Production environment secret'ları: `FIREBASE_PROJECT_ID`,
+  `ACKARACA_STORAGE_BUCKET`, `ACKARACA_ADMIN_EMAIL`,
+  `GCP_WORKLOAD_IDENTITY_PROVIDER`, `GCP_DEPLOY_SERVICE_ACCOUNT`
+- Environment variable'ları: `VITE_FIREBASE_API_KEY`, `VITE_FIREBASE_AUTH_DOMAIN`,
+  `VITE_FIREBASE_MESSAGING_SENDER_ID`, `VITE_FIREBASE_APP_ID`,
+  `VITE_FIREBASE_APPCHECK_SITE_KEY`, `SITE_REBUILD_PROVIDER`,
+  `SITE_REBUILD_WEBHOOK_HOST`
+- Deploy hesabına geniş Firebase Admin yetkisi vermeyin. Sahip kontrolü için
+  `roles/firebaseauth.viewer` ve `systemPolicies/owner-access` için dar bir
+  Firestore okuma izni yeter.
 
-## Deploy
+Studio'dan GitHub'a gönderilen rebuild isteği için Functions tarafında
+`SITE_REBUILD_PROVIDER=github`, `SITE_REBUILD_WEBHOOK_HOST=api.github.com`, bu
+depoya `repository_dispatch` gönderebilen bir `SITE_REBUILD_WEBHOOK_TOKEN` ve
+`https://api.github.com/repos/<sahip>/<depo>/dispatches` adresi gerekir.
 
-Üretimde çıplak `firebase deploy` yerine aşamalı wrapper kullanılır. Wrapper
-önce eski∪yeni medya manifestini hazırlar, gerekli Firebase kaynaklarını dağıtır
-ve yalnız tüm zorunlu kaynak fazları doğrulandıktan sonra manifesti tam yeni
-snapshot'a daraltır. Bootstrap statik Hosting'i backend'den önce yayınlar. Hata halinde
-eski sitenin görselleri erişilebilir kalır; stale veya overlap eden revizyonlar
-fail-closed reddedilir. Yalnız başarısız/zaman aşımına uğramış aynı snapshot ve
-revizyon güvenli bir yeni deployment ID ile tekrar denenebilir.
-Komutu çalıştırmadan önce [`.env.example`](.env.example) içindeki tüm üretim web
-değerlerini ve [`functions/.env.example`](functions/.env.example) içindeki dört
-Functions parametresini shell ortamına export edin; wrapper eksik, placeholder
-veya birbiriyle uyuşmayan ayarlarda build başlamadan durur.
+Workflow elle revizyon numarası kabul etmez. Revizyon ve istek kimliği yalnızca
+sunucudaki kuyruktan gelir. Üretim projesi, bucket ve secret'lar bu depoda
+olmadığı için yerelde yapılan doğrulama canlı bir deploy yapmaz.
 
-Eski production projesinde ilk kez bu sürüme geçerken sıra güvenlik sınırının bir
-parçasıdır:
+### Eski production'dan geçiş
 
-1. Kök ve Functions bağımlılıklarını lockfile'lardan kurun; `npm run
-   audit:policy` ve `node scripts/verify-public-content.mjs` çalıştırın. Identity
-   Platform + e-posta/parola sağlayıcısını açın, tek owner hesabını oluşturup
-   e-postasını doğrulayın ve üretim parametre/secrets'larını hazırlayın. Revision
-   0 wrapper'ı blocking Functions'tan önce bu hesabı read-only doğrular.
-2. Storage Rules'ın Firestore'a erişebilmesi için Firebase'in
+Eski sürümden ilk kez geçerken adımların sırası güvenlik açısından önemlidir:
+
+1. Bağımlılıkları kurun, `npm run audit:policy` ve
+   `node scripts/verify-public-content.mjs` çalıştırın. Identity Platform'u ve
+   e-posta/parola girişini açın, sahip hesabını oluşturup e-postasını doğrulayın.
+2. Storage Rules'ın Firestore'u okuyabilmesi için Firebase'de
    [cross-service Rules bağlantısını](https://firebase.google.com/docs/rules/manage-deploy#manage_permissions_for_cross-service_cloud_storage_security_rules)
-   etkinleştirin ve Firebase Storage service agent'ının `Firebase Rules
-   Firestore Service Agent` rolünü doğrulayın. İlk cross-service rules
-   deploy'unda Firebase CLI istemini onaylayın; eksik rol Studio medya
-   işlemlerini güvenli biçimde reddeder.
-3. Eski `us-central1/adminLoginGuard` ve HTTP `seedContent` export'larını exact
-   inventory kontrollü `npm run legacy:retire --prefix functions` komutuyla
-   kaldırın. Genel `firebase deploy --force` kullanmayın.
-4. `npm run bootstrap:plan` çıktısındaki fallback bundle sayısı ve SHA-256'yı
-   inceleyin. Exact `bootstrap-bundled:project:hash` onayı,
-   `ACKARACA_BOOTSTRAP_FROM_BUNDLED_CONTENT=true` ve revision `0` ile validated
-   bundled fallback'ı deploy edin. Wrapper önce Firestore'dan bağımsız statik
-   Hosting'i, yalnız başarısından sonra rules/indexes/Storage/Functions'ı
-   dağıtır; iki faz tamamlanmadan medya manifestini finalize etmez. Bu aşama
-   Firestore export yapmaz ve yalnız rebuild kuyruğu başlamadan önce çalışır.
-5. TOTP sağlayıcısını etkinleştirin, `/studio/setup` üzerinden owner hesabına
-   TOTP kaydedin ve exact claim komutunu çalıştırın. Komut admin claim'inin
-   yanında client'ların değiştiremediği `systemPolicies/owner-access` UID/e-posta
-   bağını da kurar. Çıkış/giriş yapıp normal owner preflight ve `/studio`
-   erişimini doğrulayın. Normal deploy wrapper bunu otomatik çalıştırır; manuel
-   kontrolün exact `ACKARACA_OWNER_PREFLIGHT_MODE=normal` komutu
-   [`functions/README.md`](functions/README.md) içindedir.
-6. `npm run legacy:migrate-content --prefix functions` dry-run çıktısındaki
-   canonical settings + on bir proje + iki journal yolunu, sınıflandırmaları,
-   local `0600` planı ve SHA-256 özetini inceleyin. Komut collection query
-   çalıştırmaz; hiçbir unrelated legacy auto-ID belgesini listelemez veya değiştirmez.
-7. Private plandaki her `sourceData` / `replacementData` çiftini inceleyin;
-   çıktının exact project+hash+paths ve `reviewed:project:hash` tokenlarının
-   ikisiyle `--apply` çalıştırın. Tanınan eski çakışmalar transaction içinde private ve kalıcı
-   olarak yedeklenir; valid-v2 belgeler korunur, absent canonical yollar
-   create-only oluşturulur, beklenmeyen veri tüm apply'ı durdurur.
-8. Migration yazılarının oluşturduğu durable outbox'ın server-issued revision
-   `>0` rebuild'ini tamamlayın; bundled bootstrap modunu tekrarlamayın.
+   açın ve Storage service agent'ında `Firebase Rules Firestore Service Agent`
+   rolünün bulunduğunu doğrulayın.
+3. Eski `adminLoginGuard` ve HTTP `seedContent` fonksiyonlarını
+   `npm run legacy:retire --prefix functions` ile kaldırın. `firebase deploy --force`
+   kullanmayın.
+4. `npm run bootstrap:plan` çıktısındaki dosya sayısını ve SHA-256 değerini
+   inceleyin, ardından revizyon `0` ile yedek içeriği deploy edin. Önce statik
+   Hosting, sonra kurallar, index'ler, Storage ve Functions yayınlanır.
+5. `/studio/setup` üzerinden TOTP kaydedin ve admin claim'ini verin. Çıkış yapıp
+   tekrar girin ve `/studio` erişimini doğrulayın.
+6. `npm run legacy:migrate-content --prefix functions` ile dry-run alın, üretilen
+   planı inceleyin ve onay değerleriyle `--apply` çalıştırın.
+7. Migration'ın kuyruğa aldığı ilk gerçek rebuild'in (revizyon > 0) tamamlanmasını
+   bekleyin. Yedek içerikle bootstrap'i bir daha çalıştırmayın.
 
-Exact onay ifadeleri, credential seçenekleri, private backup yolu ve kurtarma
-notları [`functions/README.md`](functions/README.md) içinde belgelenmiştir.
+Her adımın komutları, onay ifadeleri ve kurtarma yolları
+[`functions/README.md`](functions/README.md) içinde.
 
-```sh
-FIREBASE_PROJECT_ID='firebase-project-id' \
-ACKARACA_STORAGE_BUCKET='firebase-project-id.firebasestorage.app' \
-ACKARACA_CONTENT_REVISION='0' \
-ACKARACA_BOOTSTRAP_FROM_BUNDLED_CONTENT='true' \
-CONFIRM_BUNDLED_BOOTSTRAP='bootstrap-bundled:firebase-project-id:<sha256-from-bootstrap-plan>' \
-CONFIRM_PRODUCTION_DEPLOY='deploy:firebase-project-id' \
-npm run deploy:production
-```
+## Eski pafta kayıtları
 
-İlk kurulum revizyonu `0`'dır; daha sonraki değer rebuild webhook gövdesindeki
-`revision` olmalıdır. Build sağlayıcısı aynı site için işleri serialize etmeli ve
-stale revizyonu çalıştırmamalıdır. Parametreler, abort/finalize kurtarma komutları
-ve en az yetkili kimlik sözleşmesi
-[`functions/README.md`](functions/README.md) içinde ayrıntılıdır.
-
-Depodaki [`production-deploy.yml`](.github/workflows/production-deploy.yml),
-Studio'nun GitHub `repository_dispatch` isteğini `site-rebuild` olayıyla karşılar
-ve işleri tek bir production concurrency grubunda sıraya alır. Workflow uzun
-ömürlü servis hesabı anahtarı taşımaz; GitHub OIDC ile Workload Identity
-Federation kullanır. Production environment secret'ları olarak
-`FIREBASE_PROJECT_ID`, `ACKARACA_STORAGE_BUCKET`, `ACKARACA_ADMIN_EMAIL`,
-`GCP_WORKLOAD_IDENTITY_PROVIDER` ve `GCP_DEPLOY_SERVICE_ACCOUNT` gerekir.
-Environment variable'ları olarak `VITE_FIREBASE_API_KEY`,
-`VITE_FIREBASE_AUTH_DOMAIN`, `VITE_FIREBASE_MESSAGING_SENDER_ID`,
-`VITE_FIREBASE_APP_ID`, `VITE_FIREBASE_APPCHECK_SITE_KEY`,
-`SITE_REBUILD_PROVIDER` ve `SITE_REBUILD_WEBHOOK_HOST` gerekir. Workflow;
-web yapılandırmasının Functions projesi/bucket'ıyla tam eşleşmesini ve üretim
-parametrelerinin placeholder olmadığını build başlamadan fail-closed doğrular.
-Hem manuel deploy ADC kimliğine hem GitHub WIF deploy service account'una owner
-preflight için en az yetkili
-[`roles/firebaseauth.viewer`](https://firebase.google.com/docs/projects/iam/roles-predefined-product#firebase_authentication_roles)
-(`firebaseauth.users.get`) ve `systemPolicies/owner-access` için gerekli scoped
-Firestore okumasını verin; geniş Firebase Admin/Owner rolü vermeyin. Media ve
-rebuild'in gerekli dar Firestore yazma izinleri ayrıca
-[`functions/README.md`](functions/README.md) sözleşmesindedir.
-Functions tarafında ise `SITE_REBUILD_PROVIDER=github`,
-`SITE_REBUILD_WEBHOOK_HOST=api.github.com`, yalnız bu depoya dispatch yetkili
-`SITE_REBUILD_WEBHOOK_TOKEN` secret'ı ve tam
-`https://api.github.com/repos/ahmetcemkaraca/ackaracame/dispatches` URL'si
-tanımlanmalıdır. Üretim projesi, bucket, IAM bağı ve secret'lar bu depoda
-bulunmadığı için yerel doğrulama canlı dağıtım yapmaz.
-
-Workflow keyfî bir manuel revision girdisi kabul etmez: revision ve request ID
-yalnız sunucu rebuild kuyruğundan gelir ve deploy kimliği bunları Firestore'daki
-kabul edilmiş kayıtla yeniden doğrular. İlk `revision=0` bootstrap dağıtımı,
-rebuild kuyruğu başlamadan önce yukarıdaki açık onaylı komutla kontrollü bir
-operatör ortamından bir kez yapılır.
-
-## Önemli yollar
-
-- `/` — seçili işler ve genel profil
-- `/work` ve `/work/:slug` — portfolyo ve vaka çalışmaları
-- `/journal` ve `/journal/:slug` — yazılar ve düşünce arşivi
-- `/lab` ve `/lab/:slug` — araştırmalar ve etkileşimli deneyler
-- `/pafta/:code` — eski fiziksel QR paftalarının sınırlı kamu görünümü
-- `/studio/setup` — tek seferlik TOTP enrollment
-- `/studio` — özel içerik yönetimi
-
-Eski `paftas` kayıtlarındaki `status: "active"` değeri kamuya açılmaz. Bu kasıtlı
-karantina geriye dönük otomatik migration yapmaz: her belgeyi içerik ve medya
-güvenliği açısından elle inceleyip, yalnız gerçekten yayımlanacak olanları
-`status: "published"` değerine taşıyın; ardından bileşik index ve Functions
-dağıtımını tamamlayın.
+`paftas` koleksiyonunda `status: "active"` olan eski kayıtlar herkese açık
+değildir. Otomatik taşıma yapılmaz. Her kaydı içerik ve medya açısından elle
+inceleyin, yayınlanacakları `status: "published"` yapın, sonra index'i ve
+Functions'ı deploy edin.
 
 ## Lisans
 
-Bu depo kişisel portfolyo içeriği ve uygulama kaynaklarını içerir. Yeniden kullanım
-öncesinde depo sahibinden izin alın.
+Bu depo kişisel portfolyo içeriğini ve site kaynak kodunu içerir. Yeniden
+kullanmadan önce depo sahibinden izin alın.
