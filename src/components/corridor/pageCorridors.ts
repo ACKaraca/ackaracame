@@ -1,5 +1,6 @@
 import { localize, type Locale } from '../../context/AppPreferences';
 import { journalEntryPath, type JournalEntry, type PortfolioProject, type SiteSettings } from '../../domain/content';
+import { architecturePortfolio, architecturePortfolioCopy } from '../../lib/architecturePortfolio';
 import { isAcceptingInquiries } from '../../lib/availability';
 import { COMPANY_REGISTER_URL, company } from '../../lib/company';
 import type { CorridorPage } from '../../lib/viewMode';
@@ -79,10 +80,18 @@ export const pageCorridorEntries = (page: CorridorPage, { locale, settings, proj
     id, kind: 'page', title, href, meta: l.page, aspect: TEXT, palette: PAGE_PALETTES[0]!, ...extra,
   });
   const contactPortal = portal('contact', l.contact, '/contact');
+  const architecture = architecturePortfolioCopy(locale);
+  const architecturePortal = portal('architecture-portfolio', architecture.title, architecturePortfolio.href, {
+    document: true,
+    meta: architecture.meta,
+    image: architecturePortfolio.cover,
+    aspect: architecturePortfolio.coverAspect,
+    palette: PAGE_PALETTES[1]!,
+  });
 
   switch (page) {
     case 'work':
-      return [...projects.map((project) => projectEntry(project, locale)), contactPortal];
+      return [...projects.map((project) => projectEntry(project, locale)), architecturePortal, contactPortal];
     case 'about': {
       const t = aboutCopy[locale];
       const accepting = isAcceptingInquiries(settings.availability);
@@ -93,6 +102,7 @@ export const pageCorridorEntries = (page: CorridorPage, { locale, settings, proj
         ...aboutPractice(locale).map((item, index) => note(`practice-${index}`, item.title, t.stack, item.body)),
         note('now', t.nowTitle, t.now, t.nowBody),
         companyEntry(locale),
+        architecturePortal,
         accepting ? contactPortal : portal('work', l.work, '/work'),
       ];
     }

@@ -1,0 +1,223 @@
+{
+ "slug": "tasarim8",
+ "kind": "akademik",
+ "title": "İYTE Spor Bilimleri Fakültesi",
+ "subtitle": "Akdeniz, Kent ve Spor Etkileşiminde Spor Bilimleri Fakültesi – İYTE Kampüsü Planlaması",
+ "code": "MİM 412 – Mimari Tasarım VIII (Bitirme Projesi)",
+ "term": "2025–26 Bahar",
+ "place": "İzmir / Urla – İYTE Gülbahçe kampüsü",
+ "typology": "Kamusal yapı | Eğitim ve spor kompleksi",
+ "tools": [
+  "Revit"
+ ],
+ "summary": "“Akdeniz, Kent ve Spor Etkileşiminde Spor Bilimleri Fakültesi” konulu bitirme projesi, İYTE kampüsü planlaması kapsamında Gülbahçe Yarımadası’nın eğimli topoğrafyasında lineer bir yerleşimle kurgulandı. Fakülte, havuz yapısı, idare binası ve stadyum/açık sahalar merkezi yaya omurgasına bağlanır.",
+ "concept": "Merkezi yaya omurgası akademik, sosyal ve sportif işlevleri bağlar; yapı kütleleri tekil blok yerine parçalı ve modüler kurgulanır, açık alanlar, avlular ve geçiş mekânları tasarımın aktif parçası olur.",
+ "facts": [
+  {
+   "k": "Program",
+   "v": "Fakülte binası, havuz yapısı (–2. kattan 2. kata), idare binası, futbol sahası ve tribünler"
+  },
+  {
+   "k": "Kapalı alan (ihtiyaç programı)",
+   "v": "14.700 m² (10.500 m² net + %40 sirkülasyon)"
+  },
+  {
+   "k": "Açık spor alanları (ihtiyaç programı)",
+   "v": "15.400 m²: 400 m pist, futbol sahası, kortlar"
+  },
+  {
+   "k": "Ders yürütücüleri",
+   "v": "Prof. Dr. Kemal Reha Kavas – Mimar Bilal Ateş"
+  }
+ ],
+ "hero": {
+  "file": "hero.jpg",
+  "w": 2200,
+  "h": 1240,
+  "caption": "Kuş bakışı görselleştirme: stadyum ve atletizm pisti, fakülte, havuz yapısı ve yay planlı idare binası",
+  "tone": "dark"
+ },
+ "concept_imgs": [
+  {
+   "file": "kampus_kesitleri_169.jpg",
+   "w": 1700,
+   "h": 956,
+   "caption": "Kampüs kesiti / silüeti ve idare binası kesitleri"
+  },
+  {
+   "file": "vaziyet_1000.jpg",
+   "w": 1529,
+   "h": 1700,
+   "caption": "Vaziyet planı, 1:1000 – stadyum, kortlar, fakülte, havuz yapısı ve idare binası topoğrafik zemin üzerinde"
+  },
+  {
+   "file": "vaziyet_yakin.jpg",
+   "w": 1609,
+   "h": 1700,
+   "caption": "Çevre ilişkisini gösteren vaziyet planı (Pafta 1) – yerleşimin kampüs dokusu içindeki konumu"
+  }
+ ],
+ "drawings": [
+  {
+   "file": "plan_fakulte_zemin.jpg",
+   "w": 1674,
+   "h": 1700,
+   "caption": "Fakülte zemin kat planı, 1:200 – basketbol salonu, açık plan spor salonu, giriş holü"
+  },
+  {
+   "file": "plan_fakulte_kat1.jpg",
+   "w": 1700,
+   "h": 1044,
+   "caption": "Fakülte 1. kat planı, 1:200 – derslikler ve akademik personel odaları"
+  },
+  {
+   "file": "plan_havuz_zemin.jpg",
+   "w": 1152,
+   "h": 1700,
+   "caption": "Havuz zemin kat planı, 1:200 – havuz salonu ve tribünler"
+  },
+  {
+   "file": "plan_idare_alt.jpg",
+   "w": 1700,
+   "h": 1632,
+   "caption": "İdare alt zemin kat planı, 1:200 – yay planlı idare binası"
+  },
+  {
+   "file": "kesit_b.jpg",
+   "w": 1700,
+   "h": 637,
+   "caption": "B kesiti, 1:200 – havuz yapısı"
+  },
+  {
+   "file": "kesit_a.jpg",
+   "w": 1700,
+   "h": 208,
+   "caption": "A kesiti, 1:500 – yamaca oturan kütleler"
+  }
+ ],
+ "visuals": [
+  {
+   "file": "render_detay_stadyum.jpg",
+   "w": 1700,
+   "h": 548,
+   "caption": "Kuş bakışı görselleştirme detayı: stadyum, pist, kortlar ve fakülte kütlesi"
+  },
+  {
+   "file": "render_detay_kuzey.jpg",
+   "w": 1700,
+   "h": 849,
+   "caption": "Kuş bakışı görselleştirme detayı: kuzey kanadı ve otopark"
+  },
+  {
+   "file": "render_detay_havuz_fakulte.jpg",
+   "w": 1700,
+   "h": 757,
+   "caption": "Kuş bakışı görselleştirme detayı: kemerli kafes çatılı havuz yapısı, fakülte ve idare binası"
+  },
+  {
+   "file": "axo_fakulte.jpg",
+   "w": 1173,
+   "h": 1700,
+   "caption": "Fakülte binası patlatılmış aksonometri – katlar"
+  },
+  {
+   "file": "axo_havuz.jpg",
+   "w": 925,
+   "h": 1700,
+   "caption": "Havuz yapısı patlatılmış aksonometri – kemerli çatıdan –2. kata katlar"
+  },
+  {
+   "file": "axo_idare.jpg",
+   "w": 1700,
+   "h": 1199,
+   "caption": "İdare binası aksonometri – alt ve üst zemin katlar"
+  },
+  {
+   "file": "plan_saha.jpg",
+   "w": 946,
+   "h": 1700,
+   "caption": "Saha planı, 1:500 – futbol sahası ve tribünler"
+  }
+ ],
+ "extras": {
+  "concept_imgs": [
+   {
+    "file": "vaziyet_10000.jpg",
+    "w": 1192,
+    "h": 1400,
+    "caption": "Vaziyet planı, 1:10000 – topoğrafya içinde proje alanı (Pafta 2)"
+   }
+  ],
+  "drawings": [
+   {
+    "file": "plan_fakulte_kat2.jpg",
+    "w": 1700,
+    "h": 1076,
+    "caption": "Fakülte 2. kat planı, 1:200"
+   },
+   {
+    "file": "plan_fakulte_kat3.jpg",
+    "w": 1700,
+    "h": 1594,
+    "caption": "Fakülte 3. kat planı, 1:200 – kapalı spor salonu (F302), soyunma kabinleri"
+   },
+   {
+    "file": "plan_havuz_kat1.jpg",
+    "w": 1045,
+    "h": 1700,
+    "caption": "Havuz 1. kat planı, 1:200"
+   },
+   {
+    "file": "plan_havuz_km1.jpg",
+    "w": 1610,
+    "h": 1700,
+    "caption": "Havuz –1. kat planı, 1:200 – sporcu odaları, laboratuvarlar, kafeterya"
+   },
+   {
+    "file": "plan_havuz_km2.jpg",
+    "w": 1267,
+    "h": 1700,
+    "caption": "Havuz –2. kat planı, 1:200"
+   },
+   {
+    "file": "plan_idare_ust.jpg",
+    "w": 1628,
+    "h": 1700,
+    "caption": "İdare üst zemin kat planı, 1:200 – toplantı / kurul odaları, dekanlık"
+   },
+   {
+    "file": "kesit_c.jpg",
+    "w": 1700,
+    "h": 289,
+    "caption": "C kesiti, 1:500"
+   },
+   {
+    "file": "kesit_d.jpg",
+    "w": 1700,
+    "h": 184,
+    "caption": "D kesiti, 1:200 – idare binası"
+   },
+   {
+    "file": "kesit_e.jpg",
+    "w": 1700,
+    "h": 218,
+    "caption": "E kesiti, 1:200"
+   }
+  ],
+  "visuals": [
+   {
+    "file": "render_detay_stadyum.jpg",
+    "w": 1700,
+    "h": 548,
+    "caption": "Kuş bakışı görselleştirme detayı: stadyum, atletizm pisti ve tribünler"
+   },
+   {
+    "file": "render_detay_kuzey.jpg",
+    "w": 1700,
+    "h": 849,
+    "caption": "Kuş bakışı görselleştirme detayı: stadyumun batı kanadı, çevredeki mevcut yapılar ve otopark"
+   }
+  ]
+ },
+ "notes": "1) Kaynak: revize\\v6final.pdf (7 pafta, 14.05.2026 teslim, 'FINAL'); ara jüri görselleri kullanılmadı, eski paket araclar\\tasarim8_ara_juri_yedek\\ altında. 2) Paftaların üst bandında '2025-2026 GÜZ DÖNEMİ' yazıyor; ancak ders takvimi ve proje konusu belgeleri 'Bahar Yarıyılı' diyor, term 'Bahar' yazıldı (paftadaki Güz ifadesi büyük olasılıkla şablon hatası). Final jüri takvimde 11–22 Mayıs 2026 olarak geçiyor; paftadaki tarih 14.05.2026. 3) Facts'teki 14.700 m² ve 15.400 m² İHTİYAÇ PROGRAMI toplamlarıdır (ihtiyaç programı PDF'i), tasarlanan gerçek alan DEĞİL. 4) Başlık final paftada yalnızca proje konusu olarak geçiyor; 'Cliffside Half-Aperture' konsept adı finalde YOK, kullanılmadı (ara jüri paftalarında vardı). 5) hero.jpg ve render_detay_* PDF'e gömülü tek kuş bakışı görselden (sayfa 1, 109 parçalı döşeme, yaklaşık 3430x1940 px) alındı; hafif kontrast/renk düzeltmesi yapıldı, boyut büyütülmedi. Görselin Revit sonrası render mi yapay zekâ destekli mi olduğu belgelerden anlaşılamıyor: kullanıcı onaylamalı. 6) Aksonometriler Sayfa 7'deki vektör çizimlerden; axo_fakulte dört kat parçasının dikey birleştirilmiş montajıdır, orijinalde parçalar aralıklı; axo_havuz ve axo_idare paftadaki görünüm kırpımı nedeniyle sağ/alt kenarda kesiktir. 7) Planlar/kesitler vektörden 4-5x ölçekle alındı, başlık bloğu, logo, pafta numarası ve çizim başlıkları kırpıldı; plan etiketlerindeki oda adları paftada açık gridir. 8) Araç: PDF üst verisinde yalnızca 'Adobe PDF Library' var; 'Revit' çizim biçiminden (Revit etiket/kot sembolleri) ve önceki ara jüri dosyalarından çıkarıldı. 9) 'Gülbahçe' paftadaki metin bloğunda baş harfi kesik ('ülbahçe'); 'Urla' ilçe bilgisi paftada geçmiyor, kullanıcı bilgisiyle yazıldı. 10) vaziyet_yakin.jpg paftada etiketsiz küçük vaziyet, ölçeği belirtilmediği için caption'da ölçek yazılmadı."
+}

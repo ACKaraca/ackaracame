@@ -315,6 +315,10 @@ export default function HomePage({ page }: { page?: CorridorPage }) {
       return;
     }
     const go = () => {
+      if (entry.document && entry.href) {
+        window.location.assign(entry.href);
+        return;
+      }
       if (entry.classic) setViewMode('classic');
       navigate(entry.href ?? '/');
     };
@@ -622,8 +626,12 @@ export default function HomePage({ page }: { page?: CorridorPage }) {
                 <Link
                   href={entry.href ?? entry.cta?.href ?? branchProject?.href ?? '/work'}
                   onClick={(event) => {
-                    if (fallback) return;
+                    if (fallback && !entry.document) return;
                     event.preventDefault();
+                    if (fallback) {
+                      window.location.assign(entry.href!);
+                      return;
+                    }
                     travelAndSelect(index);
                   }}
                 >

@@ -1,0 +1,152 @@
+{
+  "slug": "tasarim7",
+  "kind": "akademik",
+  "title": "İbradı Kentsel Rehabilitasyon ve Belediye Hizmet Binası",
+  "subtitle": "İlçe merkezinde kamusal meydan ve belediye hizmet kompleksi",
+  "code": "MİM 411 – Mimari Tasarım VII",
+  "term": "2025–26 Güz",
+  "place": "Antalya / İbradı",
+  "typology": "Kamusal yapı (belediye hizmet binası + kentsel açık mekân)",
+  "tools": [
+    "Revit",
+    "Adobe Photoshop"
+  ],
+  "summary": "Akseki–İbradı bağlamında, tarihi dokunun içindeki üç alternatif çalışma alanından birinde belediye hizmet binası ve kamuya açık meydan tasarlandı. Yapı; başkanlık, meclis, müdürlükler ve sosyal-kültürel birimleri parçalı bir kütle kompozisyonunda topluyor.",
+  "concept": "Belediye binası yalnızca idari bir yapı değil, kapalı ve açık mekânları bütünleyen kamusal bir buluşma noktası olarak kurgulandı: eğimli araziye uyan parçalı kütleler ve “Yerin Ruhu” (Genius Loci) yaklaşımıyla yerel kat adetlerine saygı.",
+  "facts": [
+    {
+      "k": "Program",
+      "v": "Belediye hizmet binası + kamusal meydan / açık alan tasarımı"
+    },
+    {
+      "k": "İhtiyaç programı",
+      "v": "5.000 m² (3.570 m² net + %40 sirkülasyon)"
+    },
+    {
+      "k": "Birimler",
+      "v": "Başkanlık, Meclis, 6 müdürlük, genel kullanımlar, sosyal-kültürel tesisler, kapalı otopark ve sığınak"
+    },
+    {
+      "k": "Teslim",
+      "v": "Final – 26.12.2025 (Ders yürütücüsü: Öğr. Gör. Dr. Sadık Gökhan Ekinci)"
+    }
+  ],
+  "hero": {
+    "file": "hero.jpg",
+    "w": 2200,
+    "h": 1238,
+    "caption": "Belediye hizmet binası – taş duvar, geniş camlı ofis kütlesi ve kırma kiremitli çatılı hizmet birimi",
+    "tone": "light"
+  },
+  "concept_imgs": [
+    {
+      "file": "arazi_alternatifleri.jpg",
+      "w": 1498,
+      "h": 1500,
+      "caption": "Tarihi dokuda verilen üç alternatif çalışma alanı (1–2–3), uygulama imar planı üzerinde"
+    },
+    {
+      "file": "konsept_panosu.jpg",
+      "w": 1595,
+      "h": 892,
+      "caption": "Final paftası konsept panosu: parçalı kütle, topoğrafyaya uyum ve “Yerin Ruhu” yaklaşımı"
+    },
+    {
+      "file": "vaziyet.jpg",
+      "w": 1662,
+      "h": 1700,
+      "caption": "Vaziyet planı, 1/500 – bina grubu ve meydan, çevre yapı dokusu ile izohipsler"
+    }
+  ],
+  "drawings": [
+    {
+      "file": "plan_baskanlik.jpg",
+      "w": 1700,
+      "h": 850,
+      "caption": "Başkanlık bloğu zemin ve 1. kat planları, 1/200"
+    },
+    {
+      "file": "plan_blok12_zemin.jpg",
+      "w": 1700,
+      "h": 1633,
+      "caption": "Blok 1-2 zemin kat planı, 1/200 – fuaye / sergi salonu, yemekhane, arşiv ve teknik hacimler"
+    },
+    {
+      "file": "kesit_bb.jpg",
+      "w": 1700,
+      "h": 377,
+      "caption": "B-B kesiti, 1/200 – eğimli arazide kademelenen bloklar"
+    },
+    {
+      "file": "kesit_aa.jpg",
+      "w": 1700,
+      "h": 383,
+      "caption": "A-A kesiti, 1/200"
+    }
+  ],
+  "visuals": [
+    {
+      "file": "render_01.jpg",
+      "w": 1700,
+      "h": 956,
+      "caption": "Kuş bakışı: bina grubu, meydan ve çevre yapılar"
+    },
+    {
+      "file": "render_02.jpg",
+      "w": 1700,
+      "h": 956,
+      "caption": "Taş cepheli, kırma kiremitli çatılı blok"
+    },
+    {
+      "file": "render_03.jpg",
+      "w": 1700,
+      "h": 956,
+      "caption": "Bina grubuna yaklaşım: giriş cephesi ve çevre dokusu"
+    },
+    {
+      "file": "render_04.jpg",
+      "w": 1700,
+      "h": 956,
+      "caption": "Bina grubu ve çevre yolu, kuş bakışı"
+    },
+    {
+      "file": "maket_01.jpg",
+      "w": 1700,
+      "h": 1275,
+      "caption": "Çalışma maketi: karton eşyükselti topoğrafyası üzerinde plastilin kütle çalışması"
+    }
+  ],
+  "extras": [
+    {
+      "file": "plan_ana_giris.jpg",
+      "w": 1505,
+      "h": 1700,
+      "caption": "Blok 1, 1. kat – ana giriş, güvenlik/danışma, yöresel ürünler satış, kafeterya, Mali İşler yarı açık ofis; 1/200"
+    },
+    {
+      "file": "plan_alt_kat_otopark.jpg",
+      "w": 1700,
+      "h": 1301,
+      "caption": "Blok 1-2 alt zemin / otopark ve çok amaçlı salon, fuaye, kulis; Zabıta birimi; 1/200"
+    },
+    {
+      "file": "render_05.jpg",
+      "w": 1700,
+      "h": 956,
+      "caption": "Kuş bakışı: meydan ve bina grubu"
+    },
+    {
+      "file": "maket_02.jpg",
+      "w": 1275,
+      "h": 1700,
+      "caption": "Çalışma maketi, plastilin kütle yerleşimi (üstten görünüş)"
+    },
+    {
+      "file": "pafta_arajuri4.jpg",
+      "w": 1201,
+      "h": 1700,
+      "caption": "Ara Jüri IV paftası (09.12.2025): planlar ve ilk render seti"
+    }
+  ],
+  "notes": "Kaynaklar: MİM 411 proje konusu + ihtiyaç programı PDF'leri; Final (26.12.2025), Ara Jüri III (25.11.2025) ve Ara Jüri IV (09.12.2025) paftaları. (1) Üç alternatif alandan hangisinin detaylı tasarlandığı belgede açık yazmıyor; vaziyet planı eğri yolun içindeki merkezi alana (muhtemelen 2 numara) benziyor – kullanıcı doğrulamalı, metne konmadı. (2) Final paftalarında kesitler Revit modelinden alınmış görünüyor; hocanın uyarısı (takvim PDF'si) kesit/görünüşlerin ayrı çizim olmasını istiyor – portfolyoda kullanılırsa kullanıcı kararı. (3) Araçlar: plan/kesit paftaları Revit çıktısı, pano Adobe Photoshop (PDF metaverisi); 3B görselleri üreten yazılım (Twinmotion/Enscape/Lumion vb.) dosyalardan belli değil, tools'a yazılmadı. (4) Konsept panosundaki 'Düğmeli Ev' çizimi ve inline render kullanıcı tarafından yapılmış kabul edildi; çizimin kaynağı doğrulanmalı. (5) Mimari projenin ayrıca alan/kat/m² toplamı (yapılaşmış brüt alan) paftalarda tek bir rakam olarak yok; yalnızca ihtiyaç programı 5.000 m² verildi. (6) 'asdfasdf\\1.pdf' = Final Pafta 1 (konsept panosu + vaziyet); 'Final.pdf' yalnızca vaziyet + planlar + kesitler içeriyor. (7) Alanya Kalesi sunumları, Aleyna Yıldırım / Yusuf Alperen Öz / diğer kişilerin dosyaları, 'portf' klasöründeki yabancı proje görselleri ve 8. dönem dosyaları kullanılmadı. (8) 'maket' fotoğraflarındaki renkli plastilin kütlelerin anlamı (renk-işlev) belgelenmiş değil, yorumlanmadı."
+}

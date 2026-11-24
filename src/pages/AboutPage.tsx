@@ -2,6 +2,7 @@ import { ArrowUpRight, Box, Braces, Building2, Compass, Layers3, ShieldCheck } f
 import { Link } from 'wouter';
 import { useAppPreferences, localize } from '../context/AppPreferences';
 import { useContent } from '../context/Content';
+import { ArchitecturePortfolioCard } from '../components/projects/ArchitecturePortfolioCard';
 import { useDocumentMeta } from '../hooks/useDocumentMeta';
 import { isAcceptingInquiries } from '../lib/availability';
 import { COMPANY_REGISTER_URL } from '../lib/company';
@@ -113,6 +114,8 @@ export default function AboutPage() {
           {practiceAreas.map(({ icon: Icon, title, body }) => <article key={title}><Icon aria-hidden="true" /><h3>{title}</h3><p>{body}</p></article>)}
         </div>
       </section>
+
+      <ArchitecturePortfolioCard />
 
       <section className="section now-section">
         <div className="shell now-section__grid">

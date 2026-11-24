@@ -1,0 +1,146 @@
+{
+ "slug": "tasarim6",
+ "kind": "akademik",
+ "title": "HELIX – Dijital Sonsuz Panorama",
+ "subtitle": "Arapsuyu Mahallesi'nde Otel Tasarımı",
+ "code": "MİM 312 – Mimari Tasarım VI",
+ "term": "2024–25 Bahar",
+ "place": "Antalya / Konyaaltı / Arapsuyu",
+ "typology": "Otel (konaklama + kentsel donatılar)",
+ "tools": [
+  "Revit"
+ ],
+ "summary": "Konyaaltı'nda Akdeniz manzarasına açılan, “Dinamik Ufuklar” konseptiyle tasarlanmış halka formlu otel. Merkezi atrium çevresinde dönen kütle; zemin katta karşılama ve ortak mekânlar, üst katlarda standart/geniş aile odaları ve süitler.",
+ "concept": "“Helix” formunun akışkanlığı panoramik manzarayla buluşur: konuk odaları halkanın dış çeperinde, kamusal programlar merkezi atrium çevresinde toplanır; kütle girişte çelik–betonarme hibrit sistemle yükseltilir.",
+ "facts": [
+  {
+   "k": "Kat kurgusu",
+   "v": "-1. kat, zemin ve 1–4. katlar"
+  },
+  {
+   "k": "Ortak program",
+   "v": "Lobi, restoran, bar, çok amaçlı salon, havuz"
+  },
+  {
+   "k": "Oda tipleri",
+   "v": "Standart, geniş aile odası ve süit"
+  },
+  {
+   "k": "Taşıyıcı sistem",
+   "v": "Betonarme + çelik hibrit (girişte konsol çelik kirişler)"
+  }
+ ],
+ "hero": {
+  "file": "hero.jpg",
+  "w": 2200,
+  "h": 1237,
+  "caption": "Üçüncü kat planının koyu (blueprint) yorumu: Helix formunun halka kurgusu",
+  "tone": "dark",
+  "fit": "right"
+ },
+ "concept_imgs": [
+  {
+   "file": "vaziyet.jpg",
+   "w": 1700,
+   "h": 1516,
+   "caption": "Vaziyet planı 1/500: halka kütle, havuz ve açık spor sahası"
+  },
+  {
+   "file": "genel_yerlesim.jpg",
+   "w": 1400,
+   "h": 1330,
+   "caption": "1/1000 genel yerleşim planı: arazi ve çevre yapı dokusu"
+  },
+  {
+   "file": "arazi_konum.jpg",
+   "w": 1132,
+   "h": 736,
+   "caption": "Arazi konumu: Arapsuyu, Konyaaltı sahili (ders tanıtım sunumundan)"
+  }
+ ],
+ "drawings": [
+  {
+   "file": "plan_zemin.jpg",
+   "w": 1700,
+   "h": 1632,
+   "caption": "Zemin kat planı 1/200: karşılama, lobi, bar, restoran, çok amaçlı salon"
+  },
+  {
+   "file": "plan_kat1.jpg",
+   "w": 1700,
+   "h": 1671,
+   "caption": "1. kat planı 1/200: standart ve geniş aile odaları"
+  },
+  {
+   "file": "plan_kat3.jpg",
+   "w": 1700,
+   "h": 1477,
+   "caption": "3. kat planı 1/200: iki sıralı oda dizisi ve açık atrium"
+  },
+  {
+   "file": "plan_bodrum.jpg",
+   "w": 1092,
+   "h": 1100,
+   "caption": "-1. kat planı 1/500: personel, teknik hacimler ve sığınak"
+  },
+  {
+   "file": "kesitler.jpg",
+   "w": 1700,
+   "h": 815,
+   "caption": "A-A, B-B, C-C, D-D kesitleri 1/200"
+  },
+  {
+   "file": "gorunusler.jpg",
+   "w": 1700,
+   "h": 869,
+   "caption": "Güney, doğu ve batı görünüşleri 1/200: kolonlarla yükselen halka kütle"
+  }
+ ],
+ "visuals": [
+  {
+   "file": "render_aerial.jpg",
+   "w": 1700,
+   "h": 704,
+   "caption": "Kuş bakışı 3B model: yeşil çatılı halka, avlu, havuz ve çevre düzenlemesi"
+  },
+  {
+   "file": "render_01.jpg",
+   "w": 1700,
+   "h": 564,
+   "caption": "Giriş cephesi perspektifi: konsol çelik kirişlerle yükseltilmiş kütle"
+  },
+  {
+   "file": "render_03.jpg",
+   "w": 1700,
+   "h": 597,
+   "caption": "Cephe perspektifi: dönen teraslar ve kolon düzeni"
+  },
+  {
+   "file": "render_04.jpg",
+   "w": 1317,
+   "h": 542,
+   "caption": "Arka cephe ve gölgelik yapılar: açık terasa bağlanan çevre"
+  },
+  {
+   "file": "render_02.jpg",
+   "w": 1311,
+   "h": 436,
+   "caption": "Şehir silueti ile birlikte yaklaşım görünümü"
+  }
+ ],
+ "extras": [
+  {
+   "file": "struktur_3d.jpg",
+   "w": 1700,
+   "h": 283,
+   "caption": "Strüktür 3B şemaları: betonarme–çelik hibrit taşıyıcı sistem"
+  },
+  {
+   "file": "oda_tipleri.jpg",
+   "w": 1700,
+   "h": 418,
+   "caption": "Oda tipleri 1/100: süit, geniş aile odası ve standart oda"
+  }
+ ],
+ "notes": "(1) Pafta başlıklarında “2024-2025 GÜZ DÖNEMİ” yazıyor; ders tanıtımı ve çalışma matrisi “2024-2025 BAHAR – MİM 312” diyor, ben Bahar yazdım. Paftalar 29.04.2025 (Ara Jüri 2) ve 03.06.2025 tarihli (finalll.pdf/Final.pdf; otelV3-11.pdf daha eski sürüm). (2) Helix doğrulandı: pafta başlığı “HELIX Dijital Sonsuz Panorama”, konsept “Dinamik Ufuklar”. (3) Görseller Revit çıktılarıdır (fotogerçekçi render yok; ham 3B görünümler) – araç olarak yalnızca Revit yazıldı; Twinmotion/Enscape kullanıldıysa siz ekleyin. (4) Toplam yapı alanı, oda sayısı, otel yıldızı vb. belgelerden doğrulanamadığı için yazılmadı. Her katta 20-40 oda etiketi görünüyor, bunu kesin sayı olarak vermedim. (5) Ders yürütücüleri: Prof. Dr. İlknur Akıner, Mimar Ümit Yetgin Aykaç, Mimar Bilal Ateş; proje bireysel (pafta alt bilgisi: 20204601037 S. Ahmet Cem Karaca). (6) concept_imgs[2] (arazi_konum) ders tanıtım sunumundan alınmış uydu görüntüsüdür (Yandex altlığı, kırmızı işaret = parsel) – kullanılacaksa kaynak notu eklenebilir. (7) “extras” alanı şema dışıdır: strüktür 3B şemaları ve oda tipleri; istenirse kullan. (8) Analiz paftaları (GenelAnalizler, Yoğunluk, Yeşil Alan, Diğer Analizler, iklim analizi) diğer öğrenci gruplarına ait; kullanıcı adı geçmiyor, bu yüzden KULLANILMADI. kaynak\\Kentsel\\* dosyaları Döşemealtı/Yeşilbayır için ayrı bir kentsel planlama çalışmasıdır (arazi farklı), otel konsepti olarak kullanılmadı. (9) uyg\\Project2.pdf (MİM 342 Uygulama Projesi II) ile ky2.pdf / MİMARLIK Bölümü.pdf (Termessos Yerel Zanaat Atölyesi / Tarihi Çevrede Tasarım) ayrı derslerdir; EntregaFinal_6.pdf bir İspanyolca/Arjantin referans paftasıdır (kullanıcıya ait değil) – hepsi hariç tutuldu. (10) Genel yerleşim ve vaziyet paftalarındaki turuncu/yeşil renkler çizim temsili; orijinal pafta kompozisyonundan kırpılmıştır."
+}

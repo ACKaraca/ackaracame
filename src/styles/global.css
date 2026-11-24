@@ -1763,6 +1763,58 @@ html[data-theme='dark'] .work-toolbar__filters button.is-active {
   text-underline-offset: 4px;
 }
 
+.architecture-portfolio {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+  align-items: center;
+  gap: clamp(1.5rem, 4vw, 3.5rem);
+  margin-block: clamp(3rem, 7vw, 5rem);
+}
+
+.architecture-portfolio__media {
+  display: block;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+}
+
+.architecture-portfolio__media img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  transition: transform 900ms var(--ease-out);
+}
+
+.architecture-portfolio:hover .architecture-portfolio__media img {
+  transform: scale(1.04);
+}
+
+.architecture-portfolio__copy h2 {
+  margin: 0.6rem 0 0.8rem;
+}
+
+.architecture-portfolio__copy p {
+  max-width: 46ch;
+  color: var(--ink-soft);
+  line-height: 1.6;
+}
+
+.architecture-portfolio__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1.25rem;
+  margin-top: 1.5rem;
+}
+
+@media (max-width: 760px) {
+  .architecture-portfolio {
+    grid-template-columns: 1fr;
+  }
+}
+
 /* ------------------------------------------------------------
    Case study page
    ------------------------------------------------------------ */
