@@ -56,7 +56,7 @@ tests/rules/    Firestore ve Storage kural testleri (emülatör)
 
 ## Yerel geliştirme
 
-Node.js 22 önerilir (en az 20.19). Rules testleri için Java 21 veya üstü gerekir.
+Node.js 24 gerekir (en az 24.12; firebase 13 bunu ister). Functions Node.js 22 çalışma zamanında koşar. Rules testleri için Java 21 veya üstü gerekir.
 
 ```sh
 npm ci
