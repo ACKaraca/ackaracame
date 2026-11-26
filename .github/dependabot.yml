@@ -5,6 +5,13 @@ updates:
     schedule:
       interval: "weekly"
     open-pull-requests-limit: 5
+    ignore:
+      # Pinned to the exact version named in scripts/dependency-audit-policy.json;
+      # any other version fails the audit gate, so it is raised by hand after review.
+      - dependency-name: "firebase-tools"
+      # typescript-eslint does not accept TypeScript 7 yet, so the bump cannot install.
+      - dependency-name: "typescript"
+        update-types: ["version-update:semver-major"]
     groups:
       npm-dependencies:
         patterns:
