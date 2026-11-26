@@ -15,6 +15,8 @@ export default defineConfig({
   build: {
     target: 'es2022',
     sourcemap: false,
+    // The CSP allows fonts from 'self' only, so a font inlined as a data: URI is blocked in production.
+    assetsInlineLimit: 0,
   },
   test: {
     environment: 'jsdom',
