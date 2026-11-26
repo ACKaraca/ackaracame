@@ -1765,40 +1765,130 @@ html[data-theme='dark'] .work-toolbar__filters button.is-active {
 
 .architecture-portfolio {
   display: grid;
-  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
   align-items: center;
-  gap: clamp(1.5rem, 4vw, 3.5rem);
-  margin-block: clamp(3rem, 7vw, 5rem);
+  gap: clamp(2rem, 6vw, 5rem);
+  margin-block: clamp(3.5rem, 8vw, 6rem);
 }
 
-.architecture-portfolio__media {
+/* Three real sheets of the deck, laid over each other like drawings on a table. */
+.architecture-portfolio__stack {
+  position: relative;
   display: block;
-  overflow: hidden;
-  border: 1px solid var(--line);
-  border-radius: var(--radius-lg);
+  aspect-ratio: 4 / 3;
 }
 
-.architecture-portfolio__media img {
+.architecture-portfolio__sheet {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto;
+  width: 76%;
+  aspect-ratio: 297 / 210;
+  margin: auto;
+  padding: clamp(0.3rem, 0.8vw, 0.6rem);
+  /* Paper stays paper in both themes. */
+  border: 1px solid rgba(14, 17, 25, 0.16);
+  background: #fbfaf7;
+  box-shadow: var(--shadow-md);
+}
+
+.architecture-portfolio__sheet:nth-child(1) {
+  transform: rotate(-6deg) translate(-10%, -7%);
+}
+
+.architecture-portfolio__sheet:nth-child(2) {
+  transform: rotate(4deg) translate(11%, -4%);
+}
+
+.architecture-portfolio__sheet:nth-child(3) {
+  transform: translateY(5%);
+}
+
+/* The stack fans out when the visitor reaches for it or for the button that opens it. */
+.architecture-portfolio__stack:hover .architecture-portfolio__sheet:nth-child(1),
+.architecture-portfolio:has(.button:hover, .button:focus-visible) .architecture-portfolio__sheet:nth-child(1) {
+  transform: rotate(-10deg) translate(-14%, -9%);
+}
+
+.architecture-portfolio__stack:hover .architecture-portfolio__sheet:nth-child(2),
+.architecture-portfolio:has(.button:hover, .button:focus-visible) .architecture-portfolio__sheet:nth-child(2) {
+  transform: rotate(8deg) translate(15%, -6%);
+}
+
+.architecture-portfolio__stack:hover .architecture-portfolio__sheet:nth-child(3),
+.architecture-portfolio:has(.button:hover, .button:focus-visible) .architecture-portfolio__sheet:nth-child(3) {
+  transform: translateY(2%);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .architecture-portfolio__sheet {
+    transition: transform 520ms var(--ease-out);
+  }
+}
+
+.architecture-portfolio__sheet img {
   display: block;
   width: 100%;
-  height: auto;
-  aspect-ratio: 16 / 9;
+  height: 100%;
+  min-height: 0;
   object-fit: cover;
-  transition: transform 900ms var(--ease-out);
 }
 
-.architecture-portfolio:hover .architecture-portfolio__media img {
-  transform: scale(1.04);
+/* Page number in the corner, as on the deck's own sheets. */
+.architecture-portfolio__sheet span {
+  padding-top: clamp(0.25rem, 0.6vw, 0.45rem);
+  color: #101113;
+  font-size: clamp(0.62rem, 1vw, 0.8rem);
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  line-height: 1;
+  text-align: right;
 }
 
 .architecture-portfolio__copy h2 {
-  margin: 0.6rem 0 0.8rem;
+  margin: 0 0 0.9rem;
+  font-size: clamp(1.7rem, 3vw, 2.5rem);
+  font-weight: 740;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  text-wrap: balance;
 }
 
 .architecture-portfolio__copy p {
   max-width: 46ch;
   color: var(--ink-soft);
-  line-height: 1.6;
+  line-height: 1.65;
+}
+
+/* Title block: what is inside, before the visitor leaves the site or downloads 26 MB. */
+.architecture-portfolio__facts {
+  display: grid;
+  grid-template-columns: 0.7fr 1.5fr 0.9fr 0.8fr;
+  margin: 1.75rem 0 0;
+  border-block: 1px solid var(--line-strong);
+}
+
+.architecture-portfolio__facts div {
+  padding: 0.75rem 0.9rem 0.85rem;
+  border-left: 1px solid var(--line);
+}
+
+.architecture-portfolio__facts div:first-child {
+  padding-left: 0;
+  border-left: 0;
+}
+
+.architecture-portfolio__facts dt {
+  color: var(--ink-faint);
+  font-size: 0.8rem;
+}
+
+.architecture-portfolio__facts dd {
+  margin: 0.25rem 0 0;
+  font-size: 1rem;
+  font-weight: 650;
+  letter-spacing: -0.01em;
 }
 
 .architecture-portfolio__actions {
@@ -1806,12 +1896,31 @@ html[data-theme='dark'] .work-toolbar__filters button.is-active {
   flex-wrap: wrap;
   align-items: center;
   gap: 1.25rem;
-  margin-top: 1.5rem;
+  margin-top: 1.75rem;
 }
 
 @media (max-width: 760px) {
   .architecture-portfolio {
     grid-template-columns: 1fr;
+  }
+
+  .architecture-portfolio__stack {
+    max-width: 30rem;
+  }
+}
+
+@media (max-width: 520px) {
+  .architecture-portfolio__facts {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .architecture-portfolio__facts div:nth-child(odd) {
+    padding-left: 0;
+    border-left: 0;
+  }
+
+  .architecture-portfolio__facts div:nth-child(n + 3) {
+    border-top: 1px solid var(--line);
   }
 }
 
