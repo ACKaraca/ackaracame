@@ -1,0 +1,39 @@
+name: Mirror to personal repository
+
+on:
+  push:
+    branches: [master]
+
+permissions:
+  contents: read
+
+# Only the newest master matters; an older run would be rejected as non-fast-forward.
+concurrency:
+  group: mirror-personal
+  cancel-in-progress: true
+
+jobs:
+  mirror:
+    # The personal fork receives this file too; only the source repository pushes.
+    if: github.repository == 'ACKaraca/ackaracame'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Fast-forward master on ahmetcemkaraca/ackaracame
+        env:
+          # Write deploy key that is scoped to the personal repository alone.
+          MIRROR_DEPLOY_KEY: ${{ secrets.PERSONAL_MIRROR_DEPLOY_KEY }}
+        run: |
+          install -m 700 -d ~/.ssh
+          printf '%s\n' "$MIRROR_DEPLOY_KEY" > ~/.ssh/mirror_key
+          chmod 600 ~/.ssh/mirror_key
+          # GitHub's published host key (https://api.github.com/meta), so the push never trusts on first use.
+          echo "github.com ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOMqqnkVzrm0SdG6UOoqKLsabgH5C9okWi0dh2l9GKJl" > ~/.ssh/known_hosts
+          # No --force: if the personal repository ever diverges this fails loudly instead of overwriting it.
+          GIT_SSH_COMMAND="ssh -i ~/.ssh/mirror_key -o IdentitiesOnly=yes -o StrictHostKeyChecking=yes" \
+            git push git@github.com:ahmetcemkaraca/ackaracame.git "$GITHUB_SHA:refs/heads/master"
