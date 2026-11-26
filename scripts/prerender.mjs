@@ -101,7 +101,7 @@ const sitemap = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://w
     ? `\n    <xhtml:link rel="alternate" hreflang="tr" href="${escapeAttribute(meta.alternates.tr)}" />\n    <xhtml:link rel="alternate" hreflang="en" href="${escapeAttribute(meta.alternates.en)}" />\n    <xhtml:link rel="alternate" hreflang="x-default" href="${escapeAttribute(meta.alternates.xDefault)}" />`
     : '';
   return `  <url>\n    <loc>${escapeAttribute(meta.canonical)}</loc>${alternates}\n  </url>`;
-}).join('\n')}\n</urlset>\n`;
+}).join('\n')}\n  <url>\n    <loc>https://ackaraca.me/portfolyo</loc>\n  </url>\n</urlset>\n`; // the static deck in public/portfolyo is not a prerendered route
 await writeFile(join(dist, 'sitemap.xml'), sitemap);
 await writeFile(join(dist, 'robots.txt'), 'User-agent: *\nAllow: /\nSitemap: https://ackaraca.me/sitemap.xml\n');
 await rm(join(root, '.ssr'), { recursive: true, force: true });
