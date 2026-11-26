@@ -1,0 +1,77 @@
+{
+  "slug": "liberty",
+  "kind": "otel",
+  "title": "Liberty Otel Lojmanları",
+  "subtitle": "Konaklama Yapısı – Yangın Tedbirleri Röleve Planı",
+  "code": "Yangın Tedbirleri Röleve Projesi",
+  "term": "2026",
+  "place": "Kuşadası / Aydın",
+  "typology": "Otel / Konaklama",
+  "tools": [
+    "AutoCAD"
+  ],
+  "summary": "Kuşadası'nda üçgen bir parselde yer alan Liberty Otel Lojmanları için, mevcut mimari projeden röleve edilen bodrum, zemin, normal kat (1–4) ve çatı planları üzerinde yangın tedbirleri işlenmiş; dört planlık tek bir sunum paftası hazırlanmıştır.",
+  "concept": "Tasarım değil röleve ve işaretleme çalışması: mevcut planlar çizim olarak sadeleştirilmiş, üzerine yangın lejantına göre acil aydınlatma, çıkış levhası, duman dedektörü, alarm butonu, söndürme tüpü ve yangın dolabı yerleştirilmiştir.",
+  "facts": [
+    {
+      "k": "Parsel",
+      "v": "Türkmen Mah., Ada 857 / Parsel 12"
+    },
+    {
+      "k": "Kat düzeni",
+      "v": "Bodrum, zemin, 4 normal kat (1–4), çatı"
+    },
+    {
+      "k": "İşveren",
+      "v": "Koçlar Otelcilik Turizm Tic. San. AŞ."
+    },
+    {
+      "k": "Pafta",
+      "v": "Betemu Mimarlık ve Tasarım Stüdyosu"
+    }
+  ],
+  "hero": {
+    "file": "hero.jpg",
+    "w": 2200,
+    "h": 1375,
+    "caption": "Zemin kat yangın tedbirleri planının blueprint (ters çevrilmiş) versiyonu — üçgen parsel üzerindeki otel kütlesi, havuz ve açık alanlar.",
+    "tone": "dark"
+  },
+  "concept_imgs": [],
+  "drawings": [
+    {
+      "file": "plan_bodrum.jpg",
+      "w": 1700,
+      "h": 1197,
+      "caption": "Bodrum kat planı — otopark, çamaşırhane, revir, jeneratör, trafo, kalorifer dairesi, su deposu, havuz teknik hacimleri ve yangın lejantı."
+    },
+    {
+      "file": "plan_zemin.jpg",
+      "w": 1700,
+      "h": 1197,
+      "caption": "Zemin kat planı — otel girişi, resepsiyon, lobi, restoran, toplantı salonu, mutfak, teraslar ve havuz."
+    },
+    {
+      "file": "plan_normal_katlar.jpg",
+      "w": 1700,
+      "h": 798,
+      "caption": "Normal katlar planı (1, 2, 3, 4) — orta koridor boyunca odalar, balkonlar, yangın merdiveni ve asansör."
+    },
+    {
+      "file": "plan_cati.jpg",
+      "w": 1700,
+      "h": 857,
+      "caption": "Çatı kat planı — asansör kulesi ve yangın merdiveni çıkışı (sunum paftasından)."
+    }
+  ],
+  "visuals": [],
+  "extras": [
+    {
+      "file": "ozalit_pafta.jpg",
+      "w": 1700,
+      "h": 1094,
+      "caption": "Dört planın bir arada sunulduğu 'Yangın Tedbirleri Röleve Planı' sunum paftası (Betemu başlıklı; ofis çalışması olarak ekstra)."
+    }
+  ],
+  "notes": "Belgelerdeki bilgi: pafta 'Betemu Mimarlık ve Tasarım Stüdyosu' başlıklı; mimar/müellif olarak Can Altun, işveren Koçlar Otelcilik Turizm Tic. San. AŞ. yazıyor; planlarda 'MİMAR: CAN ALTUN' ibaresi var. Çalışmanın bu ofis bünyesinde (stajyer/çalışan olarak) yapıldığı ve kullanıcının hangi kısmı çizdiği belgeden anlaşılmıyor — metin bu yüzden yalnızca 'hazırlanmıştır' diyor, kişisel katkı iddiası yok; kullanıcı rolünü doğrulamalı. AutoCAD kullanımı PDF üst verisinden (AutoCAD 2022) çıkarıldı; PDF'ler 2026 Mayıs tarihli. Alan (m²), kat adedi dışında yükseklik, otel oda sayısı ve tarih bilgisi belgelerde yok, yazılmadı. Normal kat planı başlığı '(1,2,3,4)' olduğundan 4 normal kat yazıldı. Planlardaki 'Liberty Otel Lojmanları' adı başlıktan alındı. Çatı planı yalnızca sunum paftasında var (ayrı pdf yok); oradan vektör olarak kırpıldı. drawings planları cadpdf\\ klasöründeki sürümlerden alındı (yangın dolabı sembolü içerir; üst klasördeki pdf'lerde dolap sembolü yok). Klasörde ayrıca '857_12_MİMARİ 2 (1).tif' (7192x50493 px, tek bit taranmış uzun şerit: onaylı mimari proje planları/kesit/görünüşleri) var; kullanılmadı — başkasına ait resmi mimari proje taramasıdır ve çok düşük çözünürlüklü/okunaksız olduğundan. İstenirse bir görünüş/kesit kırpılabilir. Sunum paftası (extras) brief gereği 1700 px ile sınırlandı; küçük yazılar yakınlaştırmadan zor okunur. Hero zemin kat planından üretildi (lejant gizlendi, koyu lacivert zemin + hafif blueprint ızgarası); tone=dark."
+}

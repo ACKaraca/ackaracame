@@ -1,0 +1,40 @@
+{
+ "images": [
+  {
+   "file": "p1.jpg",
+   "caption": "1–2 · Röleve: Batıhan mevcut blok bodrum planı",
+   "w": 1236,
+   "h": 1700
+  },
+  {
+   "file": "p2.jpg",
+   "caption": "2–3 · CAD: Liberty lojmanları normal katlar",
+   "w": 1700,
+   "h": 798
+  },
+  {
+   "file": "p3.jpg",
+   "caption": "2–3 · Röleve ve CAD: Fantasia Otel alt zemin planı",
+   "w": 1700,
+   "h": 1348
+  },
+  {
+   "file": "p4.jpg",
+   "caption": "3 · CAD: yay planlı 5000 blok, zemin kat",
+   "w": 1700,
+   "h": 826
+  },
+  {
+   "file": "p5.jpg",
+   "caption": "4–5 · Lejantlı yangın tedbirleri paftası",
+   "w": 1700,
+   "h": 1196
+  },
+  {
+   "file": "p6.jpg",
+   "caption": "4–5 · Pafta: Oya Apart Otel zemin kat",
+   "w": 1700,
+   "h": 1198
+  }
+ ]
+}

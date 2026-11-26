@@ -1,0 +1,89 @@
+{
+ "slug": "oya",
+ "kind": "otel",
+ "title": "Oya Apart Otel",
+ "subtitle": "İç avlulu otel – yangın tedbirleri planları",
+ "code": "Yangın Tedbirleri Röleve Projesi",
+ "term": "2026",
+ "place": "Kuşadası / Aydın",
+ "typology": "Otel (apart otel)",
+ "tools": [
+  "AutoCAD"
+ ],
+ "summary": "Kuşadası'ndaki iç avlulu (açık avlu) Oya Apart Otel için bodrum, zemin, 1., 2., 3. kat ve çatı kat planlarını kapsayan Yangın Tedbirleri Planı çizim seti. Planlarda acil durum aydınlatması, çıkış levhaları, duman dedektörleri, alarm butonları, söndürme tüpleri ve yangın dolapları gösterilir.",
+ "concept": "Çalışmanın kapsamı: mevcut kat planlarının AutoCAD'de çizilmesi ve her kata yangın lejantındaki sembollerin yerleştirilmesi; tüm katlar tek tip pafta düzeninde (yeşil çerçeveli Yangın Tedbirleri Planı) sunuldu.",
+ "facts": [
+  {
+   "k": "Proje",
+   "v": "Oya Apart Otel, yangın tedbirleri planı"
+  },
+  {
+   "k": "Katlar",
+   "v": "Bodrum, zemin, 1., 2., 3. kat ve çatı"
+  },
+  {
+   "k": "Plan kurgusu",
+   "v": "Merkezi açık avlu etrafında odalar, açık koridor, asansör ve yangın merdiveni"
+  },
+  {
+   "k": "Ruhsat/dosya no",
+   "v": "947/89 (paftalardaki başlık)"
+  }
+ ],
+ "hero": {
+  "file": "hero.jpg",
+  "w": 2200,
+  "h": 1375,
+  "caption": "Tipik kat planı (2. kat) – merkezi avlu simetrisi, blueprint görünümü",
+  "tone": "dark"
+ },
+ "concept_imgs": [
+  {
+   "file": "detay_kat1_avlu.jpg",
+   "w": 1700,
+   "h": 934,
+   "caption": "1. kat – açık avlu, asansör ve yangın merdiveni çevresi, yangın sembolleri"
+  }
+ ],
+ "drawings": [
+  {
+   "file": "plan_bodrum.jpg",
+   "w": 1700,
+   "h": 1679,
+   "caption": "Bodrum kat planı – depolar, çamaşırhane, su deposu, personel mahalleri"
+  },
+  {
+   "file": "pafta_zemin.jpg",
+   "w": 1700,
+   "h": 1198,
+   "caption": "Zemin kat – Yangın Tedbirleri Planı paftası (lejant, acil durum talimatı ve yangın talimatı panelleriyle)"
+  },
+  {
+   "file": "plan_kat1.jpg",
+   "w": 1680,
+   "h": 1700,
+   "caption": "1. kat planı – avlu etrafında konaklama birimleri"
+  },
+  {
+   "file": "plan_kat2.jpg",
+   "w": 1675,
+   "h": 1700,
+   "caption": "2. kat planı – açık koridorlarla avluya bağlanan odalar"
+  },
+  {
+   "file": "plan_cati.jpg",
+   "w": 1655,
+   "h": 1700,
+   "caption": "Çatı kat planı – çatı teras, güneş enerjisi alanları, asansör kulesi"
+  }
+ ],
+ "visuals": [
+  {
+   "file": "plan_kat3.jpg",
+   "w": 1675,
+   "h": 1700,
+   "caption": "3. kat planı: aynı düzen, avlu çevresinde konaklama birimleri"
+  }
+ ],
+ "notes": "1) Ruhsat/dosya no: tüm paftalarda (yeşil çerçeveli ve sade versiyonlar) yalnızca (947/89) geçiyor; (781/14) Oya dosyalarında hiçbir yerde yok, bu yüzden bu sayıyı kullanmadım. 947/89'un ruhsat mı, dosya mı, imar sicili mi olduğu belgelerde yazmıyor; metne 'Ruhsat/dosya no' diye koydum, doğrulayın. 2) Paftalardaki mühür/ünvan: 'Mimar Can Altun' (Mimarlar Odası mührü); sade versiyonlarda 'MİMAR: CAN ALTUN'. Çizimlerin kimin tarafından yapıldığı/kullanıcının rolü belgelerden belli değil, metne yazmadım; 'Röleve Projesi' ifadesi sizin verdiğiniz başlıktır; rolünüzü (çizen/yardımcı) kontrol edin. 3) Ada/parsel, alan, yatak sayısı gibi bina verileri paftalarda yok, metne koymadım. 4) Araç: PDF meta verisi AutoCAD 2022/2024/2026 gösteriyor (yeşil paftalar Photoshop ile rasterleştirilmiş). 5) 2. ve 3. kat planları aynı düzende; 3. kat planı ek olarak plan_kat3.jpg dosyasında, drawings'e koymadım (tekrar olmasın). 6) Hero 2. kat vektör PDF'inden (OYA 2.pdf) 4x render edilip tersine çevrilmiş ve lacivert zemin + hafif grid üzerine yerleştirilmiştir; yangın sembolleri turuncu vurgudur. 7) Bodrum/çatı/zemin sade vektör PDF'lerden, yeşil paftanın içindeki plan değil, doğrudan vektör render ile üretildi (daha keskin). 8) Kuşadası kontakt sayfalarına (kus_02/03/09) gerek olmadı; 504 14 09+ klasöründeki 'Royal' dosyaları başka bir proje, kullanılmadı. 9) Saha fotoğrafı yok; visuals alanında plan yakın detay kırpımları var, istenirse kaldırılabilir."
+}

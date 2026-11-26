@@ -1,0 +1,163 @@
+{
+ "slug": "tasarim5",
+ "kind": "akademik",
+ "title": "Yüksekteki Bahçeler",
+ "subtitle": "Akdeniz iklimi için sağlıklı konut yerleşimi",
+ "code": "MİM 311 – Mimari Tasarım V",
+ "term": "2024–25 Güz",
+ "place": "Antalya",
+ "typology": "Konut",
+ "tools": [
+  "Revit"
+ ],
+ "summary": "Akdeniz iklim tipinin hâkim olduğu Antalya'da, 'Sağlıklı Konut' temasıyla verilen arazide tasarlanan çok bloklu konut yerleşimi. Yeşil peyzaj, zeminden çatıya uzanan bahçe-teras ağıyla konutlara taşınır; zemin katta ticari ve sosyal birimler yer alır.",
+ "concept": "Yüksekteki Bahçeler: yeşil peyzaj örtüsü binanın zemininden başlayarak dış cepheler boyunca çatıya kadar devam eden bir ağ olarak kurgulanır; kütle araziyle ve komşu parkla bağ kurmak için yırtılır, üst katlarda teraslar eklenir.",
+ "facts": [
+  {
+   "k": "Program",
+   "v": "A, B, C konut blokları; zemin katta dükkân, çamaşırhane, çok amaçlı salon ve oyun/spor parkı; bodrumda otopark"
+  },
+  {
+   "k": "Daire tipleri",
+   "v": "1+0, 1+1, 2+1, 3+1, 4+1 (tek kat ve dubleks), kapıcı dairesi"
+  },
+  {
+   "k": "Çevre",
+   "v": "Önerilen yaya yolu; komşu park ve okul ile bağlantılı, yeşil dokuya açık yerleşim"
+  },
+  {
+   "k": "Teslim",
+   "v": "Final jürisi, 25.12.2024 – 5 adet A0 pafta"
+  }
+ ],
+ "hero": {
+  "file": "hero.jpg",
+  "w": 1920,
+  "h": 1080,
+  "caption": "Sokaktan giriş görünümü: kolonlu geçiş, giriş meydanı ve çatı terası ağaçları",
+  "tone": "dark"
+ },
+ "concept_imgs": [
+  {
+   "file": "konsept_kutle_169.jpg",
+   "w": 1700,
+   "h": 956,
+   "caption": "Kütle gelişimi: kaba kütle → araziyle ve parkla bağlantı için yırtılma → üst kotlarda bahçeler için yatay kaydırma → teras eklenmesi"
+  },
+  {
+   "file": "vaziyet.jpg",
+   "w": 1383,
+   "h": 1700,
+   "caption": "Vaziyet planı 1/500: önerilen yaya yolu, park ve çevre dokusu ile blok yerleşimi"
+  },
+  {
+   "file": "konsept_siluet.jpg",
+   "w": 1509,
+   "h": 1700,
+   "caption": "'Yüksekteki Bahçeler' konsept anlatımı ve doğu siluet / çevre görünümleri"
+  }
+ ],
+ "drawings": [
+  {
+   "file": "plan_zemin.jpg",
+   "w": 1700,
+   "h": 1455,
+   "caption": "Zemin kat planı 1/200: ticari-sosyal birimler, yaya akslı peyzaj ve giriş kurgusu"
+  },
+  {
+   "file": "plan_kat1.jpg",
+   "w": 1695,
+   "h": 1700,
+   "caption": "1. kat planı 1/200: konut birimleri ve ortak çok amaçlı salon"
+  },
+  {
+   "file": "kesitler.jpg",
+   "w": 1700,
+   "h": 641,
+   "caption": "A, B, C kesitleri 1/200: 12 kota kadar yükselen bloklar ve bodrum otopark katları"
+  },
+  {
+   "file": "gorunusler.jpg",
+   "w": 1541,
+   "h": 1700,
+   "caption": "A, B, C blok görünüşleri 1/200"
+  },
+  {
+   "file": "plan_bodrum.jpg",
+   "w": 1700,
+   "h": 1650,
+   "caption": "Bodrum -1. kat planı 1/200 (otopark)"
+  },
+  {
+   "file": "plan_kat2.jpg",
+   "w": 1673,
+   "h": 1700,
+   "caption": "2. kat planı 1/200"
+  }
+ ],
+ "visuals": [
+  {
+   "file": "render_01.jpg",
+   "w": 1700,
+   "h": 956,
+   "caption": "Giriş yaya aksı: bloklar arasında açılan kamusal geçiş"
+  },
+  {
+   "file": "render_02.jpg",
+   "w": 1700,
+   "h": 956,
+   "caption": "Balkon seviyesinden avlu ve çevre görünümü"
+  },
+  {
+   "file": "render_03.jpg",
+   "w": 1700,
+   "h": 956,
+   "caption": "Kuş bakışı: avlu, su öğesi ve otopark yaklaşımı (ara jüri çalışması)"
+  },
+  {
+   "file": "maket_01.jpg",
+   "w": 1700,
+   "h": 1346,
+   "caption": "Karton kütle maketi: katmanlı bloklar ve yol dokusu (ara jüri çalışması)"
+  },
+  {
+   "file": "render_04.jpg",
+   "w": 1700,
+   "h": 956,
+   "caption": "Yaya yolu ve çevre düzenlemesi (ara jüri çalışması)"
+  }
+ ],
+ "extras": [
+  {
+   "file": "pafta_01.jpg",
+   "w": 1203,
+   "h": 1700,
+   "caption": "Final paftası no. 1 (tam sayfa, A0)"
+  },
+  {
+   "file": "plan_kat2.jpg",
+   "w": 1673,
+   "h": 1700,
+   "caption": "2. kat planı 1/200"
+  },
+  {
+   "file": "plan_bodrum.jpg",
+   "w": 1700,
+   "h": 1650,
+   "caption": "Bodrum -1. kat planı 1/200 (otopark)"
+  },
+  {
+   "file": "kesitler_de.jpg",
+   "w": 1700,
+   "h": 486,
+   "caption": "D ve E boy kesitleri 1/200"
+  },
+  {
+   "file": "aks_kutle.jpg",
+   "w": 1242,
+   "h": 970,
+   "caption": "Aksonometrik kütle görünümü"
+  }
+ ],
+ "notes": "1) Proje adı: resmî ders konusu 'Akdeniz İklim Tipi için Antalya'da Sağlıklı Konut Projesi' (MİM 311, Prof. Dr. İlknur Akıner, Mimar Ümit Yetkin Aykaç, Mimar Bilal Ateş). 'Yüksekteki Bahçeler' paftadaki konsept başlığıdır; portfolyo başlığı olarak kullandım. 2) Hangi arazinin (brief'te 1 no 6.400 m² Akdeniz Üni. güney kapısı / 2 no 5.600 m²) seçildiği belgede yazmıyor; yer sadece 'Antalya' yazıldı, mahalle/ilçe doğrulanmalı. 3) Araçlar: yalnızca Revit paftalarından (oda listeleri, kot işaretleri) çıkarıldı; render yazılımı (Twinmotion/Enscape vb.) ve Photoshop/CAD kullanımı dosyalardan doğrulanamadı, CV ile teyit edilmeli. 4) Toplam kat/yükseklik, toplam konut m² ve daire adedi paftalardan net okunmadığı için metne konmadı (kesitlerde +12 kotuna kadar seviye var; daire numaraları ~54'e çıkıyor). 5) Renderlardaki 'ACK Homes' tabelası ve yeşil kulübe öğeleri tasarım aşamasında verilmiş yer tutucu/imaj öğeleridir. 6) 'Sağlıklı konut' kriterlerinden (ders gereği en az 2) hangilerinin karşılandığı paftada açıkça yazılmıyor; bu yüzden metne konmadı, kullanıcıdan teyit alınmalı. 7) Ara jüri (ara2) görselleri 3., 4., 5. visual ve maket fotoğrafıdır; final değildir. 8) 'extras' alanı şema dışı yedek görsellerdir (isteğe bağlı kullanım). 9) Uygulama klasöründeki (ayrı 'Uygulama Projesi' dersi) dosyalar bu projede kullanılmadı; paftaları (Uygulama\\Final) farklı bir yapının uygulama projesi çizimleridir; ayrıca kısa bir ek olarak değerlendirilebilir, ayrıntılı incelenmedi. 10) Literatür çalışması (Akdeniz iklim tipi yapı örnekleri: Vitoria apartman, Hide and Seek vb.) ayrı bir sunum olarak mevcut, kullanılmadı."
+}

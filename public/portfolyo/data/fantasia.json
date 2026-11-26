@@ -1,0 +1,89 @@
+{
+  "slug": "fantasia",
+  "kind": "otel",
+  "title": "Fantasia Otel",
+  "subtitle": "Çok Bloklu Tatil Tesisi – Yangın Tedbirleri Planı",
+  "code": "Yangın Tedbirleri Röleve Projesi",
+  "term": "2026",
+  "place": "",
+  "typology": "Otel / tatil tesisi",
+  "tools": [
+    "AutoCAD"
+  ],
+  "summary": "A ve B bloktan oluşan, açık ve kapalı havuzları, spa alanı, restoran/bar birimleri ve otoparkı bulunan Fantasia Otel (780/7) için vaziyet, alt zemin, bodrum–havuz, 3. kat ve B blok 6. kat planları röleve edilmiş; üzerlerine yangın tedbirleri işlenmiştir.",
+  "concept": "Tasarım değil röleve ve işaretleme çalışmasıdır: mevcut planlar çizim olarak sadeleştirilmiş, ortak yangın lejantına göre acil aydınlatma, çıkış levhası, sprinkler, duman dedektörü, alarm butonu, dolap ve tüp yerleştirilmiştir.",
+  "facts": [
+    {
+      "k": "Ada / parsel",
+      "v": "780 / 7 (paftalardaki başlık)"
+    },
+    {
+      "k": "Yapı kurgusu",
+      "v": "A blok, B blok ve köprü ile bağlı avlulu yerleşim"
+    },
+    {
+      "k": "Ortak alanlar",
+      "v": "Açık havuzlar, kapalı havuz, spa, bar, à la carte, etkinlik alanı"
+    },
+    {
+      "k": "Paftalar",
+      "v": "5 pafta: vaziyet 1:250, alt zemin/bodrum 1:200, katlar 1:100"
+    }
+  ],
+  "hero": {
+    "file": "hero.jpg",
+    "w": 2200,
+    "h": 1250,
+    "caption": "3. kat yangın tedbirleri planının blueprint (ters çevrilmiş) versiyonu — iki konaklama kanadı, yeşil çatı ve çıkış köprüsü.",
+    "tone": "dark"
+  },
+  "concept_imgs": [
+    {
+      "file": "vaziyet.jpg",
+      "w": 1700,
+      "h": 819,
+      "caption": "Vaziyet planı (1:250) — A ve B blok, köprü, açık havuzlar, kapalı havuz, à la carte, barlar, etkinlik alanı, jeneratör ve servis/ana giriş."
+    }
+  ],
+  "drawings": [
+    {
+      "file": "plan_altzemin.jpg",
+      "w": 1700,
+      "h": 1348,
+      "caption": "Alt zemin planı (1:200) — konaklama odaları (262–277), toplantı salonu, bilardo ve oyun odaları, bar, mutfak, ofisler, personel yemekhane, dükkânlar, depolar ve otopark."
+    },
+    {
+      "file": "plan_bodrum_havuz.jpg",
+      "w": 1700,
+      "h": 1430,
+      "caption": "Bodrum–havuz planı (1:200) — havuz, spa, hamam, sauna, masaj odaları, spor salonu, kuaför, kreş, çamaşırhane, makine dairesi, elektrik trafo ve atölyeler."
+    },
+    {
+      "file": "plan_kat3.jpg",
+      "w": 1700,
+      "h": 1309,
+      "caption": "3. kat planı (1:100) — iki konaklama kanadında oda 301–354, orta koridor, merdiven/asansör çekirdekleri ve yeşil çatı."
+    },
+    {
+      "file": "plan_b_blok_6kat.jpg",
+      "w": 1700,
+      "h": 866,
+      "caption": "B blok 6. kat planı (1:100) — oda 631–658, orta koridor, merdiven ve asansör; yangın tedbiri sembolleri işlenmiş."
+    }
+  ],
+  "visuals": [
+    {
+      "file": "detay_spa.jpg",
+      "w": 1488,
+      "h": 1700,
+      "caption": "Bodrum–havuz planından detay — hamam, sauna, spa ve masaj odaları, spor salonu, kuaför, kreş ve oda 173–177 bölgesi."
+    },
+    {
+      "file": "detay_havuz.jpg",
+      "w": 1700,
+      "h": 1618,
+      "caption": "Vaziyet planından detay — havuz kümesi, çocuk havuzu, kapalı havuz, à la carte, bar ve etkinlik alanı."
+    }
+  ],
+  "notes": "Kaynak: revize\\Fantasia\\1–5.pdf (AutoCAD 2026 çıktısı, tek sayfa 1984x1417 pt; 5 pafta: vaziyet 1:250, alt zemin 1:200, 3. kat 1:100, B blok 6. kat 1:100, bodrum–havuz 1:200). Tüm paftaların sol alt köşesinde 'MİMAR CAN ALTUN' yazıyor; isim metne yazılmadı, kullanıcının rolü (çizen/yardımcı) belgelerden belli değil. 'Yangın Tedbirleri Röleve Projesi' ifadesi görev tanımından alındı. Konum/il-ilçe belgelerde yok, place boş bırakıldı. '780 / 7' paftalarda başlıkta ve vaziyette geçiyor; ada/parsel mi, ruhsat/dosya no mu olduğu yazılı değil — facts'te 'Ada / parsel' dedim, kullanıcı doğrulamalı (gerekirse 'Dosya no' yapılmalı). Araç: PDF üst verisinde 'AutoCAD 2026' yazıyor, tools buna göre dolduruldu (kullanıcı teyit edecek). PDF oluşturma tarihi üst verisi 2026-11-20 (çıktı tarihi), term '2026' verildiği gibi bırakıldı. Alan, oda sayısı, kat adedi, yatak sayısı belgelerde yok, yazılmadı: B blok '6. kat' yazıyor (yani en az 6 kat), 3. kat planındaki iki kanadın A mı B mi olduğu ve vaziyetteki blokla eşleşmesi pafta üzerinde belirtilmemiş, bu yüzden 3. kat kanatları A/B diye adlandırılmadı. Oda numaralarında boşluk var (3. katta 313 ve 328–330, B blok 6. katta 637 yok); toplam oda sayısı yazılmadı. Plan çizimlerinde yalnızca plan gövdesi kırpıldı (çerçeve, başlık, isim kutusu ve yangın lejantı çıkarıldı); lejantın sembolleri (acil aydınlatma lambası, çıkış levhası, sprinkler, duman dedektörü, davlumbaz söndürme, alarm butonu, tüplü yangın dolabı, yangın tüpü) paftalarda ortaktır. Hero 3. kat vektör PDF'inden 4x render edilip ters çevrilmiş, lacivert zemin + ızgara üzerinde SAĞA yerleştirilmiştir (sol ~%40 boş, başlık/isim/lejant yok); tone=dark. Vaziyet planında yeşil/gri tarama ve ağaç sembolleri orijinalde var. Orijinal PDF'lere dokunulmadı."
+}

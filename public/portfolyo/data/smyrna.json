@@ -1,0 +1,88 @@
+{
+ "slug": "smyrna",
+ "kind": "otel",
+ "title": "Best Smyrna Otel",
+ "subtitle": "Küçük ölçekli otel için Yangın Tedbirleri Planı (ruhsat 303/10)",
+ "code": "Yangın Tedbirleri Röleve Projesi",
+ "term": "2026",
+ "place": "Kuşadası / Aydın",
+ "typology": "Otel",
+ "tools": [
+  "AutoCAD"
+ ],
+ "summary": "Kuşadası'ndaki Best Smyrna Otel (303/10) için hazırlanan yangın tedbirleri paftaları: vaziyet, zemin kat, 1-2-3-4. katlar (tipik kat) ve çatı katı planları. Planlar röleve altlığı üzerinde yangın lejantıyla işlenmiştir.",
+ "concept": "Mevcut yapı rölevesi üzerine yangın güvenliği donanımı işlendi: duman dedektörü, acil aydınlatma, acil çıkış levhası, yangın alarm butonu, yangın tüpü ve dolabı. Paftalar acil durum ve yangın talimatlarıyla tamamlandı. Hazırlayan: S. Ahmet Cem Karaca.",
+ "facts": [
+  {
+   "k": "Yapı",
+   "v": "Best Smyrna Otel (303/10)"
+  },
+  {
+   "k": "Paftalar",
+   "v": "Vaziyet, zemin, 1-2-3-4. kat, çatı"
+  },
+  {
+   "k": "Tipik kat",
+   "v": "6 oda, merdiven ve asansör çekirdeği, dış spiral merdiven"
+  },
+  {
+   "k": "Zemin kat",
+   "v": "Resepsiyon, restoran, kafeterya, bar, mutfak"
+  }
+ ],
+ "hero": {
+  "file": "hero.jpg",
+  "w": 2200,
+  "h": 1050,
+  "caption": "Zemin kat planı – blueprint versiyonu (yangın tedbirleri altlığı)",
+  "tone": "dark"
+ },
+ "concept_imgs": [
+  {
+   "file": "arsiv_planlar.jpg",
+   "w": 1700,
+   "h": 693,
+   "caption": "Arşiv kaynağı: 303/10 mimari proje taraması – bodrum, zemin ve normal kat planları (1/50)"
+  },
+  {
+   "file": "arsiv_kesit_gorunus.jpg",
+   "w": 1700,
+   "h": 492,
+   "caption": "Arşiv kaynağı: aynı taramadan A-A, B-B kesitleri ile ön, yan ve arka görünüşler (1/50)"
+  }
+ ],
+ "drawings": [
+  {
+   "file": "plan_zemin.jpg",
+   "w": 1042,
+   "h": 1700,
+   "caption": "Zemin kat yangın tedbirleri planı: resepsiyon, bar, restoran, kafeterya, mutfak ve WC'ler; duman dedektörleri ve acil çıkış levhaları işlenmiş"
+  },
+  {
+   "file": "plan_tipik_kat.jpg",
+   "w": 1275,
+   "h": 1700,
+   "caption": "1-2-3-4. kat (tipik kat) planı: altı oda, merdiven, asansör ve dış spiral merdiven; her odada duman dedektörü"
+  },
+  {
+   "file": "plan_cati.jpg",
+   "w": 1044,
+   "h": 1700,
+   "caption": "Çatı kat planı: asansör dairesi, depo, çamaşırhane ve WC"
+  },
+  {
+   "file": "plan_vaziyet.jpg",
+   "w": 1026,
+   "h": 1700,
+   "caption": "Vaziyet planı: yapı oturumu, çevre döşeme ve dış spiral merdiven"
+  },
+  {
+   "file": "pafta_yangin_tedbirleri.jpg",
+   "w": 1700,
+   "h": 1196,
+   "caption": "İmzalı 'Yangın Tedbirleri Planı' paftası (1-2-3-4. kat): yangın lejantı, acil durum ve yangın talimatı panoları, mimar kaşesi/imzası"
+  }
+ ],
+ "visuals": [],
+ "notes": "Bilgiler pafta yazılarından doğrulandı: 'BEST SMYRNA OTEL (303/10)', kat başlıkları, mahal adları, yangın lejantı (10 sembol), 'MİMAR S. AHMET CEM KARACA' kaşesi. Doğrulanamayanlar (metne konmadı): m², kat yükseklikleri, ada/parsel, ruhsat/proje tarihi, '303/10'un ruhsat mı yoksa ada/parsel mi olduğu (başlıkta parantez içinde, ruhsat varsayıldı), spiral merdivenin resmî 'acil kaçış merdiveni' niteliği, kimin için/hangi kurum adına hazırlandığı. PDF üretim tarihi 08/2026 (AutoCAD 2026) -> term '2026' olarak bırakıldı. Hero, zemin kat planının yalnız plan kısmından (başlık bloğu/lejant çıkarılmış) üretilen koyu blueprint versiyonudur; plan sağda, sol taraf yazı için boş. Arşiv TIF'i (23756x7192) iki kırpıma bölündü (concept_imgs): bodrum/zemin/normal kat planları ve kesit/görünüşler; taramadaki plan düzeni mevcut yangın paftalarındaki (6 oda/kat, zemin kat) ile birebir aynı değil, arşiv görseli olarak etiketlendi. Ayrıca imzalı VAZ/ZEM/ÇAT paftaları (yeşil çerçeveli) aynı biçimde mevcut ama yalnız KAT paftası bütün olarak kullanıldı; gerekirse eklenebilir. Çıktıda dış spiral merdiven 'acil çıkış' olarak adlandırılmadı."
+}

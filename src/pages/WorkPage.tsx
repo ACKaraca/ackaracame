@@ -4,6 +4,7 @@ import { Search, SlidersHorizontal } from 'lucide-react';
 import { Link } from 'wouter';
 import { useAppPreferences, localize } from '../context/AppPreferences';
 import { useContent } from '../context/Content';
+import { ArchitecturePortfolioCard } from '../components/projects/ArchitecturePortfolioCard';
 import { ProjectCard } from '../components/projects/ProjectCard';
 import type { PortfolioProject } from '../domain/content';
 import { useDocumentMeta } from '../hooks/useDocumentMeta';
@@ -128,6 +129,8 @@ export default function WorkPage() {
           </div>
         )}
       </section>
+
+      <ArchitecturePortfolioCard />
 
       <aside className="work-page__contact shell">
         <span>{acceptingInquiries ? (locale === 'tr' ? 'Benzer bir sistem üzerine mi düşünüyorsunuz?' : 'Thinking about a system like this?') : (locale === 'tr' ? 'Şu anda yeni görüşme almıyorum; çalışma yaklaşımımı inceleyebilirsiniz.' : 'I am not taking new enquiries right now; you can still explore how I work.')}</span>

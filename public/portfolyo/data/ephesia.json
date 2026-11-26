@@ -1,0 +1,95 @@
+{
+  "slug": "ephesia",
+  "kind": "otel",
+  "title": "Ephesia Holiday Beach Club",
+  "subtitle": "Tatil köyü – Yangın Tedbirleri Planı çizimleri",
+  "code": "Yangın Tedbirleri Röleve Projesi",
+  "term": "2026",
+  "place": "Kuşadası / Aydın",
+  "typology": "Otel / tatil köyü",
+  "tools": [
+    "AutoCAD"
+  ],
+  "summary": "Kuşadası'ndaki Ephesia Holiday Beach Club (781 ada, 14 parsel) için hazırlanan Yangın Tedbirleri Planı çizim seti. 5000 Blok (Y-1…Y-4), Resepsiyon binası ve Resort otel kat planları üzerinde yangın güvenlik donanımı gösterilmiş, tesis vaziyet planıyla ilişkilendirilmiştir.",
+  "concept": "Tasarım değil röleve çalışması: mevcut kat planları esas alınıp yangın lejantına göre (acil aydınlatma, çıkış levhası, duman dedektörü, alarm butonu, söndürme tüpü, yangın dolabı) işaretlendi; açık koridor ve kaçış merdivenleri okunur hale getirildi.",
+  "facts": [
+    {
+      "k": "Tesis",
+      "v": "Ephesia Holiday Beach Club, 781 ada / 14 parsel, Kuşadası"
+    },
+    {
+      "k": "Kapsam",
+      "v": "Vaziyet ve 5000 Blok (Y-1, Y-2, Y-3, Y-4), Resepsiyon, Resort otel kat planları"
+    },
+    {
+      "k": "5000 Blok",
+      "v": "Yay planlı konaklama bloğu; zemin katta 5101–5130, 2. katta 5301–5331 oda numaraları"
+    },
+    {
+      "k": "Resepsiyon",
+      "v": "Bodrum katta spa (hamam, sauna, masaj odaları), zemin katta lobi ve danışma"
+    }
+  ],
+  "hero": {
+    "file": "hero.jpg",
+    "w": 2200,
+    "h": 1050,
+    "caption": "5000 Blok (Y-1…Y-4) zemin kat yangın tedbirleri planı – blueprint yorumu",
+    "tone": "dark"
+  },
+  "concept_imgs": [
+    {
+      "file": "vaziyet.jpg",
+      "w": 1617,
+      "h": 1425,
+      "caption": "Vaziyet planı: 1 tesis girişi, 2 resepsiyon, 3 5000 Blok (Y1–Y4), 4 6000 Blok, 5 7000 Blok, 6 R2 Blok (mini club), 7 spa merkezi"
+    }
+  ],
+  "drawings": [
+    {
+      "file": "plan_5000_zemin.jpg",
+      "w": 1700,
+      "h": 826,
+      "caption": "5000 Blok – zemin kat yangın tedbirleri planı (Y-1…Y-4)"
+    },
+    {
+      "file": "plan_5000_2kat.jpg",
+      "w": 1700,
+      "h": 801,
+      "caption": "5000 Blok – 2. kat yangın tedbirleri planı"
+    },
+    {
+      "file": "plan_resepsiyon_zemin.jpg",
+      "w": 1700,
+      "h": 1028,
+      "caption": "Resepsiyon – zemin kat: lobi, danışma ve resepsiyon, acenta alanı, ofisler"
+    },
+    {
+      "file": "plan_resepsiyon_bodrum.jpg",
+      "w": 1700,
+      "h": 888,
+      "caption": "Resepsiyon – bodrum kat: hamam, sauna, masaj odaları, yangın ihbar merkezi"
+    },
+    {
+      "file": "plan_resort_normal_kat.jpg",
+      "w": 1700,
+      "h": 485,
+      "caption": "Resort otel – tadilatlı normal kat planı (orta koridorlu oda kanatları)"
+    }
+  ],
+  "visuals": [
+    {
+      "file": "drone.jpg",
+      "w": 1700,
+      "h": 956,
+      "caption": "Tesisin havadan (drone) görünümü: yay planlı 5000 Blok, konaklama blokları ve Ege kıyısı"
+    },
+    {
+      "file": "drone_detay.jpg",
+      "w": 900,
+      "h": 810,
+      "caption": "Havadan görünümden kesit: 5000 Blok yayı ve çevresindeki konaklama blokları, havuz ve eğlence alanları"
+    }
+  ],
+  "notes": "1) Ruhsat numarası hiçbir çizimde okunamadı; yalnızca '781/14' (ada/parsel) var, metne ruhsat no yazılmadı. 2) Çizimlerin pafta başlığında 'BETEMU Architecture' antetli bir ofis bloğu var (vaziyet ve OZALİT PDF'leri); Cem'in bu çizimlerdeki rolü (çizim/röleve) doğrulanmalı, metin 'yapılan iş' olarak tarafsız yazıldı. 3) '5000 blok 1.kat.pdf' aslında zemin kat planının kopyası (başlığı ZEMİN KAT PLANI, oda no 51xx); kullanılmadı. 4) Resort planları 'TADİLATLI' (tadilat) planlarıdır; yangın lejantı yok, başlık bloğu yok — 'Resort otel' adı dosya adından. 5) 'tools: AutoCAD' dosya uzantılarından (DWG) çıkarıldı; Cem'in kullanıp kullanmadığı doğrulanmalı. 6) Drone fotoğrafı WhatsApp dosyası, tarih adından 15.05.2026; çekim tarihi/ kaynağı doğrulanmadı. Fotoğrafta sağdaki blok inşaat halinde görünüyor. 7) Kaynakta ayrıca 201/2 parseli (A–D blok, yönetim binası) için yangın planları ve eski 781/14 mimari vaziyet paftası (TIF, Autodesk Educational filigranlı) var; kullanılmadı. 8) Hero, 5000 Blok zemin planının koyu lacivert ters çevrilmiş sürümüdür; başlık ve lejant metinleri çıkarılmıştır (üzerine metin için üst bölüm boş). 9) Hiçbir m², kapasite, tarih ya da ödül bilgisi çizimlerden doğrulanamadığı için eklenmedi."
+}

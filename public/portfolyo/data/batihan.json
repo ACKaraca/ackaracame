@@ -1,0 +1,113 @@
+{
+  "slug": "batihan",
+  "kind": "otel",
+  "title": "Batıhan Beach Resort",
+  "subtitle": "Yangın Tedbirleri Röleve Planları — Otel ve Yan Yapılar",
+  "code": "Yangın Tedbirleri Röleve Projesi",
+  "term": "2026",
+  "place": "Kuşadası / Aydın",
+  "typology": "Otel (mevcut yapı röleve çalışması)",
+  "tools": [
+    "AutoCAD"
+  ],
+  "summary": "Kuşadası'ndaki Batıhan Beach Resort için hazırlanan yangın tedbirleri röleve planları: A blok, B blok, mevcut blok ile amfi tiyatro, kids club ve snack bar. Her kat planı AutoCAD'de çizilip yangın lejantıyla donatılarak PDF paftalara dönüştürüldü.",
+  "concept": "Yeni tasarım değil, mevcut yapının belgelenmesi: kat planları röleve edilip lejanta göre yangın dolabı, söndürme tüpü, alarm butonu, duman dedektörü, çıkış levhası ve acil aydınlatma işlendi.",
+  "facts": [
+    {
+      "k": "İşin türü",
+      "v": "Yangın tedbirleri röleve planı (mevcut yapı)"
+    },
+    {
+      "k": "Yapılar",
+      "v": "A blok, B blok, mevcut blok, amfi tiyatro, kids club, snack bar"
+    },
+    {
+      "k": "Kat planları",
+      "v": "A blok 1–6. kat · B blok bodrum, zemin, 1–7. kat · mevcut blok zemin ve bodrum"
+    },
+    {
+      "k": "Plan lejantı",
+      "v": "Yangın dolabı, söndürme tüpü, alarm butonu, duman dedektörü, çıkış levhası, acil aydınlatma"
+    }
+  ],
+  "hero": {
+    "file": "hero.jpg",
+    "w": 2200,
+    "h": 1400,
+    "caption": "A blok 1. kat yangın tedbirleri röleve planı — blueprint görünümü",
+    "tone": "dark"
+  },
+  "concept_imgs": [
+    {
+      "file": "yerlesim_mevcut_a.jpg",
+      "w": 1128,
+      "h": 1700,
+      "caption": "Mevcut blok zemin kat planı ve ilave A blok 1. kat planının birlikte okunduğu pafta"
+    },
+    {
+      "file": "plan_yardimci_yapilar.jpg",
+      "w": 1700,
+      "h": 1473,
+      "caption": "Yan yapılar: amfi tiyatro (zemin ve bodrum), kids club ve snack bar zemin kat röleve planları"
+    }
+  ],
+  "drawings": [
+    {
+      "file": "plan_a_1kat.jpg",
+      "w": 1696,
+      "h": 1700,
+      "caption": "A blok 1. kat yangın tedbirleri röleve planı: iç bahçe etrafında odalar, balkonlar, merdiven ve asansör çekirdekleri"
+    },
+    {
+      "file": "plan_a_tipik.jpg",
+      "w": 1621,
+      "h": 1700,
+      "caption": "A blok 3. kat planı — 3.–5. katlar aynı düzende tekrarlanır; oda numaraları ve yangın merdiveni işlenmiştir"
+    },
+    {
+      "file": "plan_b_tipik.jpg",
+      "w": 1700,
+      "h": 441,
+      "caption": "B blok 3. kat (tipik kat) planı: merkezî merdiven-asansör holü ve iki yanda teraslı odalar"
+    },
+    {
+      "file": "plan_b_zemin.jpg",
+      "w": 1700,
+      "h": 596,
+      "caption": "B blok zemin kat planı: mutfak, snack bar, fitness salonu, odalar ve havuz"
+    },
+    {
+      "file": "plan_mevcut_zemin.jpg",
+      "w": 1421,
+      "h": 1700,
+      "caption": "Mevcut blok zemin kat planı: resepsiyon, konferans salonları, restoran ve ofisler"
+    },
+    {
+      "file": "plan_mevcut_bodrum.jpg",
+      "w": 1236,
+      "h": 1700,
+      "caption": "Mevcut otel bloğu bodrum kat planı: balo salonu, mutfak, spor salonu, hamam/sauna, soğuk depolar ve çok amaçlı salon"
+    }
+  ],
+  "visuals": [
+    {
+      "file": "saha_havuz_cephe.jpg",
+      "w": 1700,
+      "h": 956,
+      "caption": "Havuz ve otel cephesi — Batıhan Apart saha fotoğrafı, Mayıs 2017"
+    },
+    {
+      "file": "saha_bar.jpg",
+      "w": 1700,
+      "h": 956,
+      "caption": "Havuz başı bar — Batıhan Apart saha fotoğrafı, Mayıs 2017"
+    },
+    {
+      "file": "saha_havuz_kus_bakisi.jpg",
+      "w": 1700,
+      "h": 956,
+      "caption": "Havuz ve çevresi, üst kattan görünüm — Batıhan Apart saha fotoğrafı, Mayıs 2017"
+    }
+  ],
+  "notes": "(1) Plan paftalarında 'MİMAR: CAN ALTUN' yazıyor; bu muhtemelen yapının/projenin mimarıdır, Ahmet'in çalışması röleve ve yangın tedbiri işaretlemesi olarak tanımlandı — tasarım iddiası yok. Rolünü ve mimar adının portfolyoda anılıp anılmayacağını doğrulayın. (2) PDF metadatasından yalnızca AutoCAD 2022 doğrulanabildi; PDF'ler 26.05–02.06.2026 tarihlerinde üretilmiş. (3) Saha fotoğrafları 'Batıha Apart' klasöründen (2017, 29 Mayıs): havuz+cephe+bar görüntüleri A bloğun elmas planlı gövdesini göstermiyor; aynı tesisin apart/yan binası olabilir — fotoğraf altyazılarını teyit edin. Kişi yüzü olan kareler elendi. (4) 'Mevcut blok' ile 'A blok' arasındaki ilişki (A blok = mevcut bloğa eklenen katlar mı?) pafta adlarından kesin çıkarılamadı; 'mevcutzemina1' paftasında 'İlave A blok 1. kat' ibaresi var. (5) Alan (m²), yatak sayısı, yapım yılı, proje no gibi bilgiler belgelerden doğrulanamadı, metne konmadı. (6) Kaynakta ayrıca taranmış arşiv tif'leri (aritma, yüzme havuzu, imar, 396/47 ada-parsel mimari/betonarme) var; bunlar röleve işi değil eski ruhsat arşividir, kullanılmadı. Hero, A blok 1. kat PDF'inin tersine çevrilmiş (lacivert zemin) versiyonudur; kırmızı yangın sembolleri turuncuya çevrildi."
+}

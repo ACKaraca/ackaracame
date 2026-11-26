@@ -1,0 +1,176 @@
+{
+ "slug": "tasarim4",
+ "kind": "akademik",
+ "title": "Deniz Bilim Gençlik Evi",
+ "subtitle": "Öğrenci Dostu Antalya: Üniversite Gençlik Evi",
+ "code": "MİM 212 – Mimari Tasarım IV",
+ "term": "2023–24 Bahar",
+ "place": "Antalya",
+ "typology": "Kamusal yapı | Eğitim, gençlik ve konaklama merkezi",
+ "tools": [
+  "Archicad",
+  "Revit",
+  "AutoCAD",
+  "Adobe Photoshop"
+ ],
+ "summary": "Deniz bilimlerine ilgi duyan gençler için kurgulanan; eğitim, çalışma, eğlence ve konaklamayı bir araya getiren bir gençlik merkezi. Yapı, bir dere ve nekropol sınırı ile kentsel yola komşu parselde, ortak bir avluyu çevreleyen birkaç hacim olarak kurgulandı.",
+ "concept": "Önce iki odak noktası belirlendi; gençlik merkezi eklenerek yapı bütünleşti, ardından konaklama birimi eklendi ve ana yapıdan ayrışan çatılarla akvaryum aksı ortaya çıkarıldı.",
+ "facts": [
+  {
+   "k": "Ders",
+   "v": "MİM 212 Mimari Tasarım IV, Akdeniz Üniversitesi Mimarlık Fakültesi (2023–24 Bahar)"
+  },
+  {
+   "k": "Program",
+   "v": "Kütüphane ve sessiz çalışma, yemekhane, yönetim, konaklama, su sporları ve iklim–deniz–dere araştırma odaları, dükkânlar"
+  },
+  {
+   "k": "Kat düzeni",
+   "v": "Bodrum otopark ve 120 kişilik çok amaçlı salon; zemin ve 1. kat"
+  },
+  {
+   "k": "Teslim",
+   "v": "4 adet A0 final paftası, 1:500 vaziyet, 1:200 plan/görünüş, 1:100 kesit, 1:20 sistem kesiti"
+  }
+ ],
+ "hero": {
+  "file": "hero.jpg",
+  "w": 1920,
+  "h": 1080,
+  "caption": "Gençlik evi: dere kıyısında, avluyu çevreleyen kırmızı çatılı hacimler ve açık deniz manzarası",
+  "tone": "dark"
+ },
+ "concept_imgs": [
+  {
+   "file": "vaziyet.jpg",
+   "w": 1459,
+   "h": 1369,
+   "caption": "1:500 vaziyet planı: yol, otobüs durağı, otopark, dere ve nekropol sınırı"
+  },
+  {
+   "file": "konsept_form.jpg",
+   "w": 878,
+   "h": 1140,
+   "caption": "Form gelişimi: odak noktaları, gençlik merkezinin eklenmesi ve konaklama yapısının ayrışması"
+  },
+  {
+   "file": "konsept_aks.jpg",
+   "w": 1529,
+   "h": 1700,
+   "caption": "Kat bazlı işlev şeması (patlatılmış aksonometri): bodrum, zemin ve 1. kat"
+  }
+ ],
+ "drawings": [
+  {
+   "file": "plan_zemin.jpg",
+   "w": 1331,
+   "h": 1700,
+   "caption": "Zemin kat planı, 1:200"
+  },
+  {
+   "file": "plan_kat1.jpg",
+   "w": 1140,
+   "h": 1700,
+   "caption": "1. kat planı, 1:200: kütüphane, sessiz çalışma ve teras"
+  },
+  {
+   "file": "plan_bodrum.jpg",
+   "w": 1568,
+   "h": 1700,
+   "caption": "-1. kat planı, 1:200: kapalı otopark ve 120 kişilik çok amaçlı salon"
+  },
+  {
+   "file": "kesit_aa.jpg",
+   "w": 1700,
+   "h": 857,
+   "caption": "A-A kesiti (renkli), 1:100"
+  },
+  {
+   "file": "kesit_set.jpg",
+   "w": 1700,
+   "h": 1678,
+   "caption": "A-A, B-B, C-C ve D-D kesitleri, 1:200"
+  },
+  {
+   "file": "gorunus_guney.jpg",
+   "w": 1700,
+   "h": 265,
+   "caption": "Güney görünüşü, 1:100"
+  }
+ ],
+ "visuals": [
+  {
+   "file": "render_havadan.jpg",
+   "w": 1700,
+   "h": 956,
+   "caption": "Kuşbakışı: yapı grubu, dere ve avlu"
+  },
+  {
+   "file": "render_giris.jpg",
+   "w": 1700,
+   "h": 956,
+   "caption": "Ana giriş: geniş saçaklı yuvarlak kütle ve giriş meydanı"
+  },
+  {
+   "file": "render_avlu.jpg",
+   "w": 1700,
+   "h": 956,
+   "caption": "Ortak avlu ve yaya akışı"
+  },
+  {
+   "file": "render_kutuphane.jpg",
+   "w": 1700,
+   "h": 956,
+   "caption": "Kütüphane ve sessiz çalışma alanı"
+  },
+  {
+   "file": "maket.jpg",
+   "w": 1700,
+   "h": 936,
+   "caption": "Arazi/yerleşim maketi: dere, yol ve yapı kütleleri (karton ve köpük malzeme)"
+  }
+ ],
+ "extras": {
+  "drawings": [
+   {
+    "file": "gorunus_guney.jpg",
+    "w": 1700,
+    "h": 265,
+    "caption": "Güney görünüşü, 1:100"
+   },
+   {
+    "file": "kesit_set.jpg",
+    "w": 1700,
+    "h": 1678,
+    "caption": "A-A, B-B, C-C ve D-D kesitleri, 1:200"
+   },
+   {
+    "file": "kesit_sistem.jpg",
+    "w": 1032,
+    "h": 1700,
+    "caption": "Sistem kesiti, 1:20"
+   }
+  ],
+  "visuals": [
+   {
+    "file": "render_aksam.jpg",
+    "w": 1700,
+    "h": 956,
+    "caption": "Ana giriş, akşam görünümü"
+   },
+   {
+    "file": "render_cok_amacli.jpg",
+    "w": 1700,
+    "h": 956,
+    "caption": "Çok amaçlı salon"
+   },
+   {
+    "file": "render_otobus_duragi.jpg",
+    "w": 1700,
+    "h": 956,
+    "caption": "Giriş aksı ve otobüs durağı"
+   }
+  ]
+ },
+ "notes": "1) Proje adı 'Deniz Bilim Gençlik Evi' (final paftalardaki 'Deniz Bilimi' ve 'Deniz Bilim Gençlik Evi' ifadelerinden); resmî pafta başlığı 'Öğrenci Dostu Antalya: Üniversite Gençlik Evi'. 'Denizcilik/Açıkhava Tiyatrosu' ifadeleri son paftalarda geçmiyor; ara jüri aşamalarındaki program (konser alanı, sinema, spor salonu) final programında değişmiş. 2) Parsel yeri paftalarda yalnızca 'Antalya' ve 'Nekropol sınırı' olarak görünüyor; mahalle/ilçe doğrulanamadı, bu yüzden yazılmadı (kullanıcı onaylarsa eklenebilir). 3) Araçlar: Archicad (kat planı PDF'si 'GSEducationalVersion'), Revit (IFC shared parameters dosyası), AutoCAD 2024 (kesit PDF'leri) ve Photoshop (paftalar) dosya üst verilerinden çıkarıldı; render yazılımı (görseller 1920x1080 PNG) kesin belirlenemedi, o yüzden tools listesine yazılmadı. 4) m² değeri, ödül veya jüri notu belgelerde yok; yazılmadı. 5) Final görsellerde arka plan deniz/şehir silüeti ile bazı komşu hacimler render ortamının hazır sahnesi (özgün tasarım değil); hero'da dikkat. 6) Maket fotoğrafı ara jüri aşamasına ait kaba arazi maketi; final form değil (final form ile farklı yerleşim). 7) Kaynakta 'concept-sheet.jpg' Hindistan/Jaipur Nagar Nigam projesine ait bir referans pafta, atlandı; 'Arcicad' klasörü (ARCHICAD eğitim süreci ödevi) ayrı bir ders çalışması, bu projeye dahil edilmedi. 6\\ ve final\\pafta\\ altındaki kahverengi çatılı render'lar ara/önceki sürüm (28 Mayıs 2024), final pafta (3 Haziran 2024, kırmızı çatılı) esas alındı. 8) Final teslim videosu bağlantısı: https://youtu.be/8bvFmkU8q8k (final\\Video Link.txt). 9) Danışmanlar paftada Arş.Gör. Dr. Ayşe Yıldırım Ateş, Arş.Gör. Şerife İncedemir, Y. Mimar Seval Gelen, Y. Mimar Ali Kemal Sergin olarak geçiyor."
+}

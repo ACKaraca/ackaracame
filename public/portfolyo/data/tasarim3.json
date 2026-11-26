@@ -1,0 +1,179 @@
+{
+ "slug": "tasarim3",
+ "kind": "akademik",
+ "title": "Hep ‘Birlik’te",
+ "subtitle": "Anaokulu / Kreş – “Çocuk ve Cumhuriyet”",
+ "code": "MİM 211 – Mimari Tasarım III",
+ "term": "2023–24 Güz",
+ "place": "Antalya / Konyaaltı, Pınarbaşı (4046 ada, 2 ve 3 parsel)",
+ "typology": "Kamusal yapı – eğitim (okul öncesi)",
+ "tools": [
+  "Revit",
+  "Autodesk Rendering",
+  "Fiziksel maket (karton)"
+ ],
+ "summary": "“Çocuk ve Cumhuriyet” temalı dönem projesinde Konyaaltı’nda 3–6 yaş grubuna yönelik, oditoryum ve kapalı otoparkı da içeren bir kreş/anaokulu tasarlandı. Birlik değeri, yaş gruplarını buluşturan ortak alanlar aksıyla mekâna dönüştürüldü.",
+ "concept": "Birlik, Cumhuriyet’in temel değerlerinden biri olarak ele alındı: farklı yaş gruplarının bir araya gelip birlikte oynayabildiği Ortak Alanlar aksı, sınıfları, bahçeyi ve fuaye–oditoryum grubunu bağlayan kurgunun omurgasıdır.",
+ "facts": [
+  {
+   "k": "Program",
+   "v": "Kreş + anaokulu; 3–6 yaş sınıfları, atölye, yemekhane, oditoryum, idari birimler"
+  },
+  {
+   "k": "Parsel",
+   "v": "Yaklaşık 2000 m²; TAKS 0,40 – KAKS 0,80; 2 kat; serbest nizam"
+  },
+  {
+   "k": "Kat kurgusu",
+   "v": "–1. kat (otopark, oditoryum, mutfak), zemin kat, 1. kat"
+  },
+  {
+   "k": "Teslim",
+   "v": "1/200 maket, vaziyet, 1/100 plan–kesit–görünüş, taşıyıcı sistem, 3B görseller"
+  }
+ ],
+ "hero": {
+  "file": "hero.jpg",
+  "w": 1920,
+  "h": 1080,
+  "caption": "Ana giriş cephesi ve yaya aksı – sokaktan bakış",
+  "tone": "dark"
+ },
+ "concept_imgs": [
+  {
+   "file": "vaziyet.jpg",
+   "w": 1700,
+   "h": 1582,
+   "caption": "1/200 vaziyet planı: yaya, servis ve veli–idare dolaşım ayrımı"
+  },
+  {
+   "file": "balon_diyagram.jpg",
+   "w": 1040,
+   "h": 720,
+   "caption": "Balon diyagram: giriş, soyunma, bahçe ve ‘gri alan’ ilişkileri; eğitim, idari ve ortak birimler"
+  }
+ ],
+ "drawings": [
+  {
+   "file": "plan_zemin.jpg",
+   "w": 1700,
+   "h": 798,
+   "caption": "1/100 zemin kat planı – 5–6 yaş sınıfları, yemekhane, atölye, fuaye ve oditoryum girişi"
+  },
+  {
+   "file": "plan_1kat.jpg",
+   "w": 1700,
+   "h": 1198,
+   "caption": "1/100 1. kat planı – 3–4 yaş sınıfları, uyku odaları, bilgisayar/jimnastik, idari birimler"
+  },
+  {
+   "file": "kesit_aa.jpg",
+   "w": 1700,
+   "h": 548,
+   "caption": "1/100 AA kesiti"
+  },
+  {
+   "file": "aksonometri_patlatma.jpg",
+   "w": 1510,
+   "h": 1700,
+   "caption": "Patlatma aksonometri: –1., zemin ve 1. kat işlev kodlaması"
+  },
+  {
+   "file": "plan_bodrum.jpg",
+   "w": 1700,
+   "h": 794,
+   "caption": "1/100 –1. kat planı – kapalı otopark, oditoryum, mutfak, teknik birim"
+  },
+  {
+   "file": "kesit_bb.jpg",
+   "w": 1700,
+   "h": 954,
+   "caption": "1/100 BB kesiti"
+  }
+ ],
+ "visuals": [
+  {
+   "file": "render_ust_gorunum.jpg",
+   "w": 1700,
+   "h": 956,
+   "caption": "Kuşbakışı: yapı, bahçe ve araç/yaya dolaşımı"
+  },
+  {
+   "file": "render_bahce.jpg",
+   "w": 1700,
+   "h": 956,
+   "caption": "Oyun bahçesi"
+  },
+  {
+   "file": "render_sinif.jpg",
+   "w": 1700,
+   "h": 956,
+   "caption": "Sınıf – ortak etkinlik mekânı"
+  },
+  {
+   "file": "render_ortak_alan.jpg",
+   "w": 1700,
+   "h": 956,
+   "caption": "Ortak alan – oyun ve tırmanma elemanı"
+  },
+  {
+   "file": "maket_kutle.jpg",
+   "w": 1700,
+   "h": 1275,
+   "caption": "Çalışma maketi (karton, kütle)"
+  }
+ ],
+ "extra_drawings": [
+  {
+   "file": "plan_bodrum.jpg",
+   "w": 1700,
+   "h": 794,
+   "caption": "1/100 –1. kat planı – kapalı otopark, oditoryum, mutfak, teknik birim"
+  },
+  {
+   "file": "kesit_bb.jpg",
+   "w": 1700,
+   "h": 954,
+   "caption": "1/100 BB kesiti"
+  },
+  {
+   "file": "gorunusler.jpg",
+   "w": 1593,
+   "h": 1700,
+   "caption": "1/100 kuzey, güney, batı ve doğu görünüşleri"
+  },
+  {
+   "file": "struktur.jpg",
+   "w": 1700,
+   "h": 703,
+   "caption": "Zemin ve 1. kat strüktür planları, strüktür şeması"
+  }
+ ],
+ "extra_visuals": [
+  {
+   "file": "pafta_gorsel_triptik.jpg",
+   "w": 1700,
+   "h": 976,
+   "caption": "Final paftasının üç görüntülü üst bandı (sokak, giriş, bahçe)"
+  },
+  {
+   "file": "render_oditoryum.jpg",
+   "w": 1700,
+   "h": 956,
+   "caption": "Oditoryum iç mekânı"
+  },
+  {
+   "file": "render_yemekhane.jpg",
+   "w": 1700,
+   "h": 956,
+   "caption": "Yemekhane"
+  },
+  {
+   "file": "maket_vaziyet.jpg",
+   "w": 1700,
+   "h": 1114,
+   "caption": "1/200 baz maket – çevre ile birlikte"
+  }
+ ],
+ "notes": "Proje adı final paftasında ‘Hep ‘Birlik’te’; ara jüride ‘Birlik’, ara sürümlerde ‘ECO KREŞ’ (8 eco_Reports; sürdürülebilirlik/ürün paftası) başlıkları kullanılmış. Konu, proje föyünden (Mim 211 2023-24 Güz, Şube 3) ‘Çocuk ve Cumhuriyet’ kreş tasarımı olarak doğrulandı; arsa Konyaaltı Pınarbaşı, 4046 ada 2-3 parsel. Yapılaşma alanı/m² beyanı için final paftalarında doğrulanabilir bir toplam yok; föy ‘yaklaşık 1150 m²’ hedefi veriyor, yazmadım. Yazılım: ‘Revit’ dosya adlarından (Architectural-Model, Reports, 3DView assets) çıkarıldı; render motorunun Twinmotion mu Revit/Autodesk Rendering mi olduğu doğrulanamadı – lütfen CV ile teyit edin (kullanılmışsa ‘Revit’ dışındaki araçları ekleyin; paftada düzenleme için Illustrator/Photoshop benzeri bir araç kullanılmış olabilir, kanıt yok). Föy 2 katlı yapı istiyor; final tasarım ayrıca –1. katı (otopark+oditoryum) içeriyor. Final pafta metni ‘Birlik’ kavramını ‘Kommensalizm’ ile ilişkilendiriyor – bilimsel olarak tartışmalı bir terim, metinde kullanmadım. Final pafta ve ara jüri paftaları (teal ‘Birlik’, 8.1 arajür2) farklı yerleşim sürümleri; final kesin sürümdür. Hero ‘tone’ sahne parlaklığı ortalama ~104/255 olduğundan ‘dark’ seçildi, üzerinde yazı için gradyan önerilir. extra_* alanları şema dışı ek seçkidir. Kaynaklarda ‘ECO KREŞ’ alternatif sürümüne ait görseller (8 eco_Reports\\…) kullanılmadı."
+}

@@ -24,6 +24,8 @@ export interface CorridorEntry {
   extra?: { image: string; aspect: number };
   /** Portal that leaves the corridor for the classic page. */
   classic?: boolean;
+  /** Portal to a static document outside the SPA; loaded with a full page navigation. */
+  document?: boolean;
   /** Hangs close to neighbouring tight entries. */
   tight?: boolean;
 }
